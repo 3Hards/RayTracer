@@ -19,7 +19,7 @@ elseif(WIN32)
     add_compile_options(/W4)
 endif()
 
-add_executable(raytracer ${SRC_DIR}/main.cpp)
+add_executable(raytracer)
 
 ##################### CUSTUM CMD ##########################
 
@@ -28,3 +28,5 @@ add_custom_command(
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:raytracer> ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+add_subdirectory(src)
