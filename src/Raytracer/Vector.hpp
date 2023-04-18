@@ -14,10 +14,10 @@ namespace Raytracer {
     class Vector : public IVector, public Transformable::ATransformable {
         public:
             void setPrimitives(std::vector<std::shared_ptr<Transformable::IPrimitive>>);
-            std::tuple<bool, Material::IMaterial, Transformable::Point3f> run(Transformable::ILight);
+            std::tuple<bool, Display::Color, Transformable::Point3f> run(Transformable::ILight);
         private:
             void moveForward();
-            std::tuple<bool, Material::IMaterial, Transformable::Point3f> checkHit();
+            std::tuple<bool, Display::Color> checkHit();
             std::vector<std::shared_ptr<Transformable::IPrimitive>> _primitives;
     };
 }

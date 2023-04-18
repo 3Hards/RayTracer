@@ -17,20 +17,29 @@ void Raytracer::Vector::moveForward()
 
 }
 
-std::tuple<bool, Material::IMaterial, Transformable::Point3f> Raytracer::Vector::checkHit()
+std::tuple<bool, Display::Color> Raytracer::Vector::checkHit()
 {
+    std::tuple<bool, Display::Color> res;
+
     for (auto primitive : _primitives) {
-        primitive
+        res = primitive->checkHit(*this);
+        if (std::get<0>(res) == true) {
+            return res;
+        }
     }
+    return std::make_tuple(false, Display::Color{0, 0, 0});
 }
 
-std::tuple<bool, Material::IMaterial, Transformable::Point3f> Raytracer::Vector::run(Transformable::ILight)
+std::tuple<bool, Display::Color, Transformable::Point3f> Raytracer::Vector::run(Transformable::ILight)
 {
-    std::tuple<bool, Material::IMaterial, Transformable::Point3f> res = checkHit();
+    std::tuple<bool, Display::Color> res;
 
-    if (std::get<0>(res) == true) {
-        return res;
+    for (int i = 0; i < 100; i++) {
+        res = checkHit();
+        if (std::get<0>(res) == true) {
+            return std::make_tuple(std::get<0>(res), std::get<1>(res), _pos);
+        }
+        moveForward();
     }
-    moveForward();
-    return res;
+    return std::make_tuple(false, Display::Color{0, 0, 0}, Transformable::Point3f{0, 0, 0});
 }
