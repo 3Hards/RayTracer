@@ -11,7 +11,7 @@
 
 namespace Transformable {
     class ATransformable : public ITransformable {
-        protected:
+        public:
             ATransformable() = delete;
             Point3f getPos();
             Point3f getAxis();
