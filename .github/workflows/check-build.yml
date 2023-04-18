@@ -1,0 +1,27 @@
+name: Check Build
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  linux-test:
+    runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker:latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          set -e
+          mkdir build
+          cd build
+          cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
+          cmake --build .
+      - name: Check Files
+        run: |
+          set -e
+          ls -l raytracer
