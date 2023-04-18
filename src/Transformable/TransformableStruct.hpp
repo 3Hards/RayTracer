@@ -5,6 +5,8 @@
 ** Transformable structs
 */
 
+#pragma once
+
 namespace Transformable {
 
     enum class TransformableType {

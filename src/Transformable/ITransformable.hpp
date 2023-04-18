@@ -5,6 +5,8 @@
 ** ITransformable
 */
 
+#pragma once
+
 #include "TransformableStruct.hpp"
 
 namespace Transformable {
