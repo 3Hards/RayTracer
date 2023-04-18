@@ -1,0 +1,10 @@
+.vs/*
+.vscode/*
+*.o
+*.dll
+*.so
+build/*
+lib/*
+*.sln
+/raytracer
+*.exe
