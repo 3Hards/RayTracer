@@ -1,3 +1,9 @@
+/*
+** EPITECH PROJECT, 2023
+** RayTracer
+** File description:
+** IVector
+*/
 
 #include <vector>
 #include <memory>
@@ -11,7 +17,7 @@ namespace Material {
     class IMaterial;
 }
 
-namespace RayTracer {
+namespace Raytracer {
     class IVector : public Transformable::ITransformable {
         public:
             virtual void setPrimitives(std::vector<std::shared_ptr<Transformable::IPrimitive>>) = 0;
