@@ -5,6 +5,8 @@
 ** Vector header
 */
 
+#pragma once
+
 #include "IVector.hpp"
 #include "ATransformable.hpp"
 
@@ -14,6 +16,8 @@ namespace Raytracer {
             void setPrimitives(std::vector<std::shared_ptr<Transformable::IPrimitive>>);
             std::tuple<bool, Material::IMaterial, Transformable::Point3f> run(Transformable::ILight);
         private:
+            void moveForward();
+            std::tuple<bool, Material::IMaterial, Transformable::Point3f> checkHit();
             std::vector<std::shared_ptr<Transformable::IPrimitive>> _primitives;
     };
 }

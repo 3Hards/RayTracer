@@ -5,16 +5,22 @@
 ** IVector
 */
 
+#pragma once
+
 #include <vector>
 #include <memory>
 #include "ITransformable.hpp"
 
 namespace Transformable {
-    class IPrimitive;
-    class ILight;
+    class IPrimitive {
+        std::tuple<bool, Color> checkHit(std::shared_ptr<Raytracer::IVector>);
+    };
+    class ILight {
+
+    };
 }
 namespace Material {
-    class IMaterial;
+    class IMaterial {};
 }
 
 namespace Raytracer {
