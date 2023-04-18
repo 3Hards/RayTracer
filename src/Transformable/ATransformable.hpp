@@ -5,6 +5,8 @@
 ** ATransformable header
 */
 
+#pragma once
+
 #include "ITransformable.hpp"
 
 namespace Transformable {
