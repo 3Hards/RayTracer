@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2023
+** RayTracer
+** File description:
+** Transformable structs
+*/
+
 namespace Transformable {
 
     enum class TransformableType {
