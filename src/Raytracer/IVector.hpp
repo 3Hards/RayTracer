@@ -21,7 +21,7 @@ namespace Material {
 }
 
 namespace Raytracer {
-    class IVector : public Transformable::ITransformable {
+    class IVector {
         public:
             virtual void setPrimitives(std::vector<std::shared_ptr<Transformable::IPrimitive>>) = 0;
             virtual std::tuple<bool, Display::Color, Transformable::Point3f> run(Transformable::ILight) = 0;

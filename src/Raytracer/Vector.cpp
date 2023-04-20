@@ -9,6 +9,8 @@
 #include <array>
 #include "Vector.hpp"
 
+Raytracer::Vector::Vector() {}
+
 void Raytracer::Vector::setPrimitives(std::vector<std::shared_ptr<Transformable::IPrimitive>> primitives)
 {
     _primitives = primitives;
