@@ -34,6 +34,6 @@ jobs:
       - uses: pixta-dev/repository-mirroring-action@v1
         with:
           target_repo_url:
-            ${{ env.REPO_URL }}
+            ${{ secrets.REPO_URL }}
           ssh_private_key:
             ${{ secrets.GTHB_SSH_PRIVATE_KEY }}
