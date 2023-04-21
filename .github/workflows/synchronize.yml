@@ -26,6 +26,7 @@ jobs:
   sync-with-tek-orga:
     needs: [linux-test]
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - uses: actions/checkout@v3
         with:
@@ -33,6 +34,6 @@ jobs:
       - uses: pixta-dev/repository-mirroring-action@v1
         with:
           target_repo_url:
-            git@github.com:EpitechPromo2026/B-OOP-400-TLS-4-1-raytracer-leonore.clos-manescau.git
+            ${{ env.REPO_URL }}
           ssh_private_key:
             ${{ secrets.GTHB_SSH_PRIVATE_KEY }}
