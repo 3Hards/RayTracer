@@ -1,0 +1,38 @@
+name: synchronize
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  linux-test:
+    runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker:latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          set -e
+          mkdir build
+          cd build
+          cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
+          cmake --build .
+      - name: Check Files
+        run: |
+          set -e
+          ls -l raytracer
+  sync-with-tek-orga:
+    needs: [linux-test]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: pixta-dev/repository-mirroring-action@v1
+      with:
+        target_repo_url:
+          ${{ env.REPO_URL }}
+        ssh_private_key:
+          ${{ secrets.GTHB_SSH_PRIVATE_KEY }}
