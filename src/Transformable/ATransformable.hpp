@@ -12,7 +12,7 @@
 namespace Transformable {
     class ATransformable : public ITransformable {
         public:
-            ATransformable() = delete;
+            virtual ATransformable() = default;
             Point3f getPos();
             Point3f getAxis();
             void setPos(Point3f);
