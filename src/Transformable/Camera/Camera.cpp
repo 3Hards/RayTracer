@@ -36,5 +36,25 @@ namespace Transformable {
             //TODO: Compute vectors
         }
 
+        Point3f Camera::getPos() {
+            return ATransformable::getPos();
+        }
+
+        Point3f Camera::getAxis() {
+            return ATransformable::getAxis();
+        }
+
+        void Camera::setPos(Point3f pos) {
+            ATransformable::setPos(pos);
+        }
+
+        void Camera::setAxis(Point3f axis) {
+            ATransformable::setAxis(axis);
+        }
+
+        TransformableType Camera::getType() {
+            return ATransformable::getType();
+        }
+
     }
 }
