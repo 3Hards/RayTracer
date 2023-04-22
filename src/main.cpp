@@ -11,6 +11,6 @@
 int main()
 {
     std::cout << "Hello World!" << std::endl;
-    Transformable::Camera::Camera camera(90, 1920, 1080, {0, 0, 0}, {0, 0, 0});
+    Transformable::Camera::Camera camera(90, 1920, 1080, {0, 0, 0}, {42, 0, 42});
     return 0;
 }
