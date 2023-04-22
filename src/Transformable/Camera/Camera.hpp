@@ -8,8 +8,10 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include "ICamera.hpp"
 #include "../ATransformable.hpp"
+#include "../../Raytracer/IVector.hpp"
 
 namespace Transformable {
     namespace Camera {
@@ -33,7 +35,7 @@ namespace Transformable {
                     Point3f position = {0, 0, 0},
                     Point3f axis = {0, 0, 0}
                 );
-                std::vector<Raytracer::IVector> getVectors() const override;
+                std::vector<std::shared_ptr<Raytracer::IVector>> getVectors() const override;
                 Point3f getPos() override;
                 Point3f getAxis() override;
                 void setPos(Point3f pos) override;
@@ -45,7 +47,7 @@ namespace Transformable {
                 int _fov;
                 int _width;
                 int _height;
-                std::vector<Raytracer::IVector> _vectors;
+                std::vector<std::shared_ptr<Raytracer::IVector>> _vectors;
         };
     }
 }
