@@ -28,7 +28,7 @@ namespace Transformable {
             computeVectors();
         }
 
-        std::vector<Raytracer::IVector> Camera::getVectors() {
+        std::vector<Raytracer::IVector> Camera::getVectors() const {
             return _vectors;
         }
 
