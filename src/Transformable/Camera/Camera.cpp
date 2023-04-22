@@ -10,6 +10,7 @@
 
 namespace Transformable {
     namespace Camera {
+
         Camera::Camera(
             int fov,
             int width,
@@ -24,6 +25,16 @@ namespace Transformable {
             _pos = position;
             _axis = axis;
             _type = TransformableType::Camera;
+            computeVectors();
         }
+
+        std::vector<Raytracer::IVector> Camera::getVectors() {
+            return _vectors;
+        }
+
+        void Camera::computeVectors() {
+            //TODO: Compute vectors
+        }
+
     }
 }

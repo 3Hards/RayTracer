@@ -34,7 +34,9 @@ namespace Transformable {
                     Point3f axis = {0, 0, 0}
                 );
                 std::vector<Raytracer::IVector> getVectors();
+
             private:
+                void computeVectors();
                 int _fov;
                 int _width;
                 int _height;
