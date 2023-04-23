@@ -17,14 +17,17 @@ namespace Scene {
         _light(nullptr)
     {}
 
-    void Scene::addTransformable(std::shared_ptr<Transformable::ITransformable> transformable)
+    void Scene::addCamera(std::shared_ptr<Transformable::Camera::ICamera> camera)
     {
-        if (transformable->getType() == Transformable::TransformableType::Camera &&
-            _camera == nullptr) {
-            _camera = std::dynamic_pointer_cast<Transformable::Camera::ICamera>(transformable);
-        } else if (transformable->getType() == Transformable::TransformableType::Light &&
-            _light == nullptr) {
-            _light = std::dynamic_pointer_cast<Transformable::Light::ILight>(transformable);
+        if (_camera == nullptr) {
+            _camera = camera;
+        }
+    }
+
+    void Scene::addLight(std::shared_ptr<Transformable::Light::ILight> light)
+    {
+        if (_light == nullptr) {
+            _light = light;
         }
     }
 

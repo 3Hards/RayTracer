@@ -16,8 +16,12 @@ namespace Scene {
     class Scene : public IScene {
         public:
             Scene(std::string const &filename);
-            void addTransformable(std::shared_ptr<Transformable::ITransformable> transformable);
             void playScene(std::string const &filename);
+            void addCamera(std::shared_ptr<Transformable::Camera::ICamera> camera);
+            void addLight(std::shared_ptr<Transformable::Light::ILight> light);
+            //void addTransformation(std::shared_ptr<Transformable::Transformation::ITransformation> transformation);
+            //void addPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive> primitive);
+            
         
         private:
             void handleVectorAnswer(std::tuple<bool, Display::Color, Transformable::Point3f> answer);

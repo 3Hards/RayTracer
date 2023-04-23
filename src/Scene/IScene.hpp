@@ -9,15 +9,17 @@
 
 #include <memory>
 #include <string>
-#include "ITransformable.hpp"
 #include "ILight.hpp"
+#include "ICamera.hpp"
 
 namespace Scene {
     class IScene {
         public:
             virtual ~IScene() = default;
-            virtual void addTransformable(std::shared_ptr<Transformable::ITransformable> transformable) = 0;
             virtual void playScene(std::string const &filename) = 0;
-            //virtual void addTransformation(ITransformation *transformation) = 0;
+            virtual void addCamera(std::shared_ptr<Transformable::Camera::ICamera> camera) = 0;
+            virtual void addLight(std::shared_ptr<Transformable::Light::ILight> light) = 0;
+            //void addTransformation(std::shared_ptr<Transformable::Transformation::ITransformation> transformation) = 0;
+            //void addPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive> primitive) = 0;
     };
 }
