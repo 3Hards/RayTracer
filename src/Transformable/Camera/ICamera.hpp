@@ -16,7 +16,7 @@ namespace Transformable {
         class ICamera : public ITransformable {
             public:
                 virtual ~ICamera() = default;
-                virtual std::vector<std::shared_ptr<Raytracer::IVector>> getVectors() const = 0;
+                virtual std::vector<std::shared_ptr<Raytracer::IVector>> computeVectors() = 0;
         };
     }
 }
