@@ -8,8 +8,8 @@
 #pragma once
 
 #include <vector>
-#include "../ITransformable.hpp"
-#include "../../Raytracer/IVector.hpp"
+#include "ITransformable.hpp"
+#include "IVector.hpp"
 
 namespace Transformable {
     namespace Camera {

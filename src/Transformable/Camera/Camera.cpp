@@ -6,8 +6,8 @@
 */
 
 #include "Camera.hpp"
-#include "../ATransformable.hpp"
-#include "../../Raytracer/Vector.hpp"
+#include "ATransformable.hpp"
+#include "Vector.hpp"
 
 namespace Transformable {
     namespace Camera {
@@ -18,14 +18,11 @@ namespace Transformable {
             int height,
             Point3f position,
             Point3f axis
-        ) : ATransformable()
+        ) : ATransformable(position, axis, TransformableType::Camera)
         {
             _fov = fov;
             _width = width;
             _height = height;
-            _pos = position;
-            _axis = axis;
-            _type = TransformableType::Camera;
             computeVectors();
         }
 
@@ -48,9 +45,7 @@ namespace Transformable {
                     axis.x = _axis.x;
                     axis.y = _axis.y;
                     axis.z = _axis.z;
-                    Raytracer::Vector vector = Raytracer::Vector();
-                    vector.setPos(pos);
-                    vector.setAxis(axis);
+                    Raytracer::Vector vector = Raytracer::Vector(pos, axis, Transformable::TransformableType::Vector);
                     _vectors.push_back(std::make_shared<Raytracer::Vector>(vector));
                 }
             }

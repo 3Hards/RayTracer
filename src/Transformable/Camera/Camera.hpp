@@ -10,8 +10,8 @@
 #include <vector>
 #include <memory>
 #include "ICamera.hpp"
-#include "../ATransformable.hpp"
-#include "../../Raytracer/IVector.hpp"
+#include "ATransformable.hpp"
+#include "IVector.hpp"
 
 namespace Transformable {
     namespace Camera {
