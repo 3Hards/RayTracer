@@ -63,7 +63,7 @@ std::tuple<bool, Display::Color> Raytracer::Vector::checkHit()
     return std::make_tuple(false, Display::Color{0, 0, 0});
 }
 
-std::tuple<bool, Display::Color, Transformable::Point3f> Raytracer::Vector::run(Transformable::Light::ILight)
+std::tuple<bool, Display::Color, Transformable::Point3f> Raytracer::Vector::run(std::shared_ptr<Transformable::Light::ILight>)
 {
     std::tuple<bool, Display::Color> res;
 
