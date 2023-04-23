@@ -41,4 +41,4 @@ jobs:
           cd ..
       - name: Check Files
         run: |
-          ls -l raytracer
+          ls -l raytracer.exe
