@@ -21,8 +21,8 @@ namespace Transformable {
             Point3f _pos;
             Point3f _axis;
             TransformableType _type;
-        
+
         protected:
-            ATransformable();
+            ATransformable(Point3f pos, Point3f axis, TransformableType type);
     };
 }

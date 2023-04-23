@@ -7,10 +7,8 @@
 
 #include "ATransformable.hpp"
 
-Transformable::ATransformable::ATransformable()
+Transformable::ATransformable::ATransformable(Point3f pos, Point3f axis, TransformableType type) : _pos(pos), _axis(axis), _type(type)
 {
-    _pos = {0, 0, 0};
-    _axis = {0, 0, 0};
 }
 
 Transformable::Point3f Transformable::ATransformable::getPos()
