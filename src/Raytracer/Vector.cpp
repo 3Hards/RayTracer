@@ -20,7 +20,7 @@ void Raytracer::Vector::setPrimitives(std::vector<std::shared_ptr<Transformable:
     _primitives = primitives;
 }
 
-float Raytracer::Vector::toRad(float degree)
+double Raytracer::Vector::toRad(double degree)
 {
     return degree * (M_PI / 180);
 }

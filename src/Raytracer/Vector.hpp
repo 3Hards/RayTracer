@@ -20,6 +20,6 @@ namespace Raytracer {
             void moveForward();
             std::tuple<bool, Display::Color> checkHit();
             std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> _primitives;
-            float toRad(float degree);
+            double toRad(double degree);
     };
 }
