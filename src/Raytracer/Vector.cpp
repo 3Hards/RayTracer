@@ -76,3 +76,28 @@ std::tuple<bool, Display::Color, Transformable::Point3f> Raytracer::Vector::run(
     }
     return std::make_tuple(false, Display::Color{0, 0, 0}, Transformable::Point3f{0, 0, 0});
 }
+
+Transformable::Point3f Raytracer::Vector::getPos()
+{
+    return ATransformable::getPos();
+}
+
+Transformable::Point3f Raytracer::Vector::getAxis()
+{
+    return ATransformable::getAxis();
+}
+
+void Raytracer::Vector::setPos(Transformable::Point3f pos)
+{
+    ATransformable::setPos(pos);
+}
+
+void Raytracer::Vector::setAxis(Transformable::Point3f axis)
+{
+    ATransformable::setAxis(axis);
+}
+
+Transformable::TransformableType Raytracer::Vector::getType()
+{
+    return ATransformable::getType();
+}

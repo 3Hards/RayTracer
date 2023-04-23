@@ -16,6 +16,11 @@ namespace Raytracer {
             Vector(Transformable::Point3f pos, Transformable::Point3f axis);
             void setPrimitives(std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>>) final;
             std::tuple<bool, Display::Color, Transformable::Point3f> run(Transformable::Light::ILight) final;
+            Transformable::Point3f getPos() final;
+            Transformable::Point3f getAxis() final;
+            void setPos(Transformable::Point3f pos) final;
+            void setAxis(Transformable::Point3f axis) final;
+            Transformable::TransformableType getType() final;
         private:
             void moveForward();
             std::tuple<bool, Display::Color> checkHit();
