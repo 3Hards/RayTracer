@@ -5,24 +5,33 @@
 ** Vector
 */
 
-#include <math.h>
+#ifdef _WIN32
+    #define _USE_MATH_DEFINES
+#endif
+#include <cmath>
 #include <array>
 #include "Vector.hpp"
 
-Raytracer::Vector::Vector() {}
+Raytracer::Vector::Vector(Transformable::Point3f pos, Transformable::Point3f axis) : ATransformable(pos, axis, Transformable::TransformableType::Vector)
+{}
 
-void Raytracer::Vector::setPrimitives(std::vector<std::shared_ptr<Transformable::IPrimitive>> primitives)
+void Raytracer::Vector::setPrimitives(std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> primitives)
 {
     _primitives = primitives;
 }
 
+double Raytracer::Vector::toRad(double degree)
+{
+    return degree * (M_PI / 180);
+}
+
 void Raytracer::Vector::moveForward()
 {
-    std::array<std::array<double, 3>, 3> rot_x = {{{1, 0, 0}, {0, cos(_axis.x), -sin(_axis.x)}, {0, sin(_axis.x), cos(_axis.x)}}};
-    std::array<std::array<double, 3>, 3> rot_y = {{{cos(_axis.y), 0, sin(_axis.y)}, {0, 1, 0}, {-sin(_axis.y), 0, cos(_axis.y)}}};
-    std::array<std::array<double, 3>, 3> rot_z = {{{cos(_axis.z), -sin(_axis.z), 0}, {sin(_axis.z), cos(_axis.z), 0}, {0, 0, 1}}};
+    std::array<std::array<double, 3>, 3> rot_x = {{{1, 0, 0}, {0, cos(toRad(_axis.x)), -sin(toRad(_axis.x))}, {0, sin(toRad(_axis.x)), cos(toRad(_axis.x))}}};
+    std::array<std::array<double, 3>, 3> rot_y = {{{cos(toRad(_axis.y)), 0, sin(toRad(_axis.y))}, {0, 1, 0}, {-sin(toRad(_axis.y)), 0, cos(toRad(_axis.y))}}};
+    std::array<std::array<double, 3>, 3> rot_z = {{{cos(toRad(_axis.z)), -sin(toRad(_axis.z)), 0}, {sin(toRad(_axis.z)), cos(toRad(_axis.z)), 0}, {0, 0, 1}}};
     std::array<std::array<double, 3>, 3> rot_matrix;
-    double distance = 1.0;
+    double distance = 0.01;
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
@@ -54,7 +63,7 @@ std::tuple<bool, Display::Color> Raytracer::Vector::checkHit()
     return std::make_tuple(false, Display::Color{0, 0, 0});
 }
 
-std::tuple<bool, Display::Color, Transformable::Point3f> Raytracer::Vector::run(Transformable::ILight)
+std::tuple<bool, Display::Color, Transformable::Point3f> Raytracer::Vector::run(Transformable::Light::ILight)
 {
     std::tuple<bool, Display::Color> res;
 
@@ -66,4 +75,29 @@ std::tuple<bool, Display::Color, Transformable::Point3f> Raytracer::Vector::run(
         moveForward();
     }
     return std::make_tuple(false, Display::Color{0, 0, 0}, Transformable::Point3f{0, 0, 0});
+}
+
+Transformable::Point3f Raytracer::Vector::getPos()
+{
+    return ATransformable::getPos();
+}
+
+Transformable::Point3f Raytracer::Vector::getAxis()
+{
+    return ATransformable::getAxis();
+}
+
+void Raytracer::Vector::setPos(Transformable::Point3f pos)
+{
+    ATransformable::setPos(pos);
+}
+
+void Raytracer::Vector::setAxis(Transformable::Point3f axis)
+{
+    ATransformable::setAxis(axis);
+}
+
+Transformable::TransformableType Raytracer::Vector::getType()
+{
+    return ATransformable::getType();
 }

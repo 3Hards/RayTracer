@@ -13,26 +13,32 @@
 #include "DisplayStructs.hpp"
 
 namespace Transformable {
-    class IPrimitive;
-    class ILight {};
+    namespace Primitive {
+        class IPrimitive;
+    }
+    namespace Light {
+        class ILight {};
+    }
 }
 namespace Material {
     class IMaterial {};
 }
 
 namespace Raytracer {
-    class IVector {
+    class IVector : public Transformable::ITransformable {
         public:
-            virtual void setPrimitives(std::vector<std::shared_ptr<Transformable::IPrimitive>>) = 0;
-            virtual std::tuple<bool, Display::Color, Transformable::Point3f> run(Transformable::ILight) = 0;
+            virtual void setPrimitives(std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>>) = 0;
+            virtual std::tuple<bool, Display::Color, Transformable::Point3f> run(Transformable::Light::ILight) = 0;
     };
 }
 
 namespace Transformable {
-    class IPrimitive {
-        public:
-            std::tuple<bool, Display::Color> checkHit(Raytracer::IVector &) {
-                return std::make_tuple(true, Display::Color{1, 1, 1});
-            }
-    };
+    namespace Primitive {
+        class IPrimitive {
+            public:
+                std::tuple<bool, Display::Color> checkHit(Raytracer::IVector &) {
+                    return std::make_tuple(true, Display::Color{1, 1, 1});
+                }
+        };
+    }
 }
