@@ -11,7 +11,9 @@
 
 namespace Scene {
     Scene::Scene(std::string const &filename) :
-        _filename(filename)
+        _filename(filename),
+        _camera(nullptr),
+        _light(nullptr)
     {}
 
     void Scene::addTransformable(std::shared_ptr<Transformable::ITransformable> transformable)
@@ -28,6 +30,7 @@ namespace Scene {
     void Scene::playScene(std::string const &filename)
     {
         std::vector<std::shared_ptr<Raytracer::IVector>> _vectors = _camera->computeVectors();
+
         for (auto &vector : _vectors) {
             vector->run(_light);
         }

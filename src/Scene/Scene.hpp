@@ -11,21 +11,6 @@
 #include <memory>
 #include "IScene.hpp"
 #include "ICamera.hpp"
-#include "IVector.hpp"
-
-namespace Transformable {
-    namespace Light {
-        class ILight {
-            public:
-                virtual ~ILight() = default;
-        };
-
-        class Light : public ILight {
-            public:
-                Light() = default;
-        };
-    }
-}
 
 namespace Scene {
     class Scene : public IScene {
