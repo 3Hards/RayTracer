@@ -36,7 +36,7 @@ jobs:
           cd ..
       - name: Check Files
         run: |
-          ls -l raytracer
+          ls -l raytracer.exe
   
   sync-with-tek-orga:
     needs: [linux-test, windows-test]
