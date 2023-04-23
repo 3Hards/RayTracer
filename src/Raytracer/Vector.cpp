@@ -5,7 +5,7 @@
 ** Vector
 */
 
-#include <math.h>
+#include <cmath>
 #include <array>
 #include "Vector.hpp"
 
