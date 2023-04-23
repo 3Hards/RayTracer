@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 #include "ITransformable.hpp"
+#include "ILight.hpp"
 
 namespace Scene {
     class IScene {
