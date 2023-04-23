@@ -5,9 +5,15 @@
 ** ATransformable
 */
 
+#pragma once
+
 #include "ITransformable.hpp"
 #include "DisplayStructs.hpp"
-#include "IVector.hpp"
+#include <tuple>
+
+namespace Raytracer {
+    class IVector;
+}
 
 namespace Transformable {
     namespace Primitive {
