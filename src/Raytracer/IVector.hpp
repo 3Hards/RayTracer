@@ -11,13 +11,11 @@
 #include <memory>
 #include "ITransformable.hpp"
 #include "DisplayStructs.hpp"
+#include "IMaterial.hpp"
 
 namespace Transformable {
     class IPrimitive;
     class ILight {};
-}
-namespace Material {
-    class IMaterial {};
 }
 
 namespace Raytracer {

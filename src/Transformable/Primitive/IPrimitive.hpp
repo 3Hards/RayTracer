@@ -11,7 +11,7 @@
 
 namespace Transformable {
     namespace Primitive {
-        class IPrimitive : public ITranformable {
+        class IPrimitive : public ITransformable {
             public:
                 std::tuple<bool, Display::Color> checkHit(Raytracer::IVector);
         };
