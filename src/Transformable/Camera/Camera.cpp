@@ -27,7 +27,6 @@ namespace Transformable {
 
         std::vector<std::shared_ptr<Raytracer::IVector>> Camera::computeVectors() {
             Point3f pos = {0, 0, 0};
-            Point3f axis = {0, 0, 0};
             std::vector<std::shared_ptr<Raytracer::IVector>> vectors;
             //for the V1 of the camera, we create a rectangle of vectors
             //the origin is le top left corner of the rectangle
@@ -37,9 +36,6 @@ namespace Transformable {
                     pos.x = _pos.x + x;
                     pos.y = _pos.y + y;
                     pos.z = _pos.z;
-                    axis.x = _axis.x;
-                    axis.y = _axis.y;
-                    axis.z = _axis.z;
                     Raytracer::Vector vector = Raytracer::Vector(pos, _axis);
                     vectors.push_back(std::make_shared<Raytracer::Vector>(vector));
                 }
