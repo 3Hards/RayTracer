@@ -45,7 +45,7 @@ namespace Transformable {
                     axis.x = _axis.x;
                     axis.y = _axis.y;
                     axis.z = _axis.z;
-                    Raytracer::Vector vector = Raytracer::Vector(pos, axis, Transformable::TransformableType::Vector);
+                    Raytracer::Vector vector = Raytracer::Vector(pos, axis);
                     _vectors.push_back(std::make_shared<Raytracer::Vector>(vector));
                 }
             }
