@@ -54,12 +54,12 @@ std::tuple<bool, Display::Color> Raytracer::Vector::checkHit()
 {
     std::tuple<bool, Display::Color> res;
 
-    for (auto primitive : _primitives) {
-        res = primitive->checkHit(*this);
-        if (std::get<0>(res) == true) {
-            return res;
-        }
-    }
+    //for (auto primitive : _primitives) {
+    //    res = primitive->checkHit(std::make_unique<Raytracer::IVector>(this));
+    //    if (std::get<0>(res) == true) {
+    //        return res;
+    //    }
+    //}
     return std::make_tuple(false, Display::Color{0, 0, 0});
 }
 

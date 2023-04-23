@@ -7,9 +7,10 @@
 
 #pragma once
 
+#include <tuple>
+#include <memory>
 #include "ITransformable.hpp"
 #include "DisplayStructs.hpp"
-#include <tuple>
 
 namespace Raytracer {
     class IVector;
@@ -19,7 +20,7 @@ namespace Transformable {
     namespace Primitive {
         class IPrimitive : public ITransformable {
             public:
-                std::tuple<bool, Display::Color> checkHit(Raytracer::IVector);
+                std::tuple<bool, Display::Color> checkHit(std::unique_ptr<Raytracer::IVector>);
         };
     }
 }
