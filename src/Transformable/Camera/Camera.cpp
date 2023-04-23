@@ -13,11 +13,11 @@ namespace Transformable {
     namespace Camera {
 
         Camera::Camera(
-            int fov,
+            Point3f position,
+            Point3f axis,
             int width,
             int height,
-            Point3f position,
-            Point3f axis
+            int fov
         ) : ATransformable(position, axis, TransformableType::Camera)
         {
             _fov = fov;

@@ -17,23 +17,23 @@ namespace Transformable {
     namespace Camera {
         /**
          * @brief This class is used to create a camera
-         * @param fov Field of view
-         * @param width Number of pixels on the width
-         * @param height Number of pixels on the height
          * @param position Position of the camera (x, y, z)
          * @param axis Axis of the camera (in degrees)
+         * @param width Number of pixels on the width
+         * @param height Number of pixels on the height
+         * @param fov Field of view
          * @return Camera
          * @example Camera camera(90, 1920, 1080, {1, 2, 3}, {55, 90, 50});
-         * 
+         *
          */
         class Camera : public ICamera, public ATransformable {
             public:
                 Camera(
-                    int fov = 90,
+                    Point3f position = {0, 0, 0},
+                    Point3f axis = {0, 0, 0},
                     int width = 1920,
                     int height = 1080,
-                    Point3f position = {0, 0, 0},
-                    Point3f axis = {0, 0, 0}
+                    int fov = 90
                 );
                 std::vector<std::shared_ptr<Raytracer::IVector>> computeVectors() final;
                 Point3f getPos() final;
