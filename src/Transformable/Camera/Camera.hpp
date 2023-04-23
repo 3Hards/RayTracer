@@ -35,12 +35,12 @@ namespace Transformable {
                     Point3f position = {0, 0, 0},
                     Point3f axis = {0, 0, 0}
                 );
-                std::vector<std::shared_ptr<Raytracer::IVector>> getVectors() const override;
-                Point3f getPos() override;
-                Point3f getAxis() override;
-                void setPos(Point3f pos) override;
-                void setAxis(Point3f axis) override;
-                TransformableType getType() override;
+                std::vector<std::shared_ptr<Raytracer::IVector>> getVectors() const final;
+                Point3f getPos() final;
+                Point3f getAxis() final;
+                void setPos(Point3f pos) final;
+                void setAxis(Point3f axis) final;
+                TransformableType getType() final;
 
             private:
                 void computeVectors();
