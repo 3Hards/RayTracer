@@ -35,7 +35,7 @@ namespace Transformable {
                     Point3f position = {0, 0, 0},
                     Point3f axis = {0, 0, 0}
                 );
-                std::vector<std::shared_ptr<Raytracer::IVector>> getVectors() const final;
+                std::vector<std::shared_ptr<Raytracer::IVector>> computeVectors() final;
                 Point3f getPos() final;
                 Point3f getAxis() final;
                 void setPos(Point3f pos) final;
@@ -43,11 +43,9 @@ namespace Transformable {
                 TransformableType getType() final;
 
             private:
-                void computeVectors();
                 int _fov;
                 int _width;
                 int _height;
-                std::vector<std::shared_ptr<Raytracer::IVector>> _vectors;
         };
     }
 }

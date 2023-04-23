@@ -23,17 +23,12 @@ namespace Transformable {
             _fov = fov;
             _width = width;
             _height = height;
-            computeVectors();
         }
 
-        std::vector<std::shared_ptr<Raytracer::IVector>> Camera::getVectors() const {
-            return _vectors;
-        }
-
-        void Camera::computeVectors() {
+        std::vector<std::shared_ptr<Raytracer::IVector>> Camera::computeVectors() {
             Point3f pos = {0, 0, 0};
             Point3f axis = {0, 0, 0};
-
+            std::vector<std::shared_ptr<Raytracer::IVector>> vectors;
             //for the V1 of the camera, we create a rectangle of vectors
             //the origin is le top left corner of the rectangle
 
@@ -46,9 +41,10 @@ namespace Transformable {
                     axis.y = _axis.y;
                     axis.z = _axis.z;
                     Raytracer::Vector vector = Raytracer::Vector(pos, axis);
-                    _vectors.push_back(std::make_shared<Raytracer::Vector>(vector));
+                    vectors.push_back(std::make_shared<Raytracer::Vector>(vector));
                 }
             }
+            return vectors;
         }
 
         Point3f Camera::getPos() {
