@@ -30,6 +30,7 @@ namespace Scene {
 
     void Scene::playScene(std::string const &filename)
     {
+        (void)(filename);
         std::vector<std::shared_ptr<Raytracer::IVector>> _vectors = _camera->computeVectors();
 
         //for the v2, don't forget to handle if the light is null
