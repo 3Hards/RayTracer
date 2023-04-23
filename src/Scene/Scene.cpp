@@ -14,24 +14,22 @@ namespace Scene {
         _filename(filename)
     {}
 
-    void Scene::addTransformable(Transformable::ITransformable *transformable)
+    void Scene::addTransformable(std::shared_ptr<Transformable::ITransformable> transformable)
     {
-        _transformables.push_back(std::make_shared<Transformable::ITransformable *>(transformable));
+        if (transformable->getType() == Transformable::TransformableType::Camera &&
+            _camera == nullptr) {
+            _camera = std::dynamic_pointer_cast<Transformable::Camera::ICamera>(transformable);
+        } else if (transformable->getType() == Transformable::TransformableType::Light &&
+            _light == nullptr) {
+            _light = std::dynamic_pointer_cast<Transformable::Light::ILight>(transformable);
+        }
     }
 
     void Scene::playScene(std::string const &filename)
     {
-        getCamera();
-        //for each vector, call the function run
-    }
-
-    void Scene::getCamera()
-    {
-        for (auto &transformable : _transformables) {
-            if (transformable->getType() == Transformable::TransformableType::Camera) {
-                _camera = std::make_shared<ICamera>(transformable);
-                break;
-            }
+        std::vector<std::shared_ptr<Raytracer::IVector>> _vectors = _camera->computeVectors();
+        for (auto &vector : _vectors) {
+            vector->run(_light);
         }
     }
 }
