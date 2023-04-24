@@ -22,6 +22,8 @@ namespace Raytracer {
             void setAxis(Transformable::Point3f axis) final;
             Transformable::TransformableType getType() final;
         private:
+            bool checkDistances(std::vector<double> &prevDistances);
+            std::vector<double> getDistances();
             void moveForward();
             std::tuple<bool, Display::Color> checkHit();
             std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> _primitives;

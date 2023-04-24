@@ -63,9 +63,34 @@ std::tuple<bool, Display::Color> Raytracer::Vector::checkHit()
     return std::make_tuple(false, Display::Color{0, 0, 0});
 }
 
+bool Raytracer::Vector::checkDistances(std::vector<double> &prevDistances)
+{
+    std::vector<double> newDistances = getDistances();
+
+    for (int i = 0; i < prevDistances.size(); i++) {
+        if (prevDistances[i] <= newDistances[i]) {
+            prevDistances = newDistances;
+            return false;
+        }
+    }
+    return true;
+}
+
+std::vector<double> Raytracer::Vector::getDistances()
+{
+    std::vector <double> _distances;
+
+    for (auto primitive : _primitives) {
+        Transformable::Point3f pos = primitive->getPos();
+        _distances.push_back(pow(pow(pos.x - _pos.x, 2) + pow(pos.y - _pos.y, 2) + pow(pos.z - _pos.z, 2), 0.5));
+    }
+    return _distances;
+}
+
 std::tuple<bool, Display::Color, Transformable::Point3f> Raytracer::Vector::run(std::shared_ptr<Transformable::Light::ILight>)
 {
     std::tuple<bool, Display::Color> res;
+    std::vector<double> prevDistances = getDistances();
 
     for (int i = 0; i < 100; i++) {
         res = checkHit();
@@ -73,6 +98,7 @@ std::tuple<bool, Display::Color, Transformable::Point3f> Raytracer::Vector::run(
             return std::make_tuple(std::get<0>(res), std::get<1>(res), _pos);
         }
         moveForward();
+        checkDistances(prevDistances);
     }
     return std::make_tuple(false, Display::Color{0, 0, 0}, Transformable::Point3f{0, 0, 0});
 }
