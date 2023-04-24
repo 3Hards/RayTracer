@@ -7,3 +7,4 @@ target_sources(raytracer PRIVATE
 )
 
 add_subdirectory(Primitive)
+add_subdirectory(Camera)

@@ -5,8 +5,7 @@
 ** Sphere
 */
 
-#ifndef SPHERE_HPP_
-#define SPHERE_HPP_
+#pragma once
 
 #include "APrimitive.hpp"
 #include "ATransformable.hpp"
@@ -17,16 +16,12 @@ namespace Transformable {
         class Sphere : public APrimitive {
             public:
                 Sphere(Point3f, float ray, Material::IMaterial);
-                ~Sphere();
                 std::tuple<bool, Display::Color> checkHit(Raytracer::IVector &);
-                
+
             private:
                 double _ray;
                 Point3f _position;
-
+                Material::IMaterial _material;
         };
     }
 }
-
-
-#endif /* !SPHERE_HPP_ */
