@@ -7,14 +7,20 @@
 
 #include "IPrimitive.hpp"
 #include "ATransformable.hpp"
+#include "IMaterial.hpp"
 
 namespace Transformable {
     namespace Primitive {
         class APrimitive : public IPrimitive, public ATransformable {
             public:
-                APrimitive(Raytracer::IMaterial material);
+                APrimitive(Material::IMaterial material, Point3f pos, Point3f axis);
+                Transformable::Point3f getPos() final;
+                Transformable::Point3f getAxis() final;
+                void setPos(Transformable::Point3f pos) final;
+                void setAxis(Transformable::Point3f axis) final;
+                Transformable::TransformableType getType() final;
             protected:
-                Raytracer::IMaterial _material;
-        }
+                Material::IMaterial _material;
+        };
     }
 }

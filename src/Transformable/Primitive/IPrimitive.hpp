@@ -5,15 +5,22 @@
 ** ATransformable
 */
 
+#pragma once
+
+#include <tuple>
+#include <memory>
 #include "ITransformable.hpp"
 #include "DisplayStructs.hpp"
-#include "IVector.hpp"
+
+namespace Raytracer {
+    class IVector;
+}
 
 namespace Transformable {
     namespace Primitive {
-        class IPrimitive : public ITranformable {
+        class IPrimitive : public ITransformable {
             public:
-                std::tuple<bool, Display::Color> checkHit(Raytracer::IVector);
+                virtual std::tuple<bool, Display::Color> checkHit(std::unique_ptr<Raytracer::IVector>) = 0;
         };
     }
 }
