@@ -7,6 +7,7 @@ target_sources(raytracer PRIVATE
 )
 
 add_subdirectory(Transformable)
+add_subdirectory(Scene)
 add_subdirectory(Raytracer)
 add_subdirectory(Display)
 add_subdirectory(Material)

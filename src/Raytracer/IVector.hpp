@@ -11,12 +11,11 @@
 #include <memory>
 #include "ITransformable.hpp"
 #include "DisplayStructs.hpp"
-#include "IMaterial.hpp"
-#include "IPrimitive.hpp"
+#include "ILight.hpp"
 
 namespace Transformable {
-    namespace Light {
-        class ILight {};
+    namespace Primitive {
+        class IPrimitive;
     }
 }
 
