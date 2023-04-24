@@ -17,8 +17,6 @@ namespace Scene
     
     void Builder::buildTransformation()
     {
-        // accedes a each value of _dictionary and create a transformation new()
-        // with libconfig
         std::string type;
         std::string name;
 
