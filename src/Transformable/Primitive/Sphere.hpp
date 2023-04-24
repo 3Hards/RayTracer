@@ -16,7 +16,7 @@ namespace Transformable {
         class Sphere : public APrimitive {
             public:
                 Sphere(Point3f, float ray, Material::IMaterial);
-                std::tuple<bool, Display::Color> checkHit(std::unique_ptr<Raytracer::IVector>) final;
+                std::tuple<bool, Display::Color> checkHit(std::unique_ptr<Raytracer::IVector> &) final;
 
             private:
                 double _ray;

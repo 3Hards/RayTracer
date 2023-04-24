@@ -15,7 +15,7 @@ Transformable::Primitive::Sphere::Sphere(Point3f pos, float _ray, Material::IMat
 }
 
 //function that check if the vector hit the sphere
-std::tuple<bool, Display::Color> Transformable::Primitive::Sphere::checkHit(std::unique_ptr<Raytracer::IVector> vector)
+std::tuple<bool, Display::Color> Transformable::Primitive::Sphere::checkHit(std::unique_ptr<Raytracer::IVector> &vector)
 {
     Point3f vectorPos = vector->getPos();
     Point3f vectorAxis = vector->getAxis();
