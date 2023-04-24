@@ -23,8 +23,23 @@ jobs:
         run: |
           set -e
           ls -l raytracer
+  windows-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Debug
+          cmake --build . --config Release
+          cd ..
+      - name: Check Files
+        run: |
+          ls -l raytracer.exe
+  
   sync-with-tek-orga:
-    needs: [linux-test]
+    needs: [linux-test, windows-test]
     runs-on: ubuntu-latest
     environment: dev
     steps:

@@ -32,7 +32,7 @@ namespace Raytracer {
 
 namespace Transformable {
     namespace Primitive {
-        class IPrimitive {
+        class IPrimitive : public Transformable::ITransformable {
             public:
                 std::tuple<bool, Display::Color> checkHit(Raytracer::IVector &) {
                     return std::make_tuple(true, Display::Color{1, 1, 1});
