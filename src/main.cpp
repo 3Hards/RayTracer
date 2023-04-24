@@ -6,16 +6,15 @@
 */
 
 #include <iostream>
-#include "Transformable/Camera/Camera.hpp"
-#include "Scene.hpp"
-
-#include <iostream>
 #include "Vector.hpp"
+#include "Scene.hpp"
 
 int main()
 {
     std::cout << "Hello World!" << std::endl;
-    Transformable::Camera::Camera camera({0, 0, 0}, {42, 0, 42}, 1920, 1080, 90);
     Scene::Scene scene;
+    std::shared_ptr<Transformable::Camera::Camera> camera = std::make_shared<Transformable::Camera::Camera>({0, 0, 0}, {42, 0, 42}, 1920, 1080, 90);
+    std::shared_ptr<Transformable::Primitive::>
+    scene.addCamera(camera);
     return 0;
 }
