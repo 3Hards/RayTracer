@@ -9,6 +9,9 @@
 #include "Transformable/Camera/Camera.hpp"
 #include "Scene.hpp"
 
+#include <iostream>
+#include "Vector.hpp"
+
 int main()
 {
     std::cout << "Hello World!" << std::endl;
