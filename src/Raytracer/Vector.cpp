@@ -91,14 +91,15 @@ std::tuple<bool, Display::Color, Transformable::Point3f> Raytracer::Vector::run(
 {
     std::tuple<bool, Display::Color> res;
     std::vector<double> prevDistances = getDistances();
+    bool moveInVoid = false;
 
-    for (int i = 0; i < 100; i++) {
+    while (moveInVoid) {
         res = checkHit();
         if (std::get<0>(res) == true) {
             return std::make_tuple(std::get<0>(res), std::get<1>(res), _pos);
         }
         moveForward();
-        checkDistances(prevDistances);
+        moveInVoid = checkDistances(prevDistances);
     }
     return std::make_tuple(false, Display::Color{0, 0, 0}, Transformable::Point3f{0, 0, 0});
 }
