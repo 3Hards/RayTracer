@@ -67,7 +67,7 @@ bool Raytracer::Vector::checkDistances(std::vector<double> &prevDistances)
 {
     std::vector<double> newDistances = getDistances();
 
-    for (int i = 0; i < prevDistances.size(); i++) {
+    for (std::size_t i = 0; i < prevDistances.size(); i++) {
         if (prevDistances[i] <= newDistances[i]) {
             prevDistances = newDistances;
             return false;
