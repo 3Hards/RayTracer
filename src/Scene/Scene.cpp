@@ -14,26 +14,27 @@ namespace Scene {
 
     void Scene::addCamera(std::shared_ptr<Transformable::Camera::ICamera> camera)
     {
-        if (_camera == nullptr) {
-            _camera = camera;
-        }
+        _cameras.push_back(camera);
     }
 
     void Scene::addLight(std::shared_ptr<Transformable::Light::ILight> light)
     {
-        if (_light == nullptr) {
-            _light = light;
-        }
+        _lights.push_back(light);
+    }
+
+    void Scene::addPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive> primitive)
+    {
+        _primitives.push_back(primitive);
     }
 
     void Scene::playScene(std::string const &filename)
     {
         _filename = filename;
-        std::vector<std::shared_ptr<Raytracer::IVector>> _vectors = _camera->computeVectors();
+        std::vector<std::shared_ptr<Raytracer::IVector>> _vectors = _cameras[0]->computeVectors();
 
-        //for the v2, don't forget to handle if the light is null
+        //for the v2, don't forget to handle if the vectors are empty
         for (auto &vector : _vectors) {
-            handleVectorAnswer(vector->run(_light));
+            handleVectorAnswer(vector->run(_lights[0]));
         }
     }
 

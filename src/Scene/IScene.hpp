@@ -11,6 +11,7 @@
 #include <string>
 #include "ILight.hpp"
 #include "ICamera.hpp"
+#include "IPrimitive.hpp"
 
 namespace Scene {
     class IScene {
@@ -19,7 +20,7 @@ namespace Scene {
             virtual void playScene(std::string const &filename) = 0;
             virtual void addCamera(std::shared_ptr<Transformable::Camera::ICamera> camera) = 0;
             virtual void addLight(std::shared_ptr<Transformable::Light::ILight> light) = 0;
-            //void addTransformation(std::shared_ptr<Transformable::Transformation::ITransformation> transformation) = 0;
-            //void addPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive> primitive) = 0;
+            virtual void addPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive> primitive) = 0;
+            //virtual void addTransformation(std::shared_ptr<Transformable::Transformation::ITransformation> transformation) = 0;
     };
 }
