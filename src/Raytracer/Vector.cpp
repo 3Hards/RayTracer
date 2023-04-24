@@ -53,9 +53,10 @@ void Raytracer::Vector::moveForward()
 std::tuple<bool, Display::Color> Raytracer::Vector::checkHit()
 {
     std::tuple<bool, Display::Color> res;
+    std::unique_ptr<Raytracer::IVector> vector = std::make_unique<Raytracer::Vector>(*this);
 
     for (auto primitive : _primitives) {
-        res = primitive->checkHit(std::make_unique<Raytracer::Vector>(*this));
+        res = primitive->checkHit(vector);
         if (std::get<0>(res) == true) {
             return res;
         }
