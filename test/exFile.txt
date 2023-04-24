@@ -1,0 +1,6 @@
+elements:
+{
+    list = (
+        {type = Sphere, x = 60; y = 5; z = 40; r = 25; color = { r = 255; g = 64; b = 64; };}
+    )
+}

@@ -20,7 +20,7 @@ namespace Transformable {
     namespace Primitive {
         class IPrimitive : public ITransformable {
             public:
-                virtual std::tuple<bool, Display::Color> checkHit(std::unique_ptr<Raytracer::IVector>) = 0;
+                virtual std::tuple<bool, Display::Color> checkHit(std::unique_ptr<Raytracer::IVector>&) = 0;
         };
     }
 }
