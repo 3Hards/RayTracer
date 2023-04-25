@@ -11,6 +11,7 @@
 #include <cmath>
 #include <array>
 #include "Vector.hpp"
+#include "ILight.hpp"
 
 Raytracer::Vector::Vector(Transformable::Point3f pos, Transformable::Point3f axis) : ATransformable(pos, axis, Transformable::TransformableType::Vector)
 {}

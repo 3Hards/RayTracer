@@ -20,12 +20,12 @@ Transformable::Point3f Transformable::Primitive::APrimitive::getAxis()
     return ATransformable::getAxis();
 }
 
-void Transformable::Primitive::APrimitive::setPos(Transformable::Point3f pos)
+void Transformable::Primitive::APrimitive::setPos(Point3f pos)
 {
     ATransformable::setPos(pos);
 }
 
-void Transformable::Primitive::APrimitive::setAxis(Transformable::Point3f axis)
+void Transformable::Primitive::APrimitive::setAxis(Point3f axis)
 {
     ATransformable::setAxis(axis);
 }
