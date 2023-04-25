@@ -9,6 +9,7 @@
 
 #include "IVector.hpp"
 #include "ATransformable.hpp"
+#include "IPrimitive.hpp"
 
 namespace Raytracer {
     class Vector : public IVector, public Transformable::ATransformable {
