@@ -14,4 +14,14 @@ namespace Display {
             int _g;
             int _b;
     };
+    struct Point2f {
+        public:
+            int _x;
+            int _y;
+    };
+    struct Pixel {
+        public:
+            Color _color;
+            Point2f _pos;
+    };
 }
