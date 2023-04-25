@@ -30,10 +30,18 @@ namespace Scene {
     void Scene::playScene(std::string const &filename)
     {
         _filename = filename;
-        std::vector<std::shared_ptr<Raytracer::IVector>> _vectors = _cameras[0]->computeVectors();
+        std::vector<std::shared_ptr<Raytracer::IVector>> vectors;
 
-        //for the v2, don't forget to handle if the vectors are empty
-        for (auto &vector : _vectors) {
+        //for the v2, don't forget to handle black screen return
+        if (_lights.size() == 0 || _primitives.size() == 0) {
+            return;
+        }
+        vectors = _cameras[0]->computeVectors();
+        if (vectors.size() == 0) {
+            return;
+        }
+        for (auto &vector : vectors) {
+            vector->setPrimitives(_primitives);
             handleVectorAnswer(vector->run(_lights[0]));
         }
     }

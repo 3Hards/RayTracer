@@ -12,6 +12,7 @@
 
 namespace Material {
     class IMaterial {
-        virtual Display::Color getColor(std::unique_ptr<Raytracer::IVector>&) = 0;
+        public:
+            virtual Display::Color getColor(std::unique_ptr<Raytracer::IVector>&) = 0;
     };
 }
