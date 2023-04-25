@@ -8,7 +8,13 @@
 #include "ALight.hpp"
 
 Transformable::Light::ALight::ALight(Display::Color color, float brightness, Point3f pos) : ATransformable(pos, Point3f{0, 0, 0}, TransformableType::Light), _color(color), _brightness(brightness)
-{}
+{
+    if (_brightness > 1) {
+        _brightness = 1;
+    } else if (_brightness < 0) {
+        _brightness = 0;
+    }
+}
 
 Transformable::Point3f Transformable::Light::ALight::getPos()
 {

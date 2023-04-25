@@ -18,7 +18,7 @@ namespace Transformable {
                 void setPos(Point3f pos) final;
                 void setAxis(Point3f axis) final;
                 TransformableType getType() final;
-            private:
+            protected:
                 Display::Color _color;
                 float _brightness;
         };
