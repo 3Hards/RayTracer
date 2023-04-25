@@ -11,9 +11,9 @@
 namespace Scene
 {
     Builder::_map = {
-        {"camera", &Scene::addCamera},
-        {"light", &Scene::addLight},
-        {"primitive", &Scene::addPrimitive},
+        {"camera", &Builder::addCamera},
+        {"light", &Builder::addLight},
+        {"primitive", &Builder::addPrimitive},
     };
     
     Builder::Builder(std::list<libconfig::Setting *> dictionary)
