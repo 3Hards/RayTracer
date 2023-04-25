@@ -11,8 +11,13 @@
 #include <memory>
 #include "ITransformable.hpp"
 #include "DisplayStructs.hpp"
-#include "ILight.hpp"
 #include "IPrimitive.hpp"
+
+namespace Transformable {
+    namespace Light {
+        class ILight;
+    }
+}
 
 namespace Raytracer {
     class IVector : public Transformable::ITransformable {

@@ -12,7 +12,7 @@ namespace Transformable {
     namespace Light {
         class ALight : public ILight, public ATransformable {
             public:
-                ALight(Display::Color, float brightness, Poin3f pos);
+                ALight(Display::Color, float brightness, Point3f pos);
                 Point3f getPos() final;
                 Point3f getAxis() final;
                 void setPos(Point3f pos) final;
@@ -21,6 +21,6 @@ namespace Transformable {
             private:
                 Display::Color _color;
                 float _brightness;
-        }
+        };
     }
 }
