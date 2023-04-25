@@ -11,22 +11,9 @@
 namespace Scene
 {
     Builder::_map = {
-        {"translate", &Builder::buildTranslate},
-        {"rotate", &Builder::buildRotate},
-        {"scale", &Builder::buildScale},
-        {"sphere", &Builder::buildSphere},
-        {"cube", &Builder::buildCube},
-        {"cylinder", &Builder::buildCylinder},
-        {"cone", &Builder::buildCone},
-        {"plane", &Builder::buildPlane},
-        {"mesh", &Builder::buildMesh},
-        {"light", &Builder::buildLight},
-        {"camera", &Builder::buildCamera},
-        {"material", &Builder::buildMaterial},
-        {"texture", &Builder::buildTexture},
-        {"skybox", &Builder::buildSkybox},
-        {"transformable", &Builder::buildTransformable},
-        {"transformation", &Builder::buildTransformation}
+        {"camera", &Scene::addCamera},
+        {"light", &Scene::addLight},
+        {"primitive", &Scene::addPrimitive},
     };
     
     Builder::Builder(std::list<libconfig::Setting *> dictionary)

@@ -9,6 +9,7 @@
 
 #include "IBuilder.hpp"
 #include <iostream>
+#include "Scene.hpp"
 #include <list>
 #include "libconfig.h++"
 
