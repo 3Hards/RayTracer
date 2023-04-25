@@ -23,6 +23,9 @@ namespace Scene
             void buildTransformation() override;
             void buildTransformable() override;
             // IScene getScene() override; wait add Scene class
+            void addCamera(libconfig::Setting *setting);
+            void addLight(libconfig::Setting *setting);
+            void addPrimitive(libconfig::Setting *setting);
         private:
             // IScene _scene; wait add Scene class
             std::list<libconfig::Setting *> _dictionary;
