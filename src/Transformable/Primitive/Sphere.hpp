@@ -15,12 +15,11 @@ namespace Transformable {
     namespace Primitive {
         class Sphere : public APrimitive {
             public:
-                Sphere(Point3f, float ray, Material::IMaterial);
+                Sphere(Point3f, float ray, std::shared_ptr<Material::IMaterial> material);
                 std::tuple<bool, Display::Color> checkHit(std::unique_ptr<Raytracer::IVector> &) final;
 
             private:
                 double _ray;
-                Material::IMaterial _material;
         };
     }
 }
