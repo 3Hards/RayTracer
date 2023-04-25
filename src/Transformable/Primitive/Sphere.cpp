@@ -8,7 +8,7 @@
 #include <cmath>
 #include "Sphere.hpp"
 
-Transformable::Primitive::Sphere::Sphere(Point3f pos, float _ray, std::shared_ptr<Material::IMaterial> material) : Transformable::Primitive::APrimitive(material, pos, {0, 0, 0}), _ray(_ray)
+Transformable::Primitive::Sphere::Sphere(Point3f pos, double _ray, std::shared_ptr<Material::IMaterial> material) : Transformable::Primitive::APrimitive(material, pos, {0, 0, 0}), _ray(_ray)
 {
 }
 
