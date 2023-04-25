@@ -7,7 +7,7 @@
 
 #include "APrimitive.hpp"
 
-Transformable::Primitive::APrimitive::APrimitive(Material::IMaterial material, Point3f pos, Point3f axis)
+Transformable::Primitive::APrimitive::APrimitive(std::shared_ptr<Material::IMaterial> material, Point3f pos, Point3f axis)
     : ATransformable(pos, axis, TransformableType::Primitive), _material(material) {}
 
 Transformable::Point3f Transformable::Primitive::APrimitive::getPos()
