@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** RayTracer
 ** File description:
-** main
+** ITransformation
 */
 
 #pragma once
