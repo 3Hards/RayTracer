@@ -25,5 +25,6 @@ namespace Scene
         private:
             // IScene _scene; wait add Scene class
             std::list<libconfig::Setting *> _dictionary;
+            static const std::unordered_map<std::string, std::function<void()>> _map;
     };
 }
