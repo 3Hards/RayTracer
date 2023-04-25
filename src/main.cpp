@@ -10,6 +10,7 @@
 #include "Camera.hpp"
 #include "Scene.hpp"
 #include "Sphere.hpp"
+#include "FlatColor.hpp"
 
 int main()
 {
