@@ -12,12 +12,7 @@
 #include "ITransformable.hpp"
 #include "DisplayStructs.hpp"
 #include "ILight.hpp"
-
-namespace Transformable {
-    namespace Primitive {
-        class IPrimitive;
-    }
-}
+#include "IPrimitive.hpp"
 
 namespace Raytracer {
     class IVector : public Transformable::ITransformable {
