@@ -6,6 +6,7 @@
 */
 
 #include "Builder.hpp"
+#include "Camera.hpp"
 
 
 namespace Scene
@@ -19,6 +20,22 @@ namespace Scene
     Builder::Builder(std::list<libconfig::Setting *> dictionary)
     {
         _dictionary = dictionary;
+    }
+
+    void Builder::addCamera(libconfig::Setting *setting)
+    {
+        std::cout << "addCamera" << std::endl;
+        Scene::addCamera(std::shared_ptr<Transformable::Camera::ICamera>(new Transformable::Camera::Camera()));
+    }
+
+    void Builder::addLight(libconfig::Setting *setting)
+    {
+        std::cout << "addLight" << std::endl;
+    }
+
+    void Builder::addPrimitive(libconfig::Setting *setting)
+    {
+        std::cout << "addPrimitive" << std::endl;
     }
     
     void Builder::buildTransformation()
