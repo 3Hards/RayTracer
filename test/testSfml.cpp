@@ -12,16 +12,16 @@
 
 int main()
 {
-    Display::LibGraphicHandler lib("test");
+    Display::LibGraphicHandler lib("test", 1200, 1200);
     std::vector<Display::Pixel> pixels;
     sf::Image image;
 
-    if (!image.loadFromFile("./test/imgTestSfml.jpg")) {
+    if (!image.loadFromFile("./test/1200x1200.jpg")) {
         std::cout << "Error while loading image" << std::endl;
     }
 
-    for (int x = 0; x < image.getSize().x; x++) {
-        for (int y = 0; y < image.getSize().y; y++) {
+    for (unsigned int x = 0; x < image.getSize().x; x++) {
+        for (unsigned int y = 0; y < image.getSize().y; y++) {
             sf::Color color = image.getPixel(x, y);
             Display::Pixel pixel;
             pixel._color._r = color.r;

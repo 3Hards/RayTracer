@@ -9,17 +9,15 @@
 #include "LibGraphicHandler.hpp"
 
 namespace Display {
-    LibGraphicHandler::LibGraphicHandler(std::string fileName) :
-        _fileName(fileName)
-    {
-    }
+    LibGraphicHandler::LibGraphicHandler(std::string fileName, unsigned int width, unsigned int height) :
+        _fileName(fileName),
+        _width(width),
+        _height(height)
+    {}
 
     void LibGraphicHandler::createImage(std::vector<Pixel> pixels)
     {
-        unsigned int width = 1920;
-        unsigned int height = 1080;
-
-        _image.create(width, height, sf::Color::Black);
+        _image.create(_width, _height, sf::Color::Black);
         for (auto pixel : pixels) {
             _image.setPixel(
                 (unsigned int)pixel._pos._x,
