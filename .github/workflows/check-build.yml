@@ -36,19 +36,19 @@ jobs:
         run: |
           Invoke-WebRequest -Uri https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip -OutFile SFML-2.5.1-windows-vc15-64-bit.zip
           Expand-Archive SFML-2.5.1-windows-vc15-64-bit.zip -DestinationPath SFML
-      - name: Add SFML to PATH
+        - name: Add SFML to PATH
         shell: powershell
         run: |
-          $env:Path = $env:Path + "C:\SFML\bin;" + "C:\SFML\lib;" + "C:\SFML\include;" + "C:\SFML\share;" + "C:\SFML\lib\cmake\SFML;"
+          $env:Path = $env:Path + ";C:\SFML\bin;C:\SFML\lib;C:\SFML\include;C:\SFML\share;C:\SFML\lib\cmake\SFML"
           [Environment]::SetEnvironmentVariable("Path", $env:Path, [EnvironmentVariableTarget]::Machine)
-      - uses: actions/checkout@v2
-      - name: Build
-        run: |
-          mkdir build
-          cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Debug
-          cmake --build . --config Release
-          cd ..
-      - name: Check Files
-        run: |
-          ls -l raytracer.exe
+    - uses: actions/checkout@v2
+    - name: Build
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Debug
+        cmake --build . --config Release
+        cd ..
+    - name: Check Files
+      run: |
+        ls -l raytracer.exe
