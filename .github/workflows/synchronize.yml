@@ -27,6 +27,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: oprypin/install-sfml@v1
       - name: Build
         run: |
           mkdir build
@@ -37,7 +38,7 @@ jobs:
       - name: Check Files
         run: |
           ls -l raytracer.exe
-  
+
   sync-with-tek-orga:
     needs: [linux-test, windows-test]
     runs-on: ubuntu-latest
