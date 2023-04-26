@@ -9,7 +9,7 @@
 
 #include <vector>
 #include <string>
-#include <sfml/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include "ILibGraphicHandler.hpp"
 
 namespace Display {
