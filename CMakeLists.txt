@@ -15,35 +15,34 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-if(UNIX)
-    add_compile_options(-Wall -Wextra -Werror)
-elseif(WIN32)
-    add_compile_options(/W4)
-    include(FetchContent)
-endif()
+include(FetchContent)
 
 add_executable(${PROJECT_NAME})
 
+if(UNIX)
+    target_compile_options(${PROJECT_NAME} PRIVATE -W -Wall -Wextra -Werror)
+elseif(WIN32)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4)
+endif()
+
 ##################### LIBCONFIG++ ##########################
 
-if (WIN32)
-    set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-    set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
-    set(DBUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-    set(DBUILD_TESTS OFF CACHE BOOL "" FORCE)
-    FetchContent_Declare(
-      libconfig
-      URL https://github.com/hyperrealm/libconfig/archive/v1.7.3.tar.gz
-      CMAKE_ARGS
+set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(DBUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(DBUILD_TESTS OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+    libconfig
+    URL https://github.com/hyperrealm/libconfig/archive/v1.7.3.tar.gz
+    CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=Release
         -DCMAKE_GENERATOR_PLATFORM=x64
         -DCMAKE_CXX_STANDARD=20
-    )
-    FetchContent_GetProperties(libconfig)
-    if(NOT libconfig_POPULATED)
-        FetchContent_Populate(libconfig)
-        add_subdirectory(${libconfig_SOURCE_DIR} ${libconfig_BINARY_DIR})
-    endif()
+)
+FetchContent_GetProperties(libconfig)
+if(NOT libconfig_POPULATED)
+    FetchContent_Populate(libconfig)
+    add_subdirectory(${libconfig_SOURCE_DIR} ${libconfig_BINARY_DIR})
 endif()
 
 ##################### SFML ################################
@@ -69,7 +68,7 @@ endif()
 
 if (UNIX)
     find_library(SFML sfml-graphics sfml-window sfml-system sfml-audio)
-    target_link_libraries(
+        target_link_libraries(
         ${PROJECT_NAME}
         PRIVATE
         sfml-graphics
@@ -79,8 +78,8 @@ elseif (WIN32)
     target_link_libraries(
         ${PROJECT_NAME}
         PRIVATE
-        libconfig++
         sfml-graphics
+        libconfig++
     )
 endif()
 
