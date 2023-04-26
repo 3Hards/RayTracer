@@ -39,7 +39,7 @@ jobs:
       - name: Add SFML to PATH
         shell: powershell
         run: |
-          $env:Path = "C:\SFML\bin;" + $env:Path
+          $env:Path = $env:Path + "C:\SFML\bin;" + "C:\SFML\lib;" + "C:\SFML\include;" + "C:\SFML\share;" + "C:\SFML\lib\cmake\SFML;"
           [Environment]::SetEnvironmentVariable("Path", $env:Path, [EnvironmentVariableTarget]::Machine)
       - uses: actions/checkout@v2
       - name: Build
