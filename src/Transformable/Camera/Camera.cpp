@@ -18,7 +18,7 @@ namespace Transformable {
             int width,
             int height,
             int fov
-        ) : ATransformable(position, axis, TransformableType::Camera)
+        ) : ATransformable(position, axis, TransformableType::CAMERA)
         {
             _fov = fov;
             _width = width;

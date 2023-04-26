@@ -13,7 +13,9 @@
 #include "Vector.hpp"
 #include "ILight.hpp"
 
-Raytracer::Vector::Vector(Transformable::Point3f pos, Transformable::Point3f axis) : ATransformable(pos, axis, Transformable::TransformableType::Vector)
+Raytracer::Vector::Vector(Transformable::Point3f pos, Transformable::Point3f axis)
+    : ATransformable(pos, axis, Transformable::TransformableType::VECTOR),
+    _hittedObject(HittedObject::UNDEFINED), _hittedColor(Display::Color{0, 0, 0})
 {}
 
 void Raytracer::Vector::setPrimitives(std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> primitives)
@@ -52,7 +54,7 @@ void Raytracer::Vector::moveForward()
 }
 
 #include <iostream>
-std::tuple<bool, Display::Color> Raytracer::Vector::checkHit()
+bool Raytracer::Vector::checkHitPrimitives()
 {
     std::tuple<bool, Display::Color> res;
     std::unique_ptr<Raytracer::IVector> vector = std::make_unique<Raytracer::Vector>(*this);
@@ -60,10 +62,26 @@ std::tuple<bool, Display::Color> Raytracer::Vector::checkHit()
     for (auto primitive : _primitives) {
         res = primitive->checkHit(vector);
         if (std::get<0>(res) == true) {
-            return res;
+            _hittedObject = HittedObject::PRIMITIVE;
+            _hittedColor = std::get<1>(res);
+            return true;
         }
     }
-    return std::make_tuple(false, Display::Color{0, 0, 0});
+    return false;
+}
+
+bool Raytracer::Vector::checkHitLight(std::shared_ptr<Transformable::Light::ILight> light)
+{
+    std::tuple<bool, Display::Color> res;
+    std::unique_ptr<Raytracer::IVector> vector = std::make_unique<Raytracer::Vector>(*this);
+
+    res = light->checkHit(vector);
+    if (std::get<0>(res) == true) {
+        _hittedObject = HittedObject::LIGHT;
+        _hittedColor = std::get<1>(res);
+        return true;
+    }
+    return false;
 }
 
 bool Raytracer::Vector::checkDistances(std::vector<double> &prevDistances)
@@ -91,21 +109,21 @@ std::vector<double> Raytracer::Vector::getDistances()
     return _distances;
 }
 
-std::tuple<bool, Display::Color, Transformable::Point3f> Raytracer::Vector::run(std::shared_ptr<Transformable::Light::ILight>)
+void Raytracer::Vector::run(std::shared_ptr<Transformable::Light::ILight> light)
 {
     std::tuple<bool, Display::Color> res;
     std::vector<double> prevDistances = getDistances();
     bool moveInVoid = false;
 
     while (moveInVoid == false) {
-        res = checkHit();
-        if (std::get<0>(res) == true) {
-            return std::make_tuple(std::get<0>(res), std::get<1>(res), _pos);
-        }
         moveForward();
         moveInVoid = checkDistances(prevDistances);
+        if (checkHitPrimitives() || checkHitLight(light)) {
+            return;
+        }
     }
-    return std::make_tuple(false, Display::Color{0, 0, 0}, Transformable::Point3f{0, 0, 0});
+    _hittedObject = HittedObject::VOID;
+    return;
 }
 
 Transformable::Point3f Raytracer::Vector::getPos()

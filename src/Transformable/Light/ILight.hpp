@@ -18,6 +18,7 @@ namespace Transformable {
             public:
                 virtual ~ILight() = default;
                 virtual std::tuple<bool, Display::Color> checkHit(std::unique_ptr<Raytracer::IVector>&) = 0;
+                virtual float getBrightness() = 0;
         };
     }
 }

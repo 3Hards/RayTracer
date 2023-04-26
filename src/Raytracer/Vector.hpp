@@ -16,7 +16,9 @@ namespace Raytracer {
         public:
             Vector(Transformable::Point3f pos, Transformable::Point3f axis);
             void setPrimitives(std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>>) final;
-            std::tuple<bool, Display::Color, Transformable::Point3f> run(std::shared_ptr<Transformable::Light::ILight> light) final;
+            void run(std::shared_ptr<Transformable::Light::ILight> light) final;
+            HittedObject getHittedObject() final;
+            Display::Color getHittedColor() final;
             Transformable::Point3f getPos() final;
             Transformable::Point3f getAxis() final;
             void setPos(Transformable::Point3f pos) final;
@@ -26,8 +28,12 @@ namespace Raytracer {
             bool checkDistances(std::vector<double> &prevDistances);
             std::vector<double> getDistances();
             void moveForward();
-            std::tuple<bool, Display::Color> checkHit();
+            bool checkHitPrimitives();
+            bool checkHitLight(std::shared_ptr<Transformable::Light::ILight> light);
             std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> _primitives;
             double toRad(double degree);
+
+            HittedObject _hittedObject;
+            Display::Color _hittedColor;
     };
 }

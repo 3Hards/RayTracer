@@ -13,6 +13,7 @@ namespace Transformable {
         class ALight : public ILight, public ATransformable {
             public:
                 ALight(Display::Color, float brightness, Point3f pos);
+                float getBrightness();
                 Point3f getPos() final;
                 Point3f getAxis() final;
                 void setPos(Point3f pos) final;

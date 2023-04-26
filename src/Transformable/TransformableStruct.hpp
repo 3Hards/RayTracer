@@ -10,10 +10,10 @@
 namespace Transformable {
 
     enum class TransformableType {
-        Light,
-        Primitive,
-        Camera,
-        Vector
+        LIGHT,
+        PRIMITIVE,
+        CAMERA,
+        VECTOR
     };
 
     struct Point3f {
