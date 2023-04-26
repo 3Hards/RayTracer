@@ -5,11 +5,11 @@
 ** Scene
 */
 
-#include <iostream>
 #include "Scene.hpp"
 #include "ITransformable.hpp"
 #include "TransformableStruct.hpp"
 #include "LightCalculator.hpp"
+#include "LibGraphicHandler.hpp"
 
 namespace Scene {
 
@@ -28,9 +28,15 @@ namespace Scene {
         _primitives.push_back(primitive);
     }
 
+    void Scene::addTransformation(std::shared_ptr<Transformation::ITransformation> transformation)
+    {
+        _transformations.push_back(transformation);
+    }
+
     void Scene::playScene(std::string const &filename)
     {
         _filename = filename;
+        Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[0]->getWidth(), _cameras[0]->getHeight());
         std::vector<std::shared_ptr<Raytracer::IVector>> vectors;
 
         //for the v2, don't forget to handle black screen return
@@ -42,23 +48,20 @@ namespace Scene {
             return;
         }
         for (auto &vector : vectors) {
-            Raytracer::LightCalculator calculator(vector, _lights[0]);
             vector->setPrimitives(_primitives);
-            handleVectorAnswer(vector);
+            Raytracer::LightCalculator calculator(vector, _lights[0]);
+            addNewPixel(calculator.computePixel(), vector->getPos());
         }
+        libGraphicHandler.createImage(_pixels);
     }
 
-    void Scene::handleVectorAnswer(std::shared_ptr<Raytracer::IVector> vector)
+    void Scene::addNewPixel(Display::Color color, Transformable::Point3f position)
     {
-        vector->run(_lights[0]);
-        Display::Color color;
-        Transformable::Point3f point;
+        Display::Pixel pixel;
 
-        if (vector->getHittedObject() == Raytracer::HittedObject::PRIMITIVE) {
-            color = vector->getHittedColor();
-            point = vector->getPos();
-            std::cout << "Intersect at " << point.x << " " << point.y << " " << point.z << std::endl;
-            std::cout << "Color: " << color._r << " " << color._g << " " << color._b << std::endl;
-        }
+        pixel._color = color;
+        pixel._pos._x = (int)position.x;
+        pixel._pos._y = (int)position.y;
+        _pixels.push_back(pixel);
     }
 }

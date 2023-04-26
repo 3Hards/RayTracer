@@ -10,10 +10,11 @@
 #include <memory>
 #include "DisplayStructs.hpp"
 #include "IVector.hpp"
+#include "ITransformable.hpp"
 
 namespace Transformable {
     namespace Light {
-        class ILight {
+        class ILight : public ITransformable {
             public:
                 virtual ~ILight() = default;
                 virtual bool checkHit(std::unique_ptr<Raytracer::IVector>&) = 0;

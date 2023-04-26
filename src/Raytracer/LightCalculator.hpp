@@ -5,7 +5,7 @@
 ** LightCalculator header
 */
 
-#include "ILibGraphicHandler.hpp"
+#include "ILightCalculator.hpp"
 #include "IVector.hpp"
 #include "ILight.hpp"
 
@@ -19,8 +19,8 @@ namespace Raytracer {
             Display::Color compute();
             void redirectVector();
 
-            Transformable::Point3f _incident;
             std::shared_ptr<IVector> _vector;
             std::shared_ptr<Transformable::Light::ILight> _light;
-    }
+            Transformable::Point3f _incident;
+    };
 }

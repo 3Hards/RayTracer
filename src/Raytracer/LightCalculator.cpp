@@ -5,6 +5,7 @@
 ** LightCalculator header
 */
 
+#include <iostream>
 #include <exception>
 #include <cmath>
 #include "LightCalculator.hpp"
@@ -14,16 +15,17 @@ Raytracer::LightCalculator::LightCalculator(std::shared_ptr<IVector> vector, std
 
 void Raytracer::LightCalculator::redirectVector()
 {
-    Transformable::Point3f hitPos = _vector.getPos();
-    Transformable::Point3f lightPos = _light.getPos();
+    Transformable::Point3f hitPos = _vector->getPos();
+    Transformable::Point3f lightPos = _light->getPos();
     Transformable::Point3f axis{lightPos.x - hitPos.x, lightPos.y - hitPos.y, lightPos.z - hitPos.z};
 
-    _vector.setAxis(axis);
+    _vector->toLight();
+    _vector->setAxis(axis);
 }
 
 double Raytracer::LightCalculator::computeScalarProduct(Transformable::Point3f fst, Transformable::Point3f scd)
 {
-    double scalarProduct = fst.x * scd.x + fst.y * scd.y + fst.z * scd.z
+    return fst.x * scd.x + fst.y * scd.y + fst.z * scd.z;
 }
 
 Display::Color Raytracer::LightCalculator::compute()
@@ -38,30 +40,37 @@ Display::Color Raytracer::LightCalculator::compute()
     if (specularScalarProduct < 0) {
         specularScalarProduct = 0;
     }
-    double specular = std::pow(specularScalarProduct, 25);
+    int specular = (int)std::pow(specularScalarProduct, 25);
     Display::Color hittedColor = _vector->getHittedColor();
     Display::Color lightColor = _light->getColor();
-    return Display::Color{hittedColor.x * diffuse + lightColor.x * specular, hittedColor.y * diffuse + lightColor.y * specular, hittedColor.z * diffuse + lightColor.z * specular};
+    return Display::Color{hittedColor._r * (int)diffuse + lightColor._r * specular, hittedColor._g * (int)diffuse + lightColor._g * specular, hittedColor._b * (int)diffuse + lightColor._b * specular};
 }
 
 Display::Color Raytracer::LightCalculator::computePixel()
 {
-    Transformable::Point3f _incident = _vector->getAxis();
+    std::cout << "light pos " << _light->getPos().x << " " << _light->getPos().y << " " << _light->getPos().z << std::endl;
+    _incident = _vector->getAxis();
 
     _vector->run(_light);
     HittedObject hittedObject = _vector->getHittedObject();
 
     //pour quand on handle plusieurs light check si le vector hit une des autre light que celle visée
     if (hittedObject == HittedObject::VOID) {
+        std::cout << "void" << std::endl;
         return Display::Color{0, 0, 0};
     }
+    std::cout << "before redirect " << _vector->getAxis().x << " " << _vector->getAxis().y << " " << _vector->getAxis().z << std::endl;
     redirectVector();
+    std::cout << "after redirect " << _vector->getAxis().x << " " << _vector->getAxis().y << " " << _vector->getAxis().z << std::endl;
     _vector->run(_light);
-    HittedObject hittedObject = _vector->getHittedObject();
+    hittedObject = _vector->getHittedObject();
     if (hittedObject == HittedObject::PRIMITIVE) {
-        Display::Color{0, 0, 0};
+        std::cout << "block" << std::endl;
+        return Display::Color{0, 0, 0};
     } else if (hittedObject != HittedObject::LIGHT) {
-        throw std::runtime_exception("Error: LightCalculator::computePixel");
+        std::cout << static_cast<int>(hittedObject) << std::endl;
+        throw std::runtime_error("Error: LightCalculator::computePixel");
     }
+    std::cout << "compute " << std::endl;
     return compute();
 }

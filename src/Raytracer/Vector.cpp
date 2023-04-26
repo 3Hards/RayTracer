@@ -8,6 +8,7 @@
 #ifdef _WIN32
     #define _USE_MATH_DEFINES
 #endif
+#include <iostream>
 #include <cmath>
 #include <array>
 #include "Vector.hpp"
@@ -15,12 +16,17 @@
 
 Raytracer::Vector::Vector(Transformable::Point3f pos, Transformable::Point3f axis)
     : ATransformable(pos, axis, Transformable::TransformableType::VECTOR),
-    _hittedObject(HittedObject::UNDEFINED), _hittedColor(Display::Color{0, 0, 0})
+    _hittedObject(HittedObject::UNDEFINED), _hittedColor(Display::Color{0, 0, 0}), _toLight(false)
 {}
 
 void Raytracer::Vector::setPrimitives(std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> primitives)
 {
     _primitives = primitives;
+}
+
+void Raytracer::Vector::toLight()
+{
+    _toLight = true;
 }
 
 Raytracer::HittedObject Raytracer::Vector::getHittedObject()
@@ -49,7 +55,7 @@ void Raytracer::Vector::moveForward()
     std::array<std::array<double, 3>, 3> rot_y = {{{cos(toRad(_axis.y)), 0, sin(toRad(_axis.y))}, {0, 1, 0}, {-sin(toRad(_axis.y)), 0, cos(toRad(_axis.y))}}};
     std::array<std::array<double, 3>, 3> rot_z = {{{cos(toRad(_axis.z)), -sin(toRad(_axis.z)), 0}, {sin(toRad(_axis.z)), cos(toRad(_axis.z)), 0}, {0, 0, 1}}};
     std::array<std::array<double, 3>, 3> rot_matrix;
-    double distance = 0.01;
+    double distance = 1;
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
@@ -125,7 +131,8 @@ void Raytracer::Vector::run(std::shared_ptr<Transformable::Light::ILight> light)
     std::vector<double> prevDistances = getDistances();
     bool moveInVoid = false;
 
-    while (moveInVoid == false) {
+    while (moveInVoid == false || _toLight) {
+        //std::cout << "vector pos " << getPos().x << " " << getPos().y << " " << getPos().z << std::endl;
         moveForward();
         moveInVoid = checkDistances(prevDistances);
         if (checkHitPrimitives() || checkHitLight(light)) {
