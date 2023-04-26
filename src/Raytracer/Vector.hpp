@@ -19,6 +19,7 @@ namespace Raytracer {
             void run(std::shared_ptr<Transformable::Light::ILight> light) final;
             HittedObject getHittedObject() final;
             Display::Color getHittedColor() final;
+            std::shared_ptr<IVector> getHittedNormalVector() final;
             Transformable::Point3f getPos() final;
             Transformable::Point3f getAxis() final;
             void setPos(Transformable::Point3f pos) final;
@@ -35,5 +36,6 @@ namespace Raytracer {
 
             HittedObject _hittedObject;
             Display::Color _hittedColor;
+            std::shared_ptr<IVector> _hittedNormalVector;
     };
 }

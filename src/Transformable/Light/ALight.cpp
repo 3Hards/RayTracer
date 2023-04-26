@@ -16,6 +16,11 @@ Transformable::Light::ALight::ALight(Display::Color color, float brightness, Poi
     }
 }
 
+Display::Color Transformable::Light::ALight::getColor()
+{
+    return _color;
+}
+
 float Transformable::Light::ALight::getBrightness()
 {
     return _brightness;

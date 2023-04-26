@@ -9,6 +9,7 @@
 #include "Scene.hpp"
 #include "ITransformable.hpp"
 #include "TransformableStruct.hpp"
+#include "LightCalculator.hpp"
 
 namespace Scene {
 
@@ -41,6 +42,7 @@ namespace Scene {
             return;
         }
         for (auto &vector : vectors) {
+            Raytracer::LightCalculator calculator(vector, _lights[0]);
             vector->setPrimitives(_primitives);
             handleVectorAnswer(vector);
         }

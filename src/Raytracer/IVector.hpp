@@ -33,5 +33,6 @@ namespace Raytracer {
             virtual void run(std::shared_ptr<Transformable::Light::ILight> light) = 0;
             virtual HittedObject getHittedObject() = 0;
             virtual Display::Color getHittedColor() = 0;
+            virtual std::shared_ptr<IVector> getHittedNormalVector() = 0;
     };
 }

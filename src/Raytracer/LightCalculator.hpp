@@ -15,7 +15,11 @@ namespace Raytracer {
             LightCalculator(std::shared_ptr<IVector>, std::shared_ptr<Transformable::Light::ILight>);
             Display::Color computePixel() final;
         private:
-            std::unique_ptr<IVector> getNewVector(Transformable::Point3f hitPos);
+            double computeScalarProduct(Transformable::Point3f fst, Transformable::Point3f scd);
+            Display::Color compute();
+            void redirectVector();
+
+            Transformable::Point3f _incident;
             std::shared_ptr<IVector> _vector;
             std::shared_ptr<Transformable::Light::ILight> _light;
     }

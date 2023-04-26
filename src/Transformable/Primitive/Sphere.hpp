@@ -16,10 +16,11 @@ namespace Transformable {
         class Sphere : public APrimitive {
             public:
                 Sphere(Point3f, double ray, std::shared_ptr<Material::IMaterial> material);
-                std::tuple<bool, Display::Color> checkHit(std::unique_ptr<Raytracer::IVector> &) final;
-
+                bool checkHit(std::unique_ptr<Raytracer::IVector> &) final;
+                std::shared_ptr<Raytracer::IVector> getNormalVector() final;
             private:
                 double _ray;
+                Transformable::Point3f _lastHit;
         };
     }
 }

@@ -33,6 +33,11 @@ Display::Color Raytracer::Vector::getHittedColor()
     return _hittedColor;
 }
 
+std::shared_ptr<Raytracer::IVector> Raytracer::Vector::getHittedNormalVector()
+{
+    return _hittedNormalVector;
+}
+
 double Raytracer::Vector::toRad(double degree)
 {
     return degree * (M_PI / 180);
@@ -63,17 +68,15 @@ void Raytracer::Vector::moveForward()
     _pos.z += translation[2];
 }
 
-#include <iostream>
 bool Raytracer::Vector::checkHitPrimitives()
 {
-    std::tuple<bool, Display::Color> res;
     std::unique_ptr<Raytracer::IVector> vector = std::make_unique<Raytracer::Vector>(*this);
 
     for (auto primitive : _primitives) {
-        res = primitive->checkHit(vector);
-        if (std::get<0>(res) == true) {
+        if (primitive->checkHit(vector)) {
             _hittedObject = HittedObject::PRIMITIVE;
-            _hittedColor = std::get<1>(res);
+            _hittedColor = primitive->getColor();
+            _hittedNormalVector = primitive->getNormalVector();
             return true;
         }
     }
@@ -82,13 +85,11 @@ bool Raytracer::Vector::checkHitPrimitives()
 
 bool Raytracer::Vector::checkHitLight(std::shared_ptr<Transformable::Light::ILight> light)
 {
-    std::tuple<bool, Display::Color> res;
     std::unique_ptr<Raytracer::IVector> vector = std::make_unique<Raytracer::Vector>(*this);
 
-    res = light->checkHit(vector);
-    if (std::get<0>(res) == true) {
+    if (light->checkHit(vector)) {
         _hittedObject = HittedObject::LIGHT;
-        _hittedColor = std::get<1>(res);
+        _hittedColor = light->getColor();
         return true;
     }
     return false;
@@ -121,7 +122,6 @@ std::vector<double> Raytracer::Vector::getDistances()
 
 void Raytracer::Vector::run(std::shared_ptr<Transformable::Light::ILight> light)
 {
-    std::tuple<bool, Display::Color> res;
     std::vector<double> prevDistances = getDistances();
     bool moveInVoid = false;
 

@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <tuple>
 #include <memory>
 #include "DisplayStructs.hpp"
 #include "IVector.hpp"
@@ -17,7 +16,8 @@ namespace Transformable {
         class ILight {
             public:
                 virtual ~ILight() = default;
-                virtual std::tuple<bool, Display::Color> checkHit(std::unique_ptr<Raytracer::IVector>&) = 0;
+                virtual bool checkHit(std::unique_ptr<Raytracer::IVector>&) = 0;
+                virtual Display::Color getColor() = 0;
                 virtual float getBrightness() = 0;
         };
     }

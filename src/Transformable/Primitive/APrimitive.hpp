@@ -14,6 +14,7 @@ namespace Transformable {
         class APrimitive : public IPrimitive, public ATransformable {
             public:
                 APrimitive(std::shared_ptr<Material::IMaterial> material, Point3f pos, Point3f axis);
+                Display::Color getColor() final;
                 Transformable::Point3f getPos() final;
                 Transformable::Point3f getAxis() final;
                 void setPos(Transformable::Point3f pos) final;
@@ -21,6 +22,7 @@ namespace Transformable {
                 Transformable::TransformableType getType() final;
             protected:
                 std::shared_ptr<Material::IMaterial> _material;
+                Display::Color _color;
         };
     }
 }
