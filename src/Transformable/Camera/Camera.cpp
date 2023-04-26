@@ -15,9 +15,9 @@ namespace Transformable {
         Camera::Camera(
             Point3f position,
             Point3f axis,
-            int width,
-            int height,
-            int fov
+            unsigned int width,
+            unsigned int height,
+            unsigned int fov
         ) : ATransformable(position, axis, TransformableType::Camera)
         {
             _fov = fov;
@@ -41,6 +41,14 @@ namespace Transformable {
                 }
             }
             return vectors;
+        }
+
+        unsigned int Camera::getWidth() const {
+            return _width;
+        }
+
+        unsigned int Camera::getHeight() const {
+            return _height;
         }
 
         Point3f Camera::getPos() {
