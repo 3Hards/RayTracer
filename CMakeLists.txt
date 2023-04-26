@@ -67,8 +67,8 @@ endif()
 
 ##################### INCLUDE #############################
 
-if (linux)
-    find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
+if (UNIX)
+    find_library(SFML sfml-graphics sfml-window sfml-system sfml-audio)
     target_link_libraries(
         ${PROJECT_NAME}
         PRIVATE
