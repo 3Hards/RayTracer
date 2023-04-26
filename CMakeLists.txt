@@ -19,17 +19,14 @@ if(UNIX)
     add_compile_options(-Wall -Wextra -Werror)
 elseif(WIN32)
     add_compile_options(/W4)
+    include(FetchContent)
 endif()
 
 add_executable(${PROJECT_NAME})
 
 ##################### LIBCONFIG++ ##########################
 
-if (UNIX)
-    add_executable(${PROJECT_NAME})
-    target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS} config++)
-elseif (WIN32)
-    include(FetchContent)
+if (WIN32)
     set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
     set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
     set(DBUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
@@ -44,35 +41,46 @@ elseif (WIN32)
     )
     FetchContent_GetProperties(libconfig)
     if(NOT libconfig_POPULATED)
-      FetchContent_Populate(libconfig)
-      add_subdirectory(${libconfig_SOURCE_DIR} ${libconfig_BINARY_DIR})
+        FetchContent_Populate(libconfig)
+        add_subdirectory(${libconfig_SOURCE_DIR} ${libconfig_BINARY_DIR})
     endif()
 endif()
 
 ##################### SFML ################################
 
 if (WIN32)
-    set(SFML_STATIC_LIBRARIES FALSE)
-    set(SFML_DIR "${CMAKE_CURRENT_SOURCE_DIR}/SFML-2.5.1/lib/cmake/SFML/")
-    
-    include(FetchContent)
+    set(BUILD_SHARED_LIBS OFF)
+    set(SFML_BUILD_EXAMPLES OFF)
+    set(SFML_BUILD_DOC OFF)
+    set(SFML_BUILD_AUDIO OFF)
+    set(SFML_BUILD_NETWORK OFF)
+    set(SFML_BUILD_WINDOW ON)
+    set(SFML_BUILD_GRAPHICS ON)
+    set(SFML_BUILD_SYSTEM OFF)
     FetchContent_Declare(
-        sfml
-        URL "https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip"
-        SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/sfml-src"
+        SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 2.5.1
     )
-    FetchContent_GetProperties(sfml)
-    if(NOT sfml_POPULATED)
-        FetchContent_Populate(sfml)
-    endif()
+    FetchContent_MakeAvailable(SFML)
 endif()
-
-find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 
 ##################### INCLUDE #############################
 
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics libconfig++)
-target_include_directories(${PROJECT_NAME} PRIVATE ${libconfig_SOURCE_DIR}/lib)
+if (linux)
+    find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
+    target_link_libraries(
+        ${PROJECT_NAME}
+        PRIVATE
+        sfml-graphics
+        config++
+    )
+endif()
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    libconfig++
+    sfml-graphics
+)
 
 ##################### SRC #################################
 
