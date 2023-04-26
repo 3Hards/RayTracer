@@ -5,41 +5,40 @@
 ** Director
 */
 
-
 #include "Director.hpp"
 #include <libconfig.h++>
-
-using namespace libconfig;
+#include <iostream>
+#include <string>
 
 Scene::Director::Director(std::string pathFile)
 {
-    Config cfg;
+    libconfig::Config cfg;
 
     try {
-        cfg.readFile("test.cfg");
+        cfg.readFile(pathFile.c_str());
     }
-    catch(const FileIOException &fioex) {
+    catch(const libconfig::FileIOException &fioex) {
         std::cerr << "I/O error while reading file." << std::endl;
     }
-    catch(const ParseException &pex) {
+    catch(const libconfig::ParseException &pex) {
         std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
         << " - " << pex.getError() << std::endl;
     }
 
-    const Setting &element = cfg.lookup("element");
-    const Setting &list = element.lookup("list");
+    const libconfig::Setting &elements = cfg.lookup("elements");
+    const libconfig::Setting &list = elements.lookup("list");
 
     int len = list.getLength();
 
     for(int i = 0; i < len; i++) {
-        const Setting& element = list[i];
+        const libconfig::Setting& element = list[i];
         const std::string& type = element.lookup("type");
         int x = element.lookup("x");
         int y = element.lookup("y");
         int z = element.lookup("z");
         int r = element.lookup("r");
 
-        const Setting& color = element.lookup("color");
+        const libconfig::Setting& color = element.lookup("color");
         int red = color.lookup("r");
         int green = color.lookup("g");
         int blue = color.lookup("b");
@@ -53,5 +52,9 @@ Scene::Director::Director(std::string pathFile)
 }
 
 Scene::Director::~Director()
+{
+}
+
+void Scene::Director::playScene()
 {
 }
