@@ -5,7 +5,6 @@
 ** Scene
 */
 
-#include <iostream>
 #include "Scene.hpp"
 #include "ITransformable.hpp"
 #include "TransformableStruct.hpp"
@@ -61,8 +60,6 @@ namespace Scene {
         Transformable::Point3f point = std::get<2>(answer);
 
         if (hasHitted) {
-            std::cout << "Intersect at " << point.x << " " << point.y << " " << point.z << std::endl;
-            std::cout << "Color: " << color._r << " " << color._g << " " << color._b << std::endl;
             addNewPixel(color, point);
         }
     }
