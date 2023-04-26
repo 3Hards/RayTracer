@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.25)
 
+set(PROJECT_NAME raytracer)
+
 project(
-    Raytracer
+    ${PROJECT_NAME}
     VERSION 1.0
     DESCRIPTION "Tek2 | OOP | Raytracer"
     LANGUAGES CXX
@@ -19,7 +21,8 @@ elseif(WIN32)
     add_compile_options(/W4)
 endif()
 
-add_executable(raytracer)
+add_executable(${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS} config++)
 
 ##################### CUSTUM CMD ##########################
 
