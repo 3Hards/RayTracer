@@ -42,17 +42,19 @@ namespace Scene {
         }
         for (auto &vector : vectors) {
             vector->setPrimitives(_primitives);
-            handleVectorAnswer(vector->run(_lights[0]));
+            handleVectorAnswer(vector);
         }
     }
 
-    void Scene::handleVectorAnswer(std::tuple<bool, Display::Color, Transformable::Point3f> answer)
+    void Scene::handleVectorAnswer(std::shared_ptr<Raytracer::IVector> vector)
     {
-        bool hasHitted = std::get<0>(answer);
-        Display::Color color = std::get<1>(answer);
-        Transformable::Point3f point = std::get<2>(answer);
+        vector->run(_lights[0]);
+        Display::Color color;
+        Transformable::Point3f point;
 
-        if (hasHitted) {
+        if (vector->getHittedObject() == Raytracer::HittedObject::PRIMITIVE) {
+            color = vector->getHittedColor();
+            point = vector->getPos();
             std::cout << "Intersect at " << point.x << " " << point.y << " " << point.z << std::endl;
             std::cout << "Color: " << color._r << " " << color._g << " " << color._b << std::endl;
         }

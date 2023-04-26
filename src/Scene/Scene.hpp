@@ -23,7 +23,7 @@ namespace Scene {
             //void addTransformation(std::shared_ptr<Transformable::Transformation::ITransformation> transformation);
 
         private:
-            void handleVectorAnswer(std::tuple<bool, Display::Color, Transformable::Point3f> answer);
+            void handleVectorAnswer(std::shared_ptr<Raytracer::IVector> vector);
             std::string _filename;
             std::vector<std::shared_ptr<Transformable::Camera::ICamera>> _cameras;
             std::vector<std::shared_ptr<Transformable::Light::ILight>> _lights;

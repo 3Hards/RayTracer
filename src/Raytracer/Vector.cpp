@@ -23,6 +23,16 @@ void Raytracer::Vector::setPrimitives(std::vector<std::shared_ptr<Transformable:
     _primitives = primitives;
 }
 
+Raytracer::HittedObject Raytracer::Vector::getHittedObject()
+{
+    return _hittedObject;
+}
+
+Display::Color Raytracer::Vector::getHittedColor()
+{
+    return _hittedColor;
+}
+
 double Raytracer::Vector::toRad(double degree)
 {
     return degree * (M_PI / 180);
