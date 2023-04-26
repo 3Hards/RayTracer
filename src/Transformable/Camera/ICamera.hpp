@@ -17,6 +17,8 @@ namespace Transformable {
             public:
                 virtual ~ICamera() = default;
                 virtual std::vector<std::shared_ptr<Raytracer::IVector>> computeVectors() = 0;
+                virtual unsigned int getWidth() const = 0;
+                virtual unsigned int getHeight() const = 0;
         };
     }
 }

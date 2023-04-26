@@ -31,9 +31,9 @@ namespace Transformable {
                 Camera(
                     Point3f position = {0, 0, 0},
                     Point3f axis = {0, 0, 0},
-                    int width = 1920,
-                    int height = 1080,
-                    int fov = 90
+                    unsigned int width = 1920,
+                    unsigned int height = 1080,
+                    unsigned int fov = 90
                 );
                 std::vector<std::shared_ptr<Raytracer::IVector>> computeVectors() final;
                 Point3f getPos() final;
@@ -41,11 +41,13 @@ namespace Transformable {
                 void setPos(Point3f pos) final;
                 void setAxis(Point3f axis) final;
                 TransformableType getType() final;
+                unsigned int getWidth() const final;
+                unsigned int getHeight() const final;
 
             private:
-                int _fov;
-                int _width;
-                int _height;
+                unsigned int _fov;
+                unsigned int _width;
+                unsigned int _height;
         };
     }
 }
