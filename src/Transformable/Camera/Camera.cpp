@@ -31,8 +31,8 @@ namespace Transformable {
             //for the V1 of the camera, we create a rectangle of vectors
             //the origin is le top left corner of the rectangle
 
-            for (int y = 0; y < _height; y++) {
-                for (int x = 0; x < _width; x++) {
+            for (unsigned int y = 0; y < _height; y++) {
+                for (unsigned int x = 0; x < _width; x++) {
                     pos.x = _pos.x + x;
                     pos.y = _pos.y + y;
                     pos.z = _pos.z;
