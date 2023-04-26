@@ -51,6 +51,22 @@ endif()
 
 ##################### SFML ################################
 
+if (WIN32)
+    set(SFML_STATIC_LIBRARIES FALSE)
+    set(SFML_DIR "${CMAKE_CURRENT_SOURCE_DIR}/SFML-2.5.1/lib/cmake/SFML/")
+    
+    include(FetchContent)
+    FetchContent_Declare(
+        sfml
+        URL "https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip"
+        SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/sfml-src"
+    )
+    FetchContent_GetProperties(sfml)
+    if(NOT sfml_POPULATED)
+        FetchContent_Populate(sfml)
+    endif()
+endif()
+
 find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 
 ##################### INCLUDE #############################
