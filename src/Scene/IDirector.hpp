@@ -10,7 +10,7 @@
 
 class IDirector {
     public:
-        virtual void playScene();
+        virtual void playScene() = 0;
 
     protected:
     private:
