@@ -31,6 +31,16 @@ jobs:
   windows-test:
     runs-on: windows-latest
     steps:
+      - name: Download SFML library
+        shell: powershell
+        run: |
+          Invoke-WebRequest -Uri https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip -OutFile SFML-2.5.1-windows-vc15-64-bit.zip
+          Expand-Archive SFML-2.5.1-windows-vc15-64-bit.zip -DestinationPath SFML
+      - name: Add SFML to PATH
+        shell: powershell
+        run: |
+          $env:Path = "C:\SFML\bin;" + $env:Path
+          [Environment]::SetEnvironmentVariable("Path", $env:Path, [EnvironmentVariableTarget]::Machine)
       - uses: actions/checkout@v2
       - name: Build
         run: |
