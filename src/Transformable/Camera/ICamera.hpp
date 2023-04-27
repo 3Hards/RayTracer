@@ -19,7 +19,6 @@ namespace Transformable {
                 virtual std::vector<Point3f> computeAxis() = 0;
                 virtual unsigned int getWidth() const = 0;
                 virtual unsigned int getHeight() const = 0;
-                virtual Point3f getPos() = 0;
         };
     }
 }
