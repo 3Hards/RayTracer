@@ -71,6 +71,9 @@ Scene::Director::Director(std::string pathFile)
             int ax, ay, az;
             const libconfig::Setting &res = item["resolution"];
             int rx, ry;
+            const libconfig::Setting &trans = item["transformation"];
+            std::string transType;
+            int tx, ty, tz;
             item.lookupValue("x", x);
             item.lookupValue("y", y);
             item.lookupValue("z", z);
@@ -80,10 +83,16 @@ Scene::Director::Director(std::string pathFile)
             axis.lookupValue("z", az);
             res.lookupValue("x", rx);
             res.lookupValue("y", ry);
+            trans.lookupValue("type", transType);
+            trans.lookupValue("x", tx);
+            trans.lookupValue("y", ty);
+            trans.lookupValue("z", tz);
             std::cout << "Position: (" << x << ", " << y << ", " << z << ")" << std::endl;
             std::cout << "Axis: (" << ax << ", " << ay << ", " << az << ")" << std::endl;
             std::cout << "Field of view: " << fov << std::endl;
             std::cout << "Resolution: (" << rx << ", " << ry << ")" << std::endl;
+            std::cout << "Transformation: " << transType << std::endl;
+            std::cout << "Translation: (" << tx << ", " << ty << ", " << tz << ")" << std::endl;
         }
         else {
             std::cout << "Unknown type." << std::endl;
