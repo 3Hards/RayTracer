@@ -24,4 +24,15 @@ namespace Scene {
     };
 }
 
+struct Element {
+    std::string type;
+    int x, y, z;
+    double r, g, b;
+    double brightness;
+    int width, height;
+    int axis_x, axis_y, axis_z;
+    std::string transType;
+    int transX, transY, transZ;
+};
+
 #endif /* !DIRECTOR_HPP_ */
