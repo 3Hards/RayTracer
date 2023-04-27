@@ -24,7 +24,7 @@ namespace Transformable {
             _width = width;
             _height = height;
         }
-        std::vector<Point3f> computeAxis() {
+        std::vector<Point3f> Camera::computeAxis() {
             std::vector<Point3f> axis;
             //for the V1 of the camera, we create a rectangle
             //the vectors do not start from the same origin, they go straight to the camera
