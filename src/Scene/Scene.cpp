@@ -50,7 +50,7 @@ namespace Scene {
             vector->setPrimitives(_primitives);
             handleVectorAnswer(vector->run(_lights[0]));
         }
-        libGraphicHandler.createImage(_pixels);
+        //libGraphicHandler.createImage(_pixels);
     }
 
     void Scene::handleVectorAnswer(std::tuple<bool, Display::Color, Transformable::Point3f> answer)

@@ -29,9 +29,9 @@ int main()
             pixel._color._b = color.b;
             pixel._pos._x = x;
             pixel._pos._y = y;
-            pixels.push_back(pixel);
+            lib.addPixelToImage(pixel);
         }
     }
-    lib.createImage(pixels);
+    lib.exportImage();
     return 0;
 }
