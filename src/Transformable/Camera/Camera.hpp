@@ -35,7 +35,7 @@ namespace Transformable {
                     unsigned int height = 1080,
                     unsigned int fov = 90
                 );
-                std::vector<std::shared_ptr<Raytracer::IVector>> computeVectors() final;
+                std::vector<Transformable::Point3f> computeAxis() final;
                 Point3f getPos() final;
                 Point3f getAxis() final;
                 void setPos(Point3f pos) final;
