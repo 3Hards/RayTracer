@@ -26,8 +26,6 @@ elseif(WIN32)
 endif()
 
 ##################### LIBCONFIG++ ##########################
-add_executable(${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS} config++)
 
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
