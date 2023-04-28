@@ -42,7 +42,7 @@ namespace Scene {
         if (_lights.size() == 0 || _primitives.size() == 0) {
             return;
         }
-        vectors = _cameras[0]->computeVectors();
+        //vectors = _cameras[0]->computeVectors();
         if (vectors.size() == 0) {
             return;
         }
