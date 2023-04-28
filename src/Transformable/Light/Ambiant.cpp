@@ -14,7 +14,7 @@ bool Transformable::Light::Ambiant::checkHit(std::unique_ptr<Raytracer::IVector>
 {
     Point3f vectorPos = vector->getPos();
 
-    if (vectorPos.x == _pos.x && vectorPos.y == _pos.y && vectorPos.z == _pos.z) {
+    if (vectorPos.x >= _pos.x - 1 && vectorPos.x <= _pos.x + 1 && vectorPos.y >= _pos.y - 1 && vectorPos.y <= _pos.y + 1 && vectorPos.z >= _pos.z - 1 && vectorPos.z <= _pos.z + 1) {
         return true;
     }
     return false;

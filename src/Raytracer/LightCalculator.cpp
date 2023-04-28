@@ -5,7 +5,6 @@
 ** LightCalculator header
 */
 
-#include <iostream>
 #include <exception>
 #include <cmath>
 #include "LightCalculator.hpp"
@@ -48,7 +47,6 @@ Display::Color Raytracer::LightCalculator::compute()
 
 Display::Color Raytracer::LightCalculator::computePixel()
 {
-    std::cout << "light pos " << _light->getPos().x << " " << _light->getPos().y << " " << _light->getPos().z << std::endl;
     _incident = _vector->getAxis();
 
     _vector->run(_light);
@@ -56,21 +54,17 @@ Display::Color Raytracer::LightCalculator::computePixel()
 
     //pour quand on handle plusieurs light check si le vector hit une des autre light que celle visée
     if (hittedObject == HittedObject::VOID) {
-        std::cout << "void" << std::endl;
         return Display::Color{0, 0, 0};
+    } else if (hittedObject == HittedObject::LIGHT) {
+        return _light->getColor();
     }
-    std::cout << "before redirect " << _vector->getAxis().x << " " << _vector->getAxis().y << " " << _vector->getAxis().z << std::endl;
     redirectVector();
-    std::cout << "after redirect " << _vector->getAxis().x << " " << _vector->getAxis().y << " " << _vector->getAxis().z << std::endl;
     _vector->run(_light);
     hittedObject = _vector->getHittedObject();
     if (hittedObject == HittedObject::PRIMITIVE) {
-        std::cout << "block" << std::endl;
         return Display::Color{0, 0, 0};
     } else if (hittedObject != HittedObject::LIGHT) {
-        std::cout << static_cast<int>(hittedObject) << std::endl;
         throw std::runtime_error("Error: LightCalculator::computePixel");
     }
-    std::cout << "compute " << std::endl;
     return compute();
 }

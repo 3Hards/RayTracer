@@ -5,6 +5,7 @@
 ** Sphere
 */
 
+#include <iostream>
 #include <cmath>
 #include <memory>
 #include "Sphere.hpp"

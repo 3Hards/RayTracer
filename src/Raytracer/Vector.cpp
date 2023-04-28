@@ -8,7 +8,6 @@
 #ifdef _WIN32
     #define _USE_MATH_DEFINES
 #endif
-#include <iostream>
 #include <cmath>
 #include <array>
 #include "Vector.hpp"
@@ -51,27 +50,13 @@ double Raytracer::Vector::toRad(double degree)
 
 void Raytracer::Vector::moveForward()
 {
-    std::array<std::array<double, 3>, 3> rot_x = {{{1, 0, 0}, {0, cos(toRad(_axis.x)), -sin(toRad(_axis.x))}, {0, sin(toRad(_axis.x)), cos(toRad(_axis.x))}}};
-    std::array<std::array<double, 3>, 3> rot_y = {{{cos(toRad(_axis.y)), 0, sin(toRad(_axis.y))}, {0, 1, 0}, {-sin(toRad(_axis.y)), 0, cos(toRad(_axis.y))}}};
-    std::array<std::array<double, 3>, 3> rot_z = {{{cos(toRad(_axis.z)), -sin(toRad(_axis.z)), 0}, {sin(toRad(_axis.z)), cos(toRad(_axis.z)), 0}, {0, 0, 1}}};
-    std::array<std::array<double, 3>, 3> rot_matrix;
-    double distance = 1;
-
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            rot_matrix[i][j] = 0;
-            for (int k = 0; k < 3; k++) {
-                rot_matrix[i][j] += rot_z[i][k] * rot_y[k][j] * rot_x[k][j];
-            }
-        }
-    }
-
-    std::array<double, 3> direction = {rot_matrix[0][2], rot_matrix[1][2], rot_matrix[2][2]};
-    std::array<double, 3> translation = {direction[0] * distance, direction[1] * distance, direction[2] * distance};
-
-    _pos.x += translation[0];
-    _pos.y += translation[1];
-    _pos.z += translation[2];
+    double distance = std::sqrt(_axis.x * _axis.x + _axis.y * _axis.y + _axis.z * _axis.z);
+    double x = _axis.x /= distance;
+    double y = _axis.y /= distance;
+    double z = _axis.z /= distance;
+    _pos.x += x;
+    _pos.y += y;
+    _pos.z += z;
 }
 
 bool Raytracer::Vector::checkHitPrimitives()
@@ -95,7 +80,6 @@ bool Raytracer::Vector::checkHitLight(std::shared_ptr<Transformable::Light::ILig
 
     if (light->checkHit(vector)) {
         _hittedObject = HittedObject::LIGHT;
-        _hittedColor = light->getColor();
         return true;
     }
     return false;
@@ -132,7 +116,6 @@ void Raytracer::Vector::run(std::shared_ptr<Transformable::Light::ILight> light)
     bool moveInVoid = false;
 
     while (moveInVoid == false || _toLight) {
-        //std::cout << "vector pos " << getPos().x << " " << getPos().y << " " << getPos().z << std::endl;
         moveForward();
         moveInVoid = checkDistances(prevDistances);
         if (checkHitPrimitives() || checkHitLight(light)) {
