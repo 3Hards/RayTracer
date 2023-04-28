@@ -9,9 +9,9 @@
 
 namespace Transformable {
     namespace Light {
-        class Ambiant : public ALight {
+        class Ambient : public ALight {
             public:
-                Ambiant(Display::Color, float brightness, Point3f pos);
+                Ambient(Display::Color, float brightness, Point3d pos);
                 bool checkHit(std::unique_ptr<Raytracer::IVector>&) final;
         };
     }

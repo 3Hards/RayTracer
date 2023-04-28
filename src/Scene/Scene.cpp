@@ -7,7 +7,6 @@
 
 #include "Scene.hpp"
 #include "ITransformable.hpp"
-#include "TransformableStruct.hpp"
 #include "LightCalculator.hpp"
 #include "LibGraphicHandler.hpp"
 
@@ -55,7 +54,7 @@ namespace Scene {
         libGraphicHandler.createImage(_pixels);
     }
 
-    void Scene::addNewPixel(Display::Color color, Transformable::Point3f position)
+    void Scene::addNewPixel(Display::Color color, Transformable::Point3d position)
     {
         Display::Pixel pixel;
 

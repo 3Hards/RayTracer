@@ -8,14 +8,14 @@
 #ifdef _WIN32
     #define _USE_MATH_DEFINES
 #endif
+#include <iostream>
 #include <cmath>
 #include <array>
 #include "Vector.hpp"
 #include "ILight.hpp"
 
-Raytracer::Vector::Vector(Transformable::Point3f pos, Transformable::Point3f axis)
-    : ATransformable(pos, axis, Transformable::TransformableType::VECTOR),
-    _hittedObject(HittedObject::UNDEFINED), _hittedColor(Display::Color{0, 0, 0}), _toLight(false)
+Raytracer::Vector::Vector(Transformable::Point3d pos, Transformable::Point3d axis)
+    : ATransformable(pos, axis), _res({0, 0, 0}), _incident({0, 0, 0}), _state(State::INCIDENT)
 {}
 
 void Raytracer::Vector::setPrimitives(std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> primitives)
@@ -23,29 +23,29 @@ void Raytracer::Vector::setPrimitives(std::vector<std::shared_ptr<Transformable:
     _primitives = primitives;
 }
 
-void Raytracer::Vector::toLight()
+double Raytracer::Vector::getScalarRI()
 {
-    _toLight = true;
+    Transformable::Point3d normal = normalize(_normal);
+    Transformable::Point3d axis = normalize(_axis);
+    Transformable::Point3d R = {2 * _scalarNL * normal.x - axis.x, 2 * _scalarNL * normal.y - axis.y,  2 * _scalarNL * normal.z - axis.z};
+
+    return computeScalarProduct(R, _incident);
 }
 
-Raytracer::HittedObject Raytracer::Vector::getHittedObject()
+Transformable::Point3d Raytracer::Vector::getLightColor()
 {
-    return _hittedObject;
+    return _light->getLightColor();
 }
 
-Display::Color Raytracer::Vector::getHittedColor()
+Transformable::Point3d Raytracer::Vector::normalize(Transformable::Point3d toNormalize)
 {
-    return _hittedColor;
+    double length = std::sqrt(toNormalize.x * toNormalize.x + toNormalize.y * toNormalize.y + toNormalize.z * toNormalize.z);
+    return {toNormalize.x / length, toNormalize.y / length, toNormalize.z / length};
 }
 
-std::shared_ptr<Raytracer::IVector> Raytracer::Vector::getHittedNormalVector()
+Transformable::Point3d Raytracer::Vector::normalize()
 {
-    return _hittedNormalVector;
-}
-
-double Raytracer::Vector::toRad(double degree)
-{
-    return degree * (M_PI / 180);
+    return normalize(_axis);
 }
 
 void Raytracer::Vector::moveForward()
@@ -59,94 +59,145 @@ void Raytracer::Vector::moveForward()
     _pos.z += z;
 }
 
-bool Raytracer::Vector::checkHitPrimitives()
+void Raytracer::Vector::hitPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive> primitive)
 {
-    std::unique_ptr<Raytracer::IVector> vector = std::make_unique<Raytracer::Vector>(*this);
+    if (_state == State::INCIDENT) {
+        Transformable::Point3d hitPos = getPos();
+        Transformable::Point3d lightPos = _light->getPos();
+        Transformable::Point3d axis{lightPos.x - hitPos.x, lightPos.y - hitPos.y, lightPos.z - hitPos.z};
+        setAxis(axis);
+        _hittedPrimitive = primitive;
+        _state = State::LIGHT;
+    } else if (_state == State::LIGHT) {
+        _res = Display::Color{0, 0, 0};
+        _state = State::STOP;
+    }
+}
+
+void Raytracer::Vector::checkHitPrimitives()
+{
+    std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
 
     for (auto primitive : _primitives) {
         if (primitive->checkHit(vector)) {
-            _hittedObject = HittedObject::PRIMITIVE;
-            _hittedColor = primitive->getColor();
-            _hittedNormalVector = primitive->getNormalVector();
-            return true;
+            hitPrimitive(primitive);
         }
     }
-    return false;
 }
 
-bool Raytracer::Vector::checkHitLight(std::shared_ptr<Transformable::Light::ILight> light)
+double Raytracer::Vector::computeScalarProduct(Transformable::Point3d fst, Transformable::Point3d scd)
+{
+    fst = normalize(fst);
+    scd = normalize(scd);
+    return fst.x * scd.x + fst.y * scd.y + fst.z * scd.z;
+}
+
+void Raytracer::Vector::compute()
+{
+    Transformable::Point3d ambientLightColor = _light->getAmbientLightColor();
+    Transformable::Point3d materialBaseColor = _hittedPrimitive->getMaterialBaseColor();
+    Transformable::Point3d ambient = {
+        ambientLightColor.x * materialBaseColor.x,
+        ambientLightColor.y * materialBaseColor.y,
+        ambientLightColor.z * materialBaseColor.z
+    };
+    _normal = _hittedPrimitive->getNormalVector()->getAxis();
+    _scalarNL = computeScalarProduct(_normal, _axis);
+    if (_scalarNL < 0) {
+        _res = Display::Color{0, 0, 0};
+        return;
+    }
+    Transformable::Point3d lightColor = _light->getLightColor();
+    std::cout << "lightColor " << lightColor.x << " " << lightColor.y << " " << lightColor.z << std::endl << "materialBaseColor " << materialBaseColor.x << " " << materialBaseColor.y << " " << materialBaseColor.z << std::endl;
+    Transformable::Point3d diffuse = {lightColor.x * materialBaseColor.x * _scalarNL, lightColor.y * materialBaseColor.y * _scalarNL, lightColor.z * materialBaseColor.z * _scalarNL};
+    Transformable::Point3d specular = _hittedPrimitive->getSpecular();
+    std::cout << "diffuse " << diffuse.x << " " << diffuse.y << " " << diffuse.z << std::endl << "ambient " << ambient.x << " " << ambient.y << " " << ambient.z << std::endl;
+    _res = Display::Color{(int)((ambient.x + diffuse.x + specular.x) * 255), (int)((ambient.y + diffuse.y + specular.y) * 255), (int)((ambient.z + diffuse.z + specular.z) * 255)};
+}
+
+void Raytracer::Vector::checkHitLight()
 {
     std::unique_ptr<Raytracer::IVector> vector = std::make_unique<Raytracer::Vector>(*this);
 
-    if (light->checkHit(vector)) {
-        _hittedObject = HittedObject::LIGHT;
-        return true;
-    }
-    return false;
-}
-
-bool Raytracer::Vector::checkDistances(std::vector<double> &prevDistances)
-{
-    std::vector<double> newDistances = getDistances();
-
-    for (std::size_t i = 0; i < prevDistances.size(); i++) {
-        if (prevDistances[i] >= newDistances[i]) {
-            prevDistances = newDistances;
-            return false;
+    if (_light->checkHit(vector)) {
+        if (_state == State::INCIDENT) {
+            _res = Display::Color{0, 0, 0};
+        } else if (_state == State::LIGHT) {
+            compute();
         }
+        _state = State::STOP;
     }
-    return true;
 }
 
-std::vector<double> Raytracer::Vector::getDistances()
+void Raytracer::Vector::checkDistances()
 {
-    std::vector <double> _distances;
+    std::vector<double> prevDistances = _distances;
 
-    for (auto primitive : _primitives) {
-        Transformable::Point3f pos = primitive->getPos();
-        _distances.push_back(pow(pow(pos.x - _pos.x, 2) + pow(pos.y - _pos.y, 2) + pow(pos.z - _pos.z, 2), 0.5));
-
-    }
-    return _distances;
-}
-
-void Raytracer::Vector::run(std::shared_ptr<Transformable::Light::ILight> light)
-{
-    std::vector<double> prevDistances = getDistances();
-    bool moveInVoid = false;
-
-    while (moveInVoid == false || _toLight) {
-        moveForward();
-        moveInVoid = checkDistances(prevDistances);
-        if (checkHitPrimitives() || checkHitLight(light)) {
+    updateDistances();
+    for (std::size_t i = 0; i < prevDistances.size(); i++) {
+        if (prevDistances[i] >= _distances[i]) {
             return;
         }
     }
-    _hittedObject = HittedObject::VOID;
-    return;
+    _res = Display::Color{0, 0, 0};
+    _state = State::STOP;
 }
 
-Transformable::Point3f Raytracer::Vector::getPos()
+void Raytracer::Vector::updateDistances()
+{
+    std::vector <double> distances;
+
+    for (auto primitive : _primitives) {
+        Transformable::Point3d pos = primitive->getPos();
+        distances.push_back(pow(pow(pos.x - _pos.x, 2) + pow(pos.y - _pos.y, 2) + pow(pos.z - _pos.z, 2), 0.5));
+    }
+    _distances = distances;
+}
+
+void Raytracer::Vector::run()
+{
+    updateDistances();
+
+    while (_state != State::STOP) {
+        moveForward();
+        if (_state == State::INCIDENT) {
+            checkDistances();
+        }
+        checkHitPrimitives();
+        checkHitLight();
+    }
+}
+
+Display::Color Raytracer::Vector::computeColor(std::shared_ptr<Transformable::Light::ILight> light)
+{
+    _light = light;
+    _incident = _axis;
+    run();
+
+    _distances.clear();
+    _light.reset();
+    _hittedPrimitive.reset();
+    _state = State::INCIDENT;
+    _scalarNL = 0;
+    return _res;
+}
+
+Transformable::Point3d Raytracer::Vector::getPos()
 {
     return ATransformable::getPos();
 }
 
-Transformable::Point3f Raytracer::Vector::getAxis()
+Transformable::Point3d Raytracer::Vector::getAxis()
 {
     return ATransformable::getAxis();
 }
 
-void Raytracer::Vector::setPos(Transformable::Point3f pos)
+void Raytracer::Vector::setPos(Transformable::Point3d pos)
 {
     ATransformable::setPos(pos);
 }
 
-void Raytracer::Vector::setAxis(Transformable::Point3f axis)
+void Raytracer::Vector::setAxis(Transformable::Point3d axis)
 {
     ATransformable::setAxis(axis);
-}
-
-Transformable::TransformableType Raytracer::Vector::getType()
-{
-    return ATransformable::getType();
 }

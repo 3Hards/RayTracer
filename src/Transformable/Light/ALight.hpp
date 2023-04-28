@@ -12,16 +12,16 @@ namespace Transformable {
     namespace Light {
         class ALight : public ILight, public ATransformable {
             public:
-                ALight(Display::Color, float brightness, Point3f pos);
-                Display::Color getColor() final;
-                float getBrightness() final;
-                Point3f getPos() final;
-                Point3f getAxis() final;
-                void setPos(Point3f pos) final;
-                void setAxis(Point3f axis) final;
-                TransformableType getType() final;
+                ALight(Display::Color, float brightness, Point3d pos);
+                Transformable::Point3d getAmbientLightColor() final;
+                Transformable::Point3d getLightColor() final;
+                Point3d getPos() final;
+                Point3d getAxis() final;
+                void setPos(Point3d pos) final;
+                void setAxis(Point3d axis) final;
             protected:
-                Display::Color _color;
+                Transformable::Point3d _color;
+                Transformable::Point3d _ambientColor;
                 float _brightness;
         };
     }

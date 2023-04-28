@@ -15,7 +15,7 @@ int main(void)
     Transformable::Light::ILight light;
 
     vector.setPrimitives(list);
-    Transformable::Point3f pos = vector.getPos();
+    Transformable::Point3d pos = vector.getPos();
     std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
     vector.run(light);
     pos = vector.getPos();

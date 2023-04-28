@@ -15,12 +15,11 @@ namespace Transformable {
     namespace Primitive {
         class Sphere : public APrimitive {
             public:
-                Sphere(Point3f, double ray, std::shared_ptr<Material::IMaterial> material);
-                bool checkHit(std::unique_ptr<Raytracer::IVector> &) final;
+                Sphere(Point3d, double ray, std::shared_ptr<Material::IMaterial> material);
+                bool checkHit(std::shared_ptr<Raytracer::IVector>) final;
                 std::shared_ptr<Raytracer::IVector> getNormalVector() final;
             private:
                 double _ray;
-                Transformable::Point3f _lastHit;
         };
     }
 }

@@ -20,20 +20,11 @@ namespace Transformable {
 }
 
 namespace Raytracer {
-    enum class HittedObject {
-        UNDEFINED,
-        VOID,
-        PRIMITIVE,
-        LIGHT
-    };
-
     class IVector : public Transformable::ITransformable {
         public:
             virtual void setPrimitives(std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>>) = 0;
-            virtual void run(std::shared_ptr<Transformable::Light::ILight> light) = 0;
-            virtual void toLight() = 0;
-            virtual HittedObject getHittedObject() = 0;
-            virtual Display::Color getHittedColor() = 0;
-            virtual std::shared_ptr<IVector> getHittedNormalVector() = 0;
+            virtual Display::Color computeColor(std::shared_ptr<Transformable::Light::ILight> light) = 0;
+            virtual double getScalarRI() = 0;
+            virtual Transformable::Point3d getLightColor() = 0;
     };
 }

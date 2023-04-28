@@ -29,18 +29,17 @@ namespace Transformable {
         class Camera : public ICamera, public ATransformable {
             public:
                 Camera(
-                    Point3f position = {0, 0, 0},
-                    Point3f axis = {0, 0, 0},
+                    Point3d position = {0, 0, 0},
+                    Point3d axis = {0, 0, 0},
                     unsigned int width = 1920,
                     unsigned int height = 1080,
                     unsigned int fov = 90
                 );
                 std::vector<std::shared_ptr<Raytracer::IVector>> computeVectors() final;
-                Point3f getPos() final;
-                Point3f getAxis() final;
-                void setPos(Point3f pos) final;
-                void setAxis(Point3f axis) final;
-                TransformableType getType() final;
+                Point3d getPos() final;
+                Point3d getAxis() final;
+                void setPos(Point3d pos) final;
+                void setAxis(Point3d axis) final;
                 unsigned int getWidth() const final;
                 unsigned int getHeight() const final;
 

@@ -5,14 +5,14 @@
 ** ALight header
 */
 
-#include "Ambiant.hpp"
+#include "Ambient.hpp"
 
-Transformable::Light::Ambiant::Ambiant(Display::Color color, float brightness, Point3f pos) : ALight(color, brightness, pos)
+Transformable::Light::Ambient::Ambient(Display::Color color, float brightness, Point3d pos) : ALight(color, brightness, pos)
 {}
 
-bool Transformable::Light::Ambiant::checkHit(std::unique_ptr<Raytracer::IVector> &vector)
+bool Transformable::Light::Ambient::checkHit(std::unique_ptr<Raytracer::IVector> &vector)
 {
-    Point3f vectorPos = vector->getPos();
+    Point3d vectorPos = vector->getPos();
 
     if (vectorPos.x >= _pos.x - 1 && vectorPos.x <= _pos.x + 1 && vectorPos.y >= _pos.y - 1 && vectorPos.y <= _pos.y + 1 && vectorPos.z >= _pos.z - 1 && vectorPos.z <= _pos.z + 1) {
         return true;

@@ -18,8 +18,8 @@ namespace Transformable {
             public:
                 virtual ~ILight() = default;
                 virtual bool checkHit(std::unique_ptr<Raytracer::IVector>&) = 0;
-                virtual Display::Color getColor() = 0;
-                virtual float getBrightness() = 0;
+                virtual Transformable::Point3d getAmbientLightColor() = 0;
+                virtual Transformable::Point3d getLightColor() = 0;
         };
     }
 }
