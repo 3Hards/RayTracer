@@ -8,7 +8,6 @@
 #ifdef _WIN32
     #define _USE_MATH_DEFINES
 #endif
-#include <iostream>
 #include <cmath>
 #include <array>
 #include "Vector.hpp"
@@ -79,7 +78,7 @@ void Raytracer::Vector::checkHitPrimitives()
     std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
 
     for (auto primitive : _primitives) {
-        if (primitive->checkHit(vector)) {
+        if (_hittedPrimitive != primitive && primitive->checkHit(vector)) {
             hitPrimitive(primitive);
         }
     }
@@ -105,13 +104,12 @@ void Raytracer::Vector::compute()
     _scalarNL = computeScalarProduct(_normal, _axis);
     if (_scalarNL < 0) {
         _res = Display::Color{0, 0, 0};
+        _state = State::STOP;
         return;
     }
     Transformable::Point3d lightColor = _light->getLightColor();
-    std::cout << "lightColor " << lightColor.x << " " << lightColor.y << " " << lightColor.z << std::endl << "materialBaseColor " << materialBaseColor.x << " " << materialBaseColor.y << " " << materialBaseColor.z << std::endl;
     Transformable::Point3d diffuse = {lightColor.x * materialBaseColor.x * _scalarNL, lightColor.y * materialBaseColor.y * _scalarNL, lightColor.z * materialBaseColor.z * _scalarNL};
     Transformable::Point3d specular = _hittedPrimitive->getSpecular();
-    std::cout << "diffuse " << diffuse.x << " " << diffuse.y << " " << diffuse.z << std::endl << "ambient " << ambient.x << " " << ambient.y << " " << ambient.z << std::endl;
     _res = Display::Color{(int)((ambient.x + diffuse.x + specular.x) * 255), (int)((ambient.y + diffuse.y + specular.y) * 255), (int)((ambient.z + diffuse.z + specular.z) * 255)};
 }
 
