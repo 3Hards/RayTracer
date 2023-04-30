@@ -7,16 +7,20 @@
 
 #pragma once
 
-#include "TransformableStruct.hpp"
-
 namespace Transformable {
+    struct Point3d {
+        public:
+            double x;
+            double y;
+            double z;
+    };
+
     class ITransformable {
         public:
             virtual ~ITransformable() = default;
-            virtual Point3f getPos() = 0;
-            virtual Point3f getAxis() = 0;
-            virtual void setPos(Point3f) = 0;
-            virtual void setAxis(Point3f) = 0;
-            virtual TransformableType getType() = 0;
+            virtual Point3d getPos() = 0;
+            virtual Point3d getAxis() = 0;
+            virtual void setPos(Point3d) = 0;
+            virtual void setAxis(Point3d) = 0;
     };
 }

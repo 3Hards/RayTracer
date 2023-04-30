@@ -1,16 +1,11 @@
 /*
 ** EPITECH PROJECT, 2023
-** _rayTracer
+** RayTracer
 ** File description:
 ** FlatColor
 */
 
 #include "FlatColor.hpp"
 
-Material::FlatColor::FlatColor(Display::Color color) : _color(color)
+Material::FlatColor::FlatColor(Display::Color color) : AMaterial(color, 35, 0)
 {}
-
-Display::Color Material::FlatColor::getColor(std::unique_ptr<Raytracer::IVector>&)
-{
-    return _color;
-}

@@ -7,18 +7,21 @@
 
 #include <cmath>
 #include "Plane.hpp"
-
+#include "Vector.hpp"
 #include <iostream>
 
-Transformable::Primitive::Plane::Plane(Point3f pos, double length, double width, std::shared_ptr<Material::IMaterial> material)
+namespace Transformable {
+    namespace Primitive {
+
+Plane::Plane(Point3d pos, double length, double width, std::shared_ptr<Material::IMaterial> material)
     : Transformable::Primitive::APrimitive(material, pos, {0, 0, 0}), _length(length), _width(width)
 {
     _depth = 1;
 }
 
-std::tuple<bool, Display::Color> Transformable::Primitive::Plane::checkHit(std::unique_ptr<Raytracer::IVector> &vector)
+bool Plane::checkHit(std::shared_ptr<Raytracer::IVector> vector)
 {
-    Point3f vectorPos = vector->getPos();
+    Point3d vectorPos = vector->getPos();
 
     double distanceX = fabs(vectorPos.x - _pos.x);
     double distanceY = fabs(vectorPos.y - _pos.y);
@@ -28,8 +31,18 @@ std::tuple<bool, Display::Color> Transformable::Primitive::Plane::checkHit(std::
         distanceY <= (_width / 2) &&
         distanceZ <= (_depth / 2)) {
         std::cout << "TROUVE COPAIN" << std::endl;
-        return std::make_tuple(true, _material->getColor(vector));
+        _lastHittedVector = vector;
+        return true;
     } else {
-        return std::make_tuple(false, Display::Color{0, 0, 0});
+        return false;
+    }
+}
+
+std::shared_ptr<Raytracer::IVector> Plane::getNormalVector()
+{
+    Transformable::Point3d lastHit = _lastHittedVector->getPos();
+    return std::make_shared<Raytracer::Vector>(_pos, Point3d{lastHit.x - _pos.x, lastHit.y - _pos.y, lastHit.z - _pos.z});
+}
+
     }
 }

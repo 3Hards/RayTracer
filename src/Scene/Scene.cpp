@@ -7,7 +7,7 @@
 
 #include "Scene.hpp"
 #include "ITransformable.hpp"
-#include "TransformableStruct.hpp"
+#include "LightCalculator.hpp"
 #include "LibGraphicHandler.hpp"
 
 namespace Scene {
@@ -48,23 +48,13 @@ namespace Scene {
         }
         for (auto &vector : vectors) {
             vector->setPrimitives(_primitives);
-            handleVectorAnswer(vector->run(_lights[0]));
+            Raytracer::LightCalculator calculator(vector, _lights[0]);
+            addNewPixel(calculator.computePixel(), vector->getPos());
         }
         //libGraphicHandler.createImage(_pixels);
     }
 
-    void Scene::handleVectorAnswer(std::tuple<bool, Display::Color, Transformable::Point3f> answer)
-    {
-        bool hasHitted = std::get<0>(answer);
-        Display::Color color = std::get<1>(answer);
-        Transformable::Point3f point = std::get<2>(answer);
-
-        if (hasHitted) {
-            addNewPixel(color, point);
-        }
-    }
-
-    void Scene::addNewPixel(Display::Color color, Transformable::Point3f position)
+    void Scene::addNewPixel(Display::Color color, Transformable::Point3d position)
     {
         Display::Pixel pixel;
 
