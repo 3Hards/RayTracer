@@ -74,7 +74,7 @@ namespace Scene {
         if (axis.size() == 0) {
             return;
         }
-        getCameraSize(camWidth, camHeight, _cameras[0]);
+        getCameraSize(camWidth, camHeight);
         Transformable::Point3d camPos = _cameras[0]->getPos();
         computeVectors(camWidth, camHeight, camPos, axis);
     }
