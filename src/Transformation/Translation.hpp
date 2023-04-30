@@ -8,14 +8,13 @@
 #pragma once
 
 #include "ITransformation.hpp"
-#include "TransformableStruct.hpp"
 
 namespace Transformation {
     class Translation : public ITransformation {
         public:
-            Translation(Transformable::Point3f translation);
+            Translation(Transformable::Point3d translation);
             void applyTransformation(std::shared_ptr<Transformable::ITransformable>);
         private:
-            Transformable::Point3f _translation;
+            Transformable::Point3d _translation;
     };
 }

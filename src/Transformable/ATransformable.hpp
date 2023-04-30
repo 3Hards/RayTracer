@@ -12,17 +12,15 @@
 namespace Transformable {
     class ATransformable : public ITransformable {
         public:
-            Point3f getPos() override;
-            Point3f getAxis() override;
-            void setPos(Point3f) override;
-            void setAxis(Point3f) override;
-            TransformableType getType() override;
+            Point3d getPos() override;
+            Point3d getAxis() override;
+            void setPos(Point3d) override;
+            void setAxis(Point3d) override;
 
         protected:
-            Point3f _pos;
-            Point3f _axis;
-            TransformableType _type;
+            Point3d _pos;
+            Point3d _axis;
 
-            ATransformable(Point3f pos, Point3f axis, TransformableType type);
+            ATransformable(Point3d pos, Point3d axis);
     };
 }

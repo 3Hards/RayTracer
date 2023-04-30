@@ -1,18 +1,15 @@
 /*
 ** EPITECH PROJECT, 2023
-** _rayTracer
+** RayTracer
 ** File description:
 ** FlatColor header
 */
 
-#include "IMaterial.hpp"
+#include "AMaterial.hpp"
 
 namespace Material {
-    class FlatColor : public IMaterial {
+    class FlatColor : public AMaterial {
         public:
             FlatColor(Display::Color);
-            Display::Color getColor(std::unique_ptr<Raytracer::IVector>&) final;
-        private:
-            Display::Color _color;
     };
 }
