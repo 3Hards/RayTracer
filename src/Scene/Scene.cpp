@@ -34,12 +34,6 @@ namespace Scene {
         _transformations.push_back(transformation);
     }
 
-    void Scene::getCameraSize(unsigned int &width, unsigned int &height)
-    {
-        width = _cameras[0]->getWidth();
-        height = _cameras[0]->getHeight();
-    }
-
     void Scene::computeVectors(unsigned int camWidth, unsigned int camHeight, Transformable::Point3d camPos, std::vector<Transformable::Point3d> axis)
     {
         unsigned int i = 0;
@@ -64,7 +58,6 @@ namespace Scene {
     void Scene::playScene(std::string const &filename)
     {
         _filename = filename;
-        unsigned int camWidth, camHeight;
         std::vector<Transformable::Point3d> axis;
 
         if (_lights.size() == 0 || _primitives.size() == 0 || _cameras.size() == 0) {
@@ -74,7 +67,8 @@ namespace Scene {
         if (axis.size() == 0) {
             return;
         }
-        getCameraSize(camWidth, camHeight);
+        unsigned int camWidth = _cameras[0]->getWidth();
+        unsigned int camHeight = _cameras[0]->getHeight();
         Transformable::Point3d camPos = _cameras[0]->getPos();
         computeVectors(camWidth, camHeight, camPos, axis);
     }
