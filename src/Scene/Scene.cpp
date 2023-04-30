@@ -9,6 +9,8 @@
 #include "ITransformable.hpp"
 #include "LightCalculator.hpp"
 #include "LibGraphicHandler.hpp"
+#include "IVector.hpp"
+#include "Vector.hpp"
 
 namespace Scene {
 
@@ -34,33 +36,41 @@ namespace Scene {
 
     void Scene::playScene(std::string const &filename)
     {
+        int i = 0;
         _filename = filename;
         Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[0]->getWidth(), _cameras[0]->getHeight());
-        std::vector<std::shared_ptr<Raytracer::IVector>> vectors;
+        std::vector<Transformable::Point3d> axis;
 
-        //for the v2, don't forget to handle black screen return
         if (_lights.size() == 0 || _primitives.size() == 0) {
             return;
         }
-        //vectors = _cameras[0]->computeVectors();
-        if (vectors.size() == 0) {
+        axis = _cameras[0]->computeAxis();
+        if (axis.size() == 0) {
             return;
         }
-        for (auto &vector : vectors) {
-            vector->setPrimitives(_primitives);
-            Raytracer::LightCalculator calculator(vector, _lights[0]);
-            addNewPixel(calculator.computePixel(), vector->getPos());
+        unsigned int camWidth = _cameras[0]->getWidth();
+        unsigned int camHeight = _cameras[0]->getHeight();
+        Transformable::Point3d camPos = _cameras[0]->getPos();
+
+        for (unsigned int y = 0; y < camHeight; y++) {
+            for (unsigned int x = 0; x < camWidth && axis.size() <= i; x++) {
+                Transformable::Point3d pos = {camPos.x + x, camPos.y + y, camPos.z};
+                std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(pos, axis[i]);
+                Raytracer::LightCalculator calculator(vector, _lights[0]);
+                libGraphicHandler.addPixelToImage(createPixel(calculator.computePixel(), vector->getPos()));
+                i++;
+            }
         }
-        //libGraphicHandler.createImage(_pixels);
+        libGraphicHandler.exportImage();
     }
 
-    void Scene::addNewPixel(Display::Color color, Transformable::Point3d position)
+    Display::Pixel Scene::createPixel(Display::Color color, Transformable::Point3d position)
     {
         Display::Pixel pixel;
 
         pixel._color = color;
         pixel._pos._x = (int)position.x;
         pixel._pos._y = (int)position.y;
-        _pixels.push_back(pixel);
+        return pixel;
     }
 }
