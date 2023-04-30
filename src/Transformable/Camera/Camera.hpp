@@ -44,6 +44,7 @@ namespace Transformable {
                 unsigned int getHeight() const final;
 
             private:
+                Transformable::Point3d _origin;
                 unsigned int _fov;
                 unsigned int _width;
                 unsigned int _height;
