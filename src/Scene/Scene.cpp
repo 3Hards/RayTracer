@@ -42,7 +42,7 @@ namespace Scene {
 
     void Scene::computeVectors(unsigned int camWidth, unsigned int camHeight, Transformable::Point3d camPos, std::vector<Transformable::Point3d> axis)
     {
-        int i = 0;
+        unsigned int i = 0;
         std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(camPos, axis[0]);
         vector->setPrimitives(_primitives);
         Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[0]->getWidth(), _cameras[0]->getHeight());
