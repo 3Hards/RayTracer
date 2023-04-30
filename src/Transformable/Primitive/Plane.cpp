@@ -8,7 +8,6 @@
 #include <cmath>
 #include "Plane.hpp"
 #include "Vector.hpp"
-#include <iostream>
 
 namespace Transformable {
     namespace Primitive {
@@ -30,7 +29,6 @@ bool Plane::checkHit(std::shared_ptr<Raytracer::IVector> vector)
     if (distanceX <= (_length / 2) &&
         distanceY <= (_width / 2) &&
         distanceZ <= (_depth / 2)) {
-        std::cout << "TROUVE COPAIN" << std::endl;
         _lastHittedVector = vector;
         return true;
     } else {
