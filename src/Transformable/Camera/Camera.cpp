@@ -24,23 +24,17 @@ namespace Transformable {
             _width = width;
             _height = height;
         }
-
-        std::vector<std::shared_ptr<Raytracer::IVector>> Camera::computeVectors() {
-            Point3d pos = {0, 0, 0};
-            std::vector<std::shared_ptr<Raytracer::IVector>> vectors;
-            //for the V1 of the camera, we create a rectangle of vectors
-            //the origin is le top left corner of the rectangle
+        std::vector<Point3f> Camera::computeAxis() {
+            std::vector<Point3f> axis;
+            //for the V1 of the camera, we create a rectangle
+            //the vectors do not start from the same origin, they go straight to the camera
 
             for (unsigned int y = 0; y < _height; y++) {
                 for (unsigned int x = 0; x < _width; x++) {
-                    pos.x = _pos.x + x;
-                    pos.y = _pos.y + y;
-                    pos.z = _pos.z;
-                    Raytracer::Vector vector = Raytracer::Vector(pos, _axis);
-                    vectors.push_back(std::make_shared<Raytracer::Vector>(vector));
+                    axis.push_back(_axis);
                 }
             }
-            return vectors;
+            return axis;
         }
 
         unsigned int Camera::getWidth() const {

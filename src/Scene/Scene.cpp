@@ -42,7 +42,7 @@ namespace Scene {
         if (_lights.size() == 0 || _primitives.size() == 0) {
             return;
         }
-        vectors = _cameras[0]->computeVectors();
+        //vectors = _cameras[0]->computeVectors();
         if (vectors.size() == 0) {
             return;
         }
@@ -51,7 +51,7 @@ namespace Scene {
             Raytracer::LightCalculator calculator(vector, _lights[0]);
             addNewPixel(calculator.computePixel(), vector->getPos());
         }
-        libGraphicHandler.createImage(_pixels);
+        //libGraphicHandler.createImage(_pixels);
     }
 
     void Scene::addNewPixel(Display::Color color, Transformable::Point3d position)

@@ -13,6 +13,7 @@
 namespace Display {
     class ILibGraphicHandler {
         public:
-            virtual void createImage(std::vector<Pixel> pixels) = 0;
+            virtual void addPixelToImage(Pixel pixel) = 0;
+            virtual void exportImage() = 0;
     };
 }
