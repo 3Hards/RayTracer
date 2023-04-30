@@ -53,7 +53,7 @@ namespace Scene {
         Transformable::Point3d camPos = _cameras[0]->getPos();
 
         for (unsigned int y = 0; y < camHeight; y++) {
-            for (unsigned int x = 0; x < camWidth && axis.size() <= i; x++) {
+            for (unsigned int x = 0; x < camWidth && i <= axis.size(); x++) {
                 Transformable::Point3d pos = {camPos.x + x, camPos.y + y, camPos.z};
                 std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(pos, axis[i]);
                 Raytracer::LightCalculator calculator(vector, _lights[0]);
