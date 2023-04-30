@@ -34,7 +34,7 @@ namespace Scene {
         _transformations.push_back(transformation);
     }
 
-    void Scene::getCameraSize(unsigned int &width, unsigned int &height, std::shared_ptr<Transformable::Camera::ICamera> camera)
+    void Scene::getCameraSize(unsigned int &width, unsigned int &height)
     {
         width = _cameras[0]->getWidth();
         height = _cameras[0]->getHeight();
