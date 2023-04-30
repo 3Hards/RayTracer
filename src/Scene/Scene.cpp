@@ -34,43 +34,58 @@ namespace Scene {
         _transformations.push_back(transformation);
     }
 
-    void Scene::playScene(std::string const &filename)
+    void Scene::getCameraSize(unsigned int &width, unsigned int &height, std::shared_ptr<Transformable::Camera::ICamera> camera)
+    {
+        width = _cameras[0]->getWidth();
+        height = _cameras[0]->getHeight();
+    }
+
+    void Scene::computeVectors(unsigned int camWidth, unsigned int camHeight, Transformable::Point3d camPos, std::vector<Transformable::Point3d> axis)
     {
         int i = 0;
-        _filename = filename;
+        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(camPos, axis[0]);
+        vector->setPrimitives(_primitives);
         Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[0]->getWidth(), _cameras[0]->getHeight());
-        std::vector<Transformable::Point3d> axis;
-
-        if (_lights.size() == 0 || _primitives.size() == 0) {
-            return;
-        }
-        axis = _cameras[0]->computeAxis();
-        if (axis.size() == 0) {
-            return;
-        }
-        unsigned int camWidth = _cameras[0]->getWidth();
-        unsigned int camHeight = _cameras[0]->getHeight();
-        Transformable::Point3d camPos = _cameras[0]->getPos();
 
         for (unsigned int y = 0; y < camHeight; y++) {
             for (unsigned int x = 0; x < camWidth && i <= axis.size(); x++) {
                 Transformable::Point3d pos = {camPos.x + x, camPos.y + y, camPos.z};
-                std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(pos, axis[i]);
+                Display::Point2i pixelPos = {(int)x, (int)y};
+                vector->setPos(pos);
+                vector->setAxis(axis[i]);
                 Raytracer::LightCalculator calculator(vector, _lights[0]);
-                libGraphicHandler.addPixelToImage(createPixel(calculator.computePixel(), vector->getPos()));
+                libGraphicHandler.addPixelToImage(createPixel(calculator.computePixel(), pixelPos));
                 i++;
             }
         }
         libGraphicHandler.exportImage();
     }
 
-    Display::Pixel Scene::createPixel(Display::Color color, Transformable::Point3d position)
+    void Scene::playScene(std::string const &filename)
+    {
+        _filename = filename;
+        unsigned int camWidth, camHeight;
+        std::vector<Transformable::Point3d> axis;
+
+        if (_lights.size() == 0 || _primitives.size() == 0 || _cameras.size() == 0) {
+            return;
+        }
+        axis = _cameras[0]->computeAxis();
+        if (axis.size() == 0) {
+            return;
+        }
+        getCameraSize(camWidth, camHeight, _cameras[0]);
+        Transformable::Point3d camPos = _cameras[0]->getPos();
+        computeVectors(camWidth, camHeight, camPos, axis);
+    }
+
+    Display::Pixel Scene::createPixel(Display::Color color, Display::Point2i position)
     {
         Display::Pixel pixel;
 
         pixel._color = color;
-        pixel._pos._x = (int)position.x;
-        pixel._pos._y = (int)position.y;
+        pixel._pos._x = position._x;
+        pixel._pos._y = position._y;
         return pixel;
     }
 }
