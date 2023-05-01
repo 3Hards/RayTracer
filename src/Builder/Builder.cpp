@@ -11,7 +11,7 @@
 #include "Camera.hpp"
 #include "Sphere.hpp"
 #include "FlatColor.hpp"
-// #include "AmbientLight.hpp"
+#include "AmbientLight.hpp"
 
 namespace Scene
 {
@@ -83,15 +83,15 @@ namespace Scene
             _scene->addPrimitive(sphere);
     }
 
-    // void Builder::createAmbientLight(libconfig::Setting& setting)
-    // {
-    //         int x, y, z;
-    //         double brightness;
-    //         setting.lookupValue("x", x);
-    //         setting.lookupValue("y", y);
-    //         setting.lookupValue("z", z);
-    //         setting.lookupValue("brightness", brightness);
-    //         std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::AmbientLight>(Transformable::Point3f{x, y, z}, brightness);
-    //         _scene->addLight(light);
-    // }
+    void Builder::createAmbientLight(libconfig::Setting& setting)
+    {
+            int x, y, z;
+            double brightness;
+            setting.lookupValue("x", x);
+            setting.lookupValue("y", y);
+            setting.lookupValue("z", z);
+            setting.lookupValue("brightness", brightness);
+            std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::AmbientLight>(Transformable::Point3f{x, y, z}, brightness);
+            _scene->addLight(light);
+    }
 }
