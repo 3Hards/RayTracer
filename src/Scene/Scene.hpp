@@ -22,13 +22,12 @@ namespace Scene {
             void addTransformation(std::shared_ptr<Transformation::ITransformation> transformation) final;
 
         private:
-            void handleVectorAnswer(std::tuple<bool, Display::Color, Transformable::Point3f> answer);
-            void addNewPixel(Display::Color color, Transformable::Point3f position);
+            Display::Pixel createPixel(Display::Color color, Display::Point2i position);
+            void computeVectors(unsigned int camWidth, unsigned int camHeight, Transformable::Point3d camPos, std::vector<Transformable::Point3d> axis);
             std::string _filename;
             std::vector<std::shared_ptr<Transformable::Camera::ICamera>> _cameras;
             std::vector<std::shared_ptr<Transformable::Light::ILight>> _lights;
             std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> _primitives;
             std::vector<std::shared_ptr<Transformation::ITransformation>> _transformations;
-            std::vector<Display::Pixel> _pixels;
     };
 }
