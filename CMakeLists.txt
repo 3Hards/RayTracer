@@ -24,6 +24,9 @@ endif()
 add_executable(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS} config++)
 
+find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
+target_link_libraries(raytracer sfml-graphics)
+
 ##################### CUSTUM CMD ##########################
 
 add_custom_command(

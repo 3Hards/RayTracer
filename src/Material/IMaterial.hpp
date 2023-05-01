@@ -7,6 +7,12 @@
 
 #pragma once
 
+#include "IVector.hpp"
+#include "DisplayStructs.hpp"
+
 namespace Material {
-    class IMaterial {};
+    class IMaterial {
+        public:
+            virtual Display::Color getColor(std::unique_ptr<Raytracer::IVector>&) = 0;
+    };
 }

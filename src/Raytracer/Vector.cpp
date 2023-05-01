@@ -11,6 +11,7 @@
 #include <cmath>
 #include <array>
 #include "Vector.hpp"
+#include "ILight.hpp"
 
 Raytracer::Vector::Vector(Transformable::Point3f pos, Transformable::Point3f axis) : ATransformable(pos, axis, Transformable::TransformableType::Vector)
 {}
@@ -31,7 +32,7 @@ void Raytracer::Vector::moveForward()
     std::array<std::array<double, 3>, 3> rot_y = {{{cos(toRad(_axis.y)), 0, sin(toRad(_axis.y))}, {0, 1, 0}, {-sin(toRad(_axis.y)), 0, cos(toRad(_axis.y))}}};
     std::array<std::array<double, 3>, 3> rot_z = {{{cos(toRad(_axis.z)), -sin(toRad(_axis.z)), 0}, {sin(toRad(_axis.z)), cos(toRad(_axis.z)), 0}, {0, 0, 1}}};
     std::array<std::array<double, 3>, 3> rot_matrix;
-    double distance = 0.01;
+    double distance = 1;
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
@@ -44,13 +45,11 @@ void Raytracer::Vector::moveForward()
 
     std::array<double, 3> direction = {rot_matrix[0][2], rot_matrix[1][2], rot_matrix[2][2]};
     std::array<double, 3> translation = {direction[0] * distance, direction[1] * distance, direction[2] * distance};
-
     _pos.x += translation[0];
     _pos.y += translation[1];
     _pos.z += translation[2];
 }
 
-#include <iostream>
 std::tuple<bool, Display::Color> Raytracer::Vector::checkHit()
 {
     std::tuple<bool, Display::Color> res;
@@ -70,7 +69,7 @@ bool Raytracer::Vector::checkDistances(std::vector<double> &prevDistances)
     std::vector<double> newDistances = getDistances();
 
     for (std::size_t i = 0; i < prevDistances.size(); i++) {
-        if (prevDistances[i] >= newDistances[i]) {
+        if (prevDistances[i] > newDistances[i]) {
             prevDistances = newDistances;
             return false;
         }
