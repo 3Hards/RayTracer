@@ -27,7 +27,7 @@ Scene::Director::Director(std::string pathFile)
     const libconfig::Setting& root = cfg.getRoot();
     const libconfig::Setting& elements = root["elements"];
     const libconfig::Setting& list = elements["list"];
-    
+    (void)list;
     // Builder::Builder(list);
 }
 
