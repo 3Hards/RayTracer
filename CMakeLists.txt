@@ -25,25 +25,26 @@ elseif(WIN32)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4)
 endif()
 
-##################### LIBCONFIG++ ##########################
+##################### LIBCONFIG ##########################
 
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(DBUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(DBUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set(BUILD_STATIC_LIBS ON CACHE BOOL "" FORCE)
+set(DBUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(
     libconfig
     URL https://github.com/hyperrealm/libconfig/archive/v1.7.3.tar.gz
     CMAKE_ARGS
-        -DCMAKE_BUILD_TYPE=Release
-        -DCMAKE_GENERATOR_PLATFORM=x64
-        -DCMAKE_CXX_STANDARD=20
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/libconfig
+    -DBUILD_SHARED_LIBS=OFF
+    -DBUILD_STATIC_LIBS=ON
 )
-FetchContent_GetProperties(libconfig)
-if(NOT libconfig_POPULATED)
-    FetchContent_Populate(libconfig)
-    add_subdirectory(${libconfig_SOURCE_DIR} ${libconfig_BINARY_DIR})
-endif()
+FetchContent_MakeAvailable(libconfig)
+
+include_directories(${libconfig_SOURCE_DIR}/lib)
 
 ##################### SFML ################################
 
@@ -66,28 +67,27 @@ endif()
 
 ##################### INCLUDE #############################
 
-if (UNIX)
-    find_library(SFML sfml-graphics sfml-window sfml-system sfml-audio)
-        target_link_libraries(
-        ${PROJECT_NAME}
-        PRIVATE
-        sfml-graphics
-        config++
-    )
-elseif (WIN32)
+if (WIN32)
     target_link_libraries(
         ${PROJECT_NAME}
         PRIVATE
         sfml-graphics
+        sfml-window
+        sfml-system
         libconfig++
+    )
+elseif(UNIX)
+    target_link_libraries(
+        ${PROJECT_NAME}
+        PRIVATE
+        sfml-graphics
+        sfml-window
+        sfml-system
+        config++
     )
 endif()
 
-
-add_executable(${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS} config++)
 ##################### SRC #################################
-
 
 add_subdirectory(src)
 
