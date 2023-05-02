@@ -35,9 +35,6 @@ namespace Raytracer {
             void run();
             Transformable::Point3d normalize(Transformable::Point3d);
             Transformable::Point3d normalize();
-            void checkDistances();
-            void updateDistances();
-            void moveForward();
             void hitPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive>);
             void checkHitPrimitives();
             void checkHitLight();

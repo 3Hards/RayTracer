@@ -47,17 +47,6 @@ Transformable::Point3d Raytracer::Vector::normalize()
     return normalize(_axis);
 }
 
-void Raytracer::Vector::moveForward()
-{
-    double distance = std::sqrt(_axis.x * _axis.x + _axis.y * _axis.y + _axis.z * _axis.z);
-    double x = _axis.x /= distance;
-    double y = _axis.y /= distance;
-    double z = _axis.z /= distance;
-    _pos.x += x;
-    _pos.y += y;
-    _pos.z += z;
-}
-
 void Raytracer::Vector::hitPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive> primitive)
 {
     if (_state == State::INCIDENT) {
@@ -67,9 +56,6 @@ void Raytracer::Vector::hitPrimitive(std::shared_ptr<Transformable::Primitive::I
         setAxis(axis);
         _hittedPrimitive = primitive;
         _state = State::LIGHT;
-    } else if (_state == State::LIGHT) {
-        _res = Display::Color{0, 0, 0};
-        _state = State::STOP;
     }
 }
 
@@ -80,8 +66,12 @@ void Raytracer::Vector::checkHitPrimitives()
     for (auto primitive : _primitives) {
         if (_hittedPrimitive != primitive && primitive->checkHit(vector)) {
             hitPrimitive(primitive);
+            return;
         }
     }
+    //see later for nearest primitive
+    _res = Display::Color{0, 0, 0};
+    _state = State::STOP;
 }
 
 double Raytracer::Vector::computeScalarProduct(Transformable::Point3d fst, Transformable::Point3d scd)
@@ -118,52 +108,19 @@ void Raytracer::Vector::checkHitLight()
     std::unique_ptr<Raytracer::IVector> vector = std::make_unique<Raytracer::Vector>(*this);
 
     if (_light->checkHit(vector)) {
-        if (_state == State::INCIDENT) {
-            _res = Display::Color{0, 0, 0};
-        } else if (_state == State::LIGHT) {
-            compute();
-        }
-        _state = State::STOP;
+        compute();
+    } else {
+        _res = Display::Color{0, 0, 0};
     }
-}
-
-void Raytracer::Vector::checkDistances()
-{
-    std::vector<double> prevDistances = _distances;
-
-    updateDistances();
-    for (std::size_t i = 0; i < prevDistances.size(); i++) {
-        if (prevDistances[i] >= _distances[i]) {
-            return;
-        }
-    }
-    _res = Display::Color{0, 0, 0};
-    _state = State::STOP;
-}
-
-void Raytracer::Vector::updateDistances()
-{
-    std::vector <double> distances;
-
-    for (auto primitive : _primitives) {
-        Transformable::Point3d pos = primitive->getPos();
-        distances.push_back(pow(pow(pos.x - _pos.x, 2) + pow(pos.y - _pos.y, 2) + pow(pos.z - _pos.z, 2), 0.5));
-    }
-    _distances = distances;
 }
 
 void Raytracer::Vector::run()
 {
-    updateDistances();
-
-    while (_state != State::STOP) {
-        moveForward();
-        if (_state == State::INCIDENT) {
-            checkDistances();
-        }
-        checkHitPrimitives();
-        checkHitLight();
+    checkHitPrimitives();
+    if (_state == State::STOP) {
+        return;
     }
+    checkHitLight();
 }
 
 Display::Color Raytracer::Vector::computeColor(std::shared_ptr<Transformable::Light::ILight> light)
