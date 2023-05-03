@@ -10,6 +10,7 @@ This repository is a repository containing our second year project at Epitech Th
 * Screenshots
 * Features
 * Terminology
+* Reference
 * Disclaimer
 * Author's Adresses
 
@@ -39,6 +40,10 @@ C++ is an object-oriented programming language.
 ## 3D
 
 Three dimensions, three-dimensional or 3D are expressions that characterize the space that surrounds us.
+
+# Reference
+
+[libconfig](https://hyperrealm.github.io/libconfig/libconfig_manual.html)
 
 # Disclaimer
 
