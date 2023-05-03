@@ -9,12 +9,17 @@
 #include <libconfig.h++>
 #include <iostream>
 #include <string>
+#include <stdexcept>
 
 Scene::Director::Director(std::string pathFile)
 {
     libconfig::Config cfg;
     try {
         cfg.readFile(pathFile);
+        const libconfig::Setting& root = cfg.getRoot();
+        const libconfig::Setting& elements = root["elements"];
+        const libconfig::Setting& list = elements["list"];
+        (void)list;
     }
     catch(const libconfig::FileIOException &fioex) {
         std::cerr << "I/O error while reading file." << std::endl;
@@ -23,11 +28,6 @@ Scene::Director::Director(std::string pathFile)
         std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
             << " - " << pex.getError() << std::endl;
     }
-    
-    const libconfig::Setting& root = cfg.getRoot();
-    const libconfig::Setting& elements = root["elements"];
-    const libconfig::Setting& list = elements["list"];
-    (void)list;
     // Builder::Builder(list);
 }
 
@@ -37,4 +37,5 @@ Scene::Director::~Director()
 
 void Scene::Director::playScene()
 {
+    std::cout << "play scene" << std::endl;
 }

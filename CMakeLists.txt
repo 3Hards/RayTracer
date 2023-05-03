@@ -25,37 +25,36 @@ elseif(WIN32)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4)
 endif()
 
-##################### LIBCONFIG++ ##########################
+##################### libconfig++ ##########################
 
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(DBUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(DBUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
+set(BUILD_STATIC_LIBS OFF CACHE BOOL "" FORCE)
+set(DBUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
 FetchContent_Declare(
-    libconfig
-    URL https://github.com/hyperrealm/libconfig/archive/v1.7.3.tar.gz
-    CMAKE_ARGS
-        -DCMAKE_BUILD_TYPE=Release
-        -DCMAKE_GENERATOR_PLATFORM=x64
-        -DCMAKE_CXX_STANDARD=20
+    libconfig++
+    GIT_REPOSITORY https://github.com/hyperrealm/libconfig.git
+    GIT_TAG v1.7.3
 )
-FetchContent_GetProperties(libconfig)
-if(NOT libconfig_POPULATED)
-    FetchContent_Populate(libconfig)
-    add_subdirectory(${libconfig_SOURCE_DIR} ${libconfig_BINARY_DIR})
-endif()
+FetchContent_MakeAvailable(libconfig++)
+
+include_directories(${libconfig_SOURCE_DIR}/lib)
 
 ##################### SFML ################################
 
 if (WIN32)
-    set(BUILD_SHARED_LIBS OFF)
-    set(SFML_BUILD_EXAMPLES OFF)
-    set(SFML_BUILD_DOC OFF)
-    set(SFML_BUILD_AUDIO OFF)
-    set(SFML_BUILD_NETWORK OFF)
-    set(SFML_BUILD_WINDOW ON)
-    set(SFML_BUILD_GRAPHICS ON)
-    set(SFML_BUILD_SYSTEM OFF)
+    set(SFML_BUILD_WINDOW TRUE)
+    set(SFML_BUILD_GRAPHICS TRUE)
+    set(SFML_BUILD_AUDIO FALSE)
+    set(SFML_BUILD_NETWORK FALSE)
+    set(SFML_BUILD_EXAMPLES FALSE)
+    set(SFML_BUILD_SYSTEM FALSE)
+    set(SFML_BUILD_DOC FALSE)
+    set(SFML_BUILD_SYSTEM FALSE)
+    set(SFML_USE_STATIC_STD_LIBS FALSE)
     FetchContent_Declare(
         SFML
         GIT_REPOSITORY https://github.com/SFML/SFML.git
@@ -66,28 +65,29 @@ endif()
 
 ##################### INCLUDE #############################
 
-if (UNIX)
-    find_library(SFML sfml-graphics sfml-window sfml-system sfml-audio)
-        target_link_libraries(
+include_directories(${libconfig_SOURCE_DIR}/lib)
+
+if (WIN32)
+    target_link_libraries(
         ${PROJECT_NAME}
         PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libconfig++.lib
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libconfig++.lib
         sfml-graphics
-        config++
+        sfml-window
     )
-elseif (WIN32)
+elseif (UNIX)
+    find_package(SFML 2.5 COMPONENTS graphics window REQUIRED)
     target_link_libraries(
         ${PROJECT_NAME}
         PRIVATE
         sfml-graphics
-        libconfig++
+        sfml-window
+        config++
     )
 endif()
 
-
-add_executable(${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS} config++)
 ##################### SRC #################################
-
 
 add_subdirectory(src)
 

@@ -1,10 +1,8 @@
 .vs/*
 .vscode/*
 *.o
-*.dll
 *.so
 build/*
-lib/*
 *.sln
 CMakeFiles
 CMakeCache.txt
