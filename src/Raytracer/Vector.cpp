@@ -106,8 +106,16 @@ void Raytracer::Vector::compute()
 void Raytracer::Vector::checkHitLight()
 {
     std::unique_ptr<Raytracer::IVector> vector = std::make_unique<Raytracer::Vector>(*this);
+    std::shared_ptr<Raytracer::IVector> SharedVector = shared_from_this();
 
     if (_light->checkHit(vector)) {
+         for (auto primitive : _primitives) {
+            if (primitive->checkHit(SharedVector)) {
+                _res = Display::Color{0, 0, 0};
+                _state = State::STOP;
+                return;
+            }
+        }
         compute();
     } else {
         _res = Display::Color{0, 0, 0};
