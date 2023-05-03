@@ -7,12 +7,12 @@
 
 #pragma once
 
-#include "IBuilder.hpp"
-#include "IScene.hpp"
-#include "Scene.hpp"
 #include <libconfig.h++>
 #include <unordered_map>
 #include <functional>
+#include "IBuilder.hpp"
+#include "IScene.hpp"
+#include "Scene.hpp"
 
 namespace Scene
 {
@@ -37,4 +37,3 @@ namespace Scene
 
     };
 }
-

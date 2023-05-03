@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "IScene.hpp"
 #include <memory>
+#include "IScene.hpp"
 
 namespace Scene
 {

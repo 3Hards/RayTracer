@@ -5,10 +5,10 @@
 ** Builder
 */
 
-#include "Builder.hpp"
 #include <iostream>
 #include <string>
 #include <memory>
+#include "Builder.hpp"
 #include "Scene.hpp"
 #include "Camera.hpp"
 #include "Sphere.hpp"
