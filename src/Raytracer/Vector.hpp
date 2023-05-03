@@ -38,6 +38,7 @@ namespace Raytracer {
             void hitPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive>);
             void checkHitPrimitives();
             void checkHitLight();
+            int checkValue(double value);
 
             double _scalarNL;
             Display::Color _res;

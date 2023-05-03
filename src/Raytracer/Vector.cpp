@@ -78,7 +78,8 @@ double Raytracer::Vector::computeScalarProduct(Transformable::Point3d fst, Trans
 {
     fst = normalize(fst);
     scd = normalize(scd);
-    return fst.x * scd.x + fst.y * scd.y + fst.z * scd.z;
+    double res = fst.x * scd.x + fst.y * scd.y + fst.z * scd.z;
+    return res > 1 ? 1 : res;
 }
 
 void Raytracer::Vector::compute()
@@ -101,6 +102,17 @@ void Raytracer::Vector::compute()
     Transformable::Point3d diffuse = {lightColor.x * materialBaseColor.x * _scalarNL, lightColor.y * materialBaseColor.y * _scalarNL, lightColor.z * materialBaseColor.z * _scalarNL};
     Transformable::Point3d specular = _hittedPrimitive->getSpecular();
     _res = Display::Color{(int)((ambient.x + diffuse.x + specular.x) * 255), (int)((ambient.y + diffuse.y + specular.y) * 255), (int)((ambient.z + diffuse.z + specular.z) * 255)};
+}
+
+int Raytracer::Vector::checkValue(double value)
+{
+    if (value > 1) {
+        return 1;
+    }
+    if (value < 0) {
+        return 0;
+    }
+    return (int)value;
 }
 
 void Raytracer::Vector::checkHitLight()

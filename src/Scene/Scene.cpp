@@ -133,11 +133,7 @@ namespace Scene {
 
     Display::Pixel Scene::createPixel(Display::Color color, Display::Point2i position)
     {
-        Display::Pixel pixel;
-
-        pixel._color = color;
-        pixel._pos._x = position._x;
-        pixel._pos._y = position._y;
+        Display::Pixel pixel(color, position);
         return pixel;
     }
 }
