@@ -33,20 +33,22 @@ namespace Transformable {
                     Point3d axis = {0, 0, 0},
                     unsigned int width = 1920,
                     unsigned int height = 1080,
-                    unsigned int fov = 90
+                    double fov = 90
                 );
                 Point3d getPos() final;
                 Point3d getAxis() final;
                 void setPos(Point3d pos) final;
                 void setAxis(Point3d axis) final;
-                std::vector<Point3d> computeAxis() final;
-                unsigned int getWidth() const final;
-                unsigned int getHeight() const final;
+                Point3d computeAxis(int x, int y) final;
+                unsigned int getWidth() const;
+                unsigned int getHeight() const;
 
             private:
-                unsigned int _fov;
                 unsigned int _width;
                 unsigned int _height;
+                Point3d _lower_left_corner; 
+                Point3d _horizontal; 
+                Point3d _vertical; 
         };
     }
 }

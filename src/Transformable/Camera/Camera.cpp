@@ -5,6 +5,7 @@
 ** Camera
 */
 
+#include <cmath>
 #include "Camera.hpp"
 #include "ATransformable.hpp"
 #include "Vector.hpp"
@@ -12,53 +13,60 @@
 namespace Transformable {
     namespace Camera {
 
-        Camera::Camera(
-            Point3d position,
-            Point3d axis,
-            unsigned int width,
-            unsigned int height,
-            unsigned int fov
-        ) : ATransformable(position, axis)
+        Camera::Camera(Point3d position, Point3d axis, unsigned int width,
+            unsigned int height, double fov
+        ) : ATransformable(position, axis), _width(width), _height(height)
         {
-            _fov = fov;
-            _width = width;
-            _height = height;
-        }
-        std::vector<Point3d> Camera::computeAxis() {
-            std::vector<Point3d> axis;
-            //for the V1 of the camera, we create a rectangle
-            //the vectors do not start from the same origin, they go straight to the camera
+            double aspectRation = width / height;
+            double theta = fov * M_PI / 180.0;
+            double halfHeight = tan(theta / 2.0);
+            double halfWidth = aspectRation * halfHeight;
 
-            for (unsigned int y = 0; y < _height; y++) {
-                for (unsigned int x = 0; x < _width; x++) {
-                    axis.push_back(_axis);
-                }
-            }
-            return axis;
+            Point3d up{0, 1, 0};
+
+            Point3d w = (_pos - _axis).normalized();
+            Point3d u = up.cross(w).normalized();
+            Point3d v = w.cross(u);
+
+            _lower_left_corner = _pos - u * halfWidth - v * halfHeight - w;
+            _horizontal = u * halfWidth * 2.0;
+            _vertical = v * halfHeight * 2.0;
+        }
+        
+        Point3d Camera::computeAxis(int x, int y)
+        {
+            return _lower_left_corner + _horizontal * x + _vertical * y - _pos;
         }
 
-        unsigned int Camera::getWidth() const {
+        unsigned int Camera::getWidth() const
+        {
             return _width;
         }
 
-        unsigned int Camera::getHeight() const {
+        unsigned int Camera::getHeight() const
+        {
             return _height;
         }
 
-        Point3d Camera::getPos() {
+        Point3d Camera::getPos()
+        {
             return ATransformable::getPos();
         }
 
-        Point3d Camera::getAxis() {
+        Point3d Camera::getAxis()
+        {
             return ATransformable::getAxis();
         }
 
-        void Camera::setPos(Point3d pos) {
+        void Camera::setPos(Point3d pos)
+        {
             ATransformable::setPos(pos);
         }
 
-        void Camera::setAxis(Point3d axis) {
+        void Camera::setAxis(Point3d axis)
+        {
             ATransformable::setAxis(axis);
         }
     }
 }
+
