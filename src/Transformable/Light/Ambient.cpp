@@ -6,6 +6,7 @@
 */
 
 #include "Ambient.hpp"
+#include <cmath>
 //see later
 double ddot(Transformable::Point3d a, Transformable::Point3d b)
 {

@@ -11,6 +11,7 @@
 #include "LibGraphicHandler.hpp"
 #include "IVector.hpp"
 #include "Vector.hpp"
+#include "cmath"
 
 namespace Scene {
 
