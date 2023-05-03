@@ -25,19 +25,18 @@ endif()
 
 ##################### lib ##########################
 
-include(ExternalProject)
-
-include("Dependencies/build-libconfig.cmake")
-include("Dependencies/build-SFML.cmake")
-
-##################### INCLUDE #############################
-
-target_include_directories(
-    ${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/lib/include
-)
-
 if (WIN32)
+    
+    include(ExternalProject)
+
+    include("Dependencies/build-libconfig.cmake")
+    include("Dependencies/build-SFML.cmake")
+
+    target_include_directories(
+        ${PROJECT_NAME} PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/lib/include
+    )
+
     target_link_libraries(${PROJECT_NAME} PRIVATE
         ${LIBDIR}/lib/libconfig.lib
         ${LIBDIR}/lib/libconfig++.lib
@@ -45,14 +44,17 @@ if (WIN32)
         ${LIBDIR}/lib/sfml-window-d.lib
         ${LIBDIR}/lib/sfml-system-d.lib
     )
+
 else()
+
+    find_library(SFML_GRAPHICS sfml-graphics)
+    find_library(LIBCONFIG++ libconfig++)
+
     target_link_libraries(${PROJECT_NAME} PRIVATE
-        ${LIBDIR}/lib/libconfig.a
-        ${LIBDIR}/lib/libconfig++.a
-        ${LIBDIR}/lib/libsfml-graphics.so
-        ${LIBDIR}/lib/libsfml-window.so
-        ${LIBDIR}/lib/libsfml-system.so
+        config++
+        sfml-graphics
     )
+
 endif()
 
 ##################### SRC #################################
@@ -67,8 +69,12 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_custom_command(
-    TARGET ${PROJECT_NAME}
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBDIR}/bin ${CMAKE_CURRENT_SOURCE_DIR}
-)
+if (WIN32)
+
+    add_custom_command(
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBDIR}/bin ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+
+endif()

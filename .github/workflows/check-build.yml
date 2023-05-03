@@ -15,6 +15,9 @@ jobs:
     container: epitechcontent/epitest-docker:latest
     steps:
       - uses: actions/checkout@v2
+      - name: install-Libconfig++
+        run: |
+          sudo dnf install -y libconfig-devel
       - name: Build
         run: |
           set -e
