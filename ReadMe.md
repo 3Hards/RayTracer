@@ -6,11 +6,21 @@ This repository is a repository containing our second year project at Epitech Th
 # Table of content
 
 * Introduce
+* How Build
 * Screenshots
 * Features
 * Terminology
 * Disclaimer
 * Author's Adresses
+
+# How Build
+
+```
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
 
 # Screenshots
 
