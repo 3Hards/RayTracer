@@ -5,6 +5,7 @@
 ** Camera
 */
 
+#include <cmath>
 #include "Camera.hpp"
 #include "ATransformable.hpp"
 #include "Vector.hpp"
@@ -12,40 +13,29 @@
 namespace Transformable {
     namespace Camera {
 
-        Camera::Camera(
-            Point3d position,
-            Point3d axis,
-            unsigned int width,
-            unsigned int height,
-            unsigned int fov
-        ) : ATransformable(position, axis)
+        Camera::Camera(Point3d position, Point3d axis, unsigned int width,
+            unsigned int height, double fov
+        ) : ATransformable(position, axis), _width(width), _height(height)
         {
-            _fov = fov;
-            _width = width;
-            _height = height;
+            double aspectRation = width / height;
+            double theta = fov * M_PI / 180.0;
+            double halfHeight = tan(theta / 2.0);
+            double halfWidth = aspectRation * halfHeight;
+
+            Point3d up{0, 1, 0};
+
+            Point3d w = (_pos - _axis).normalized();
+            Point3d u = up.cross(w).normalized();
+            Point3d v = w.cross(u);
+
+            _lower_left_corner = _pos - u * halfWidth - v * halfHeight - w;
+            _horizontal = u * halfWidth * 2.0;
+            _vertical = v * halfHeight * 2.0;
         }
-
-        void Camera::computeOrigin()
+        
+        Point3d Camera::computeAxis(int x, int y)
         {
-            Point3d pixelsCenter = {_pos.x + _width / 2, _pos.y + _height / 2, _pos.z};
-            std::unique_ptr<Raytracer::Vector>(Point3d{pixelsCenter.x, pixelsCenter.y, _pos.z}, );
-            double z = _pos.z;
-
-            _origin = Point3d{_pos.x + _width / 2, _pos.y + _height / 2, z};
-        }
-
-        std::vector<Point3f> Camera::computeAxis()
-        {
-            std::vector<Point3f> axis;
-            //for the V1 of the camera, we create a rectangle
-            //the vectors do not start from the same origin, they go straight to the camera
-
-            for (unsigned int y = 0; y < _height; y++) {
-                for (unsigned int x = 0; x < _width; x++) {
-                    axis.push_back(_axis);
-                }
-            }
-            return axis;
+            return _lower_left_corner + _horizontal * x + _vertical * y - _pos;
         }
 
         unsigned int Camera::getWidth() const
@@ -79,3 +69,4 @@ namespace Transformable {
         }
     }
 }
+
