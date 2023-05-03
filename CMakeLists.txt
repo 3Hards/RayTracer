@@ -11,6 +11,7 @@ project(
 
 ##################### CMAKE OPTIONS #######################
 
+set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)

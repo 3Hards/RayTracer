@@ -32,7 +32,7 @@ namespace Transformable {
             _horizontal = u * halfWidth * 2.0;
             _vertical = v * halfHeight * 2.0;
         }
-        
+
         Point3d Camera::computeAxis(int x, int y)
         {
             return _lower_left_corner + _horizontal * x + _vertical * y - _pos;
@@ -46,6 +46,11 @@ namespace Transformable {
         unsigned int Camera::getHeight() const
         {
             return _height;
+        }
+
+        Point3d Camera::getStartPixelPos() const
+        {
+            return _lower_left_corner;
         }
 
         Point3d Camera::getPos()

@@ -42,6 +42,7 @@ namespace Transformable {
                 Point3d computeAxis(int x, int y) final;
                 unsigned int getWidth() const;
                 unsigned int getHeight() const;
+                Point3d getStartPixelPos() const;
 
             private:
                 unsigned int _width;
