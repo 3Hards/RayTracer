@@ -38,8 +38,8 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Debug
-          cmake --build . --config Release
+          cmake ..
+          cmake --build .
           cd ..
       - name: Check Files
         run: |
