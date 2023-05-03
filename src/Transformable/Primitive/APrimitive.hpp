@@ -5,6 +5,8 @@
 ** ATransformable
 */
 
+#pragma once
+
 #include "IPrimitive.hpp"
 #include "ATransformable.hpp"
 #include "IMaterial.hpp"

@@ -33,6 +33,11 @@ namespace Transformable {
             };
     };
 
+    Point3d operator-(Point3d a, Point3d b);
+    Point3d operator+(Point3d a, Point3d b);
+    Point3d operator*(Point3d a, double b);
+    Point3d operator/(Point3d a, double b);
+
     class ITransformable {
         public:
             virtual ~ITransformable() = default;
