@@ -14,10 +14,11 @@ Transformation::Rotation::Rotation(Transformable::Point3d rotation): _rotation(r
 void Transformation::Rotation::cappedAdd(double &value, double change)
 {
     value += change;
-    if (value > 360) {
-        value = value - 360;
-    } else if (value < 0) {
-        value = 361 + value;
+    while (value > 360) {
+        value -= 360;
+    }
+    while (value < 0) {
+        value += 360;
     }
 }
 
