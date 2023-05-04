@@ -47,11 +47,16 @@ namespace Transformable {
             private:
                 unsigned int _width;
                 unsigned int _height;
-                double _f;
-                Point3d _m1;
-                Point3d _m2;
-                Point3d _m3;
-                Point3d _m4;
+                double _camFov;
+                double f;
+                double m11, m12, m13;
+                double m21, m22, m23;
+                double m31, m32, m33;
+                double m41, m42, m43;
+                //Point3d _m1;
+                //Point3d _m2;
+                //Point3d _m3;
+                //Point3d _m4;
         };
     }
 }

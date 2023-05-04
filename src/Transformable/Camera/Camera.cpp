@@ -17,32 +17,63 @@ namespace Transformable {
             unsigned int height, double fov
         ) : ATransformable(position, axis), _width(width), _height(height)
         {
-            double _f = (height / 2.0) / tan(fov / 2.0);
+            double camres_y = 1080;
+            _camFov = fov;
+            Transformable::Point3d camPos = {-110, 0, 110};
+            Transformable::Point3d camDirection = {0, -20, 0};
 
-            Point3d c = {std::cos(_axis.x), std::cos(_axis.y), std::cos(_axis.z)};
-            Point3d s = {std::sin(_axis.x), std::sin(_axis.y), std::sin(_axis.z)};
+            f = (camres_y / 2.0) / tan(_camFov / 2.0);
 
-            Point3d t = {-_pos.x, -_pos.y, -_pos.z};
+            double cx = cos(camDirection.x), cy = cos(camDirection.y), cz = cos(camDirection.z);
+            double sx = sin(camDirection.x), sy = sin(camDirection.y), sz = sin(camDirection.z);
 
-            _m1 = {c.y * c.z, c.y * s.z, 0.0};
-            _m2 = {s.x * s.y * c.z - c.x * s.z, s.x * s.y * s.z + c.x * c.z, s.x * c.y};
-            _m3 = {c.x * s.y * c.z + s.x * s.z, c.x * s.y * s.z - s.x * c.z, c.x * c.y};
-            _m4 = {t.x * _m1.x + t.y * _m2.x + t.z * _m3.x,
-                t.x * _m1.y + t.y * _m2.y + t.z * _m3.y,
-                t.x * _m1.z + t.y * _m2.z + t.z * _m3.z};
+            double tx = -camPos.x, ty = -camPos.y, tz = -camPos.z;
+
+            m11 = cy * cz, m12 = cy * sz, m13 = 0.0;
+            m21 = sx * sy * cz - cx * sz, m22 = sx * sy * sz + cx * cz, m23 = sx * cy;
+            m31 = cx * sy * cz + sx * sz, m32 = cx * sy * sz - sx * cz, m33 = cx * cy;
+            m41 = tx * m11 + ty * m21 + tz * m31;
+            m42 = tx * m12 + ty * m22 + tz * m32;
+            m43 = tx * m13 + ty * m23 + tz * m33;
+            //_f = (height / 2.0) / tan(fov / 2.0);
+//
+            //Point3d c = {std::cos(_axis.x), std::cos(_axis.y), std::cos(_axis.z)};
+            //Point3d s = {std::sin(_axis.x), std::sin(_axis.y), std::sin(_axis.z)};
+//
+            //Point3d t = {-_pos.x, -_pos.y, -_pos.z};
+//
+            //_m1 = {c.y * c.z, c.y * s.z, 0.0};
+            //_m2 = {s.x * s.y * c.z - c.x * s.z, s.x * s.y * s.z + c.x * c.z, s.x * c.y};
+            //_m3 = {c.x * s.y * c.z + s.x * s.z, c.x * s.y * s.z - s.x * c.z, c.x * c.y};
+            //_m4 = _m1 * t.x + _m2 * t.y + _m3 * t.z;
         }
 
         Point3d Camera::computeAxis(int x, int y)
         {
-            Point3d n = {(x - _height/2.0) / _f,
-                (y - _height/2.0) / _f, 1.0};
+            double nx = (x - _height/2.0) / f;
+            double ny = (y - _height/2.0) / f;
+            double nz = 1.0;
 
-            Point3d w = {n.x * _m1.x + n.y * _m2.x + n.z * _m3.x + _m4.x,
-                n.x * _m1.y + n.y * _m2.y + n.z * _m3.y + _m4.y,
-                n.x * _m1.z + n.y * _m2.z + n.z * _m3.z + _m4.z};
+            double wx = nx * m11 + ny * m21 + nz * m31 + m41;
+            double wy = nx * m12 + ny * m22 + nz * m32 + m42;
+            double wz = nx * m13 + ny * m23 + nz * m33 + m43;
 
-            Point3d d = {w.x - _pos.x, w.y - _pos.y, w.z - _pos.z};
-            return d.normalized();
+            double dx = wx - _pos.x;
+            double dy = wy - _pos.y;
+            double dz = wz - _pos.z;
+            double norm = sqrt(dx*dx + dy*dy + dz*dz);
+
+            Transformable::Point3d direction = {0, 0, 0};
+            direction.x = dx / norm;
+            direction.y = dy / norm;
+            direction.z = dz / norm;
+            return direction;
+            //Point3d n = {(x - _height/2.0) / _f,
+            //    (y - _height/2.0) / _f, 1.0};
+//
+            //Point3d w = _m1 * n.x + _m2 * n.y + _m3 * n.z + _m4;
+//
+            //return (w - _pos).normalized();
         }
 
         unsigned int Camera::getWidth() const
