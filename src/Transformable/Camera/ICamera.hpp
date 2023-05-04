@@ -18,6 +18,7 @@ namespace Transformable {
                 virtual Point3d computeAxis(int x, int y) = 0;
                 virtual unsigned int getWidth() const = 0;
                 virtual unsigned int getHeight() const = 0;
+                virtual Point3d getOrigin() const = 0;
         };
     }
 }

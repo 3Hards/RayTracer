@@ -40,15 +40,18 @@ namespace Transformable {
                 void setPos(Point3d pos) final;
                 void setAxis(Point3d axis) final;
                 Point3d computeAxis(int x, int y) final;
-                unsigned int getWidth() const;
-                unsigned int getHeight() const;
+                unsigned int getWidth() const final;
+                unsigned int getHeight() const final;
+                Point3d getOrigin() const final;
 
             private:
                 unsigned int _width;
                 unsigned int _height;
-                Point3d _lower_left_corner; 
-                Point3d _horizontal; 
-                Point3d _vertical; 
+                double _f;
+                Point3d _m1;
+                Point3d _m2;
+                Point3d _m3;
+                Point3d _m4;
         };
     }
 }

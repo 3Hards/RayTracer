@@ -17,6 +17,7 @@ namespace Transformable {
             double z;
             Point3d operator*(const Point3d a) {return {x * a.x, y * a.y, z * a.z};};
             Point3d operator*(double a) {return {x * a, y * a, z * a};};
+            Point3d operator/(double a) {return {x / a, y / a, z / a};};
             Point3d operator+(const Point3d a) {return {x + a.x, y + a.y, z + a.z};};
             Point3d operator-(const Point3d a) {return {x - a.x, y - a.y, z - a.z};};
             Point3d cross(const Point3d other) const {
@@ -32,11 +33,6 @@ namespace Transformable {
                 return {x / length, y / length, z / length};
             };
     };
-
-    Point3d operator-(Point3d a, Point3d b);
-    Point3d operator+(Point3d a, Point3d b);
-    Point3d operator*(Point3d a, double b);
-    Point3d operator/(Point3d a, double b);
 
     class ITransformable {
         public:
