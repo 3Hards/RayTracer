@@ -9,6 +9,7 @@ This repository is a repository containing our second year project at Epitech Th
 * How Build
 * Screenshots
 * Features
+* Dependancy
 * Terminology
 * Reference
 * Disclaimer
@@ -26,6 +27,10 @@ cmake --build .
 # Screenshots
 
 # Features
+
+# Dependancy
+
+You need SFML and liconfig++
 
 # Terminology
 
