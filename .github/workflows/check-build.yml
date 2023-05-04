@@ -15,6 +15,9 @@ jobs:
     container: epitechcontent/epitest-docker:latest
     steps:
       - uses: actions/checkout@v2
+      - name: install-Libconfig++
+        run: |
+          sudo dnf install -y libconfig-devel
       - name: Build
         run: |
           set -e
@@ -35,8 +38,8 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Debug
-          cmake --build . --config Release
+          cmake ..
+          cmake --build .
           cd ..
       - name: Check Files
         run: |

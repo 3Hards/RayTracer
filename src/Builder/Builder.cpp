@@ -5,13 +5,15 @@
 ** Builder
 */
 
-#include "Builder.hpp"
 #include <iostream>
+#include <string>
+#include <memory>
+#include "Builder.hpp"
 #include "Scene.hpp"
 #include "Camera.hpp"
 #include "Sphere.hpp"
 #include "FlatColor.hpp"
-#include "AmbientLight.hpp"
+#include "Ambiant.hpp"
 
 namespace Scene
 {
@@ -85,13 +87,13 @@ namespace Scene
 
     void Builder::createAmbientLight(libconfig::Setting& setting)
     {
-            int x, y, z;
+            double x, y, z;
             double brightness;
             setting.lookupValue("x", x);
             setting.lookupValue("y", y);
             setting.lookupValue("z", z);
             setting.lookupValue("brightness", brightness);
-            std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::AmbientLight>(Transformable::Point3f{x, y, z}, brightness);
+            std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Ambiant>(Display::Color{0, 0, 0}, brightness, Transformable::Point3f{x, y, z});
             _scene->addLight(light);
     }
 }

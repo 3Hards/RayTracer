@@ -13,9 +13,7 @@ project(
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
-
-include(FetchContent)
+set(LIBDIR ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/lib)
 
 add_executable(${PROJECT_NAME})
 
@@ -25,66 +23,38 @@ elseif(WIN32)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4)
 endif()
 
-##################### libconfig++ ##########################
-
-set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(DBUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(DBUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
-set(BUILD_STATIC_LIBS OFF CACHE BOOL "" FORCE)
-set(DBUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
-FetchContent_Declare(
-    libconfig++
-    GIT_REPOSITORY https://github.com/hyperrealm/libconfig.git
-    GIT_TAG v1.7.3
-)
-FetchContent_MakeAvailable(libconfig++)
-
-include_directories(${libconfig_SOURCE_DIR}/lib)
-
-##################### SFML ################################
+##################### lib ##########################
 
 if (WIN32)
-    set(SFML_BUILD_WINDOW TRUE)
-    set(SFML_BUILD_GRAPHICS TRUE)
-    set(SFML_BUILD_AUDIO FALSE)
-    set(SFML_BUILD_NETWORK FALSE)
-    set(SFML_BUILD_EXAMPLES FALSE)
-    set(SFML_BUILD_SYSTEM FALSE)
-    set(SFML_BUILD_DOC FALSE)
-    set(SFML_BUILD_SYSTEM FALSE)
-    set(SFML_USE_STATIC_STD_LIBS FALSE)
-    FetchContent_Declare(
-        SFML
-        GIT_REPOSITORY https://github.com/SFML/SFML.git
-        GIT_TAG 2.5.1
+    
+    include(ExternalProject)
+
+    include("Dependencies/build-libconfig.cmake")
+    include("Dependencies/build-SFML.cmake")
+
+    target_include_directories(
+        ${PROJECT_NAME} PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/lib/include
     )
-    FetchContent_MakeAvailable(SFML)
-endif()
 
-##################### INCLUDE #############################
-
-include_directories(${libconfig_SOURCE_DIR}/lib)
-
-if (WIN32)
-    target_link_libraries(
-        ${PROJECT_NAME}
-        PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libconfig++.lib
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libconfig++.lib
-        sfml-graphics
-        sfml-window
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        ${LIBDIR}/lib/libconfig.lib
+        ${LIBDIR}/lib/libconfig++.lib
+        ${LIBDIR}/lib/sfml-graphics-d.lib
+        ${LIBDIR}/lib/sfml-window-d.lib
+        ${LIBDIR}/lib/sfml-system-d.lib
     )
-elseif (UNIX)
-    find_package(SFML 2.5 COMPONENTS graphics window REQUIRED)
-    target_link_libraries(
-        ${PROJECT_NAME}
-        PRIVATE
-        sfml-graphics
-        sfml-window
+
+else()
+
+    find_library(SFML_GRAPHICS sfml-graphics)
+    find_library(LIBCONFIG++ libconfig++)
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE
         config++
+        sfml-graphics
     )
+
 endif()
 
 ##################### SRC #################################
@@ -98,3 +68,13 @@ add_custom_command(
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+if (WIN32)
+
+    add_custom_command(
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBDIR}/bin ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+
+endif()
