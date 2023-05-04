@@ -14,7 +14,7 @@ namespace Display {
             int _g;
             int _b;
     };
-    struct Point2f {
+    struct Point2i {
         public:
             int _x;
             int _y;
@@ -22,6 +22,6 @@ namespace Display {
     struct Pixel {
         public:
             Color _color;
-            Point2f _pos;
+            Point2i _pos;
     };
 }

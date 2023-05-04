@@ -16,7 +16,6 @@
 
 int main()
 {
-    std::cout << "Hello World!" << std::endl;
     std::unique_ptr<Scene::IScene> scene = std::make_unique<Scene::Scene>();
     std::shared_ptr<Transformable::Camera::ICamera> camera = std::make_shared<Transformable::Camera::Camera>(Transformable::Point3d{0, 0, 0}, Transformable::Point3d{0, 0, 1}, 200, 200, 90);
     std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{255, 0, 0});
