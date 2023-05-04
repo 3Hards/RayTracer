@@ -13,7 +13,7 @@
 #include "Camera.hpp"
 #include "Sphere.hpp"
 #include "FlatColor.hpp"
-#include "Ambiant.hpp"
+#include "Ambient.hpp"
 
 namespace Scene
 {

@@ -5,11 +5,12 @@
 ** Director
 */
 
-#include "Director.hpp"
 #include <libconfig.h++>
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include "Director.hpp"
+#include "Builder.hpp"
 
 Scene::Director::Director(std::string pathFile)
 {
@@ -18,8 +19,8 @@ Scene::Director::Director(std::string pathFile)
         cfg.readFile(pathFile);
         const libconfig::Setting& root = cfg.getRoot();
         const libconfig::Setting& elements = root["elements"];
-        const libconfig::Setting& list = elements["list"];
-        (void)list;
+        libconfig::Setting& list = elements["list"];
+        Builder builder(list);
     }
     catch(const libconfig::FileIOException &fioex) {
         std::cerr << "I/O error while reading file." << std::endl;
@@ -28,7 +29,6 @@ Scene::Director::Director(std::string pathFile)
         std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
             << " - " << pex.getError() << std::endl;
     }
-    // Builder::Builder(list);
 }
 
 Scene::Director::~Director()
