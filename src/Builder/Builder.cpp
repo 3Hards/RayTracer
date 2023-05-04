@@ -13,7 +13,7 @@
 #include "Camera.hpp"
 #include "Sphere.hpp"
 #include "FlatColor.hpp"
-#include "Ambiant.hpp"
+#include "Ambient.hpp"
 
 namespace Scene
 {
@@ -64,7 +64,7 @@ namespace Scene
             trans.lookupValue("x", tx);
             trans.lookupValue("y", ty);
             trans.lookupValue("z", tz);
-            std::shared_ptr<Transformable::Camera::ICamera> camera = std::make_shared<Transformable::Camera::Camera>(Transformable::Point3f{x, y, z}, Transformable::Point3f{ax, ay, az}, rx, ry, fov);
+            std::shared_ptr<Transformable::Camera::ICamera> camera = std::make_shared<Transformable::Camera::Camera>(Transformable::Point3d{x, y, z}, Transformable::Point3d{ax, ay, az}, rx, ry, fov);
             _scene->addCamera(camera);
     }
 
@@ -81,7 +81,7 @@ namespace Scene
             setting.lookupValue("z", z);
             setting.lookupValue("r", r);
             std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{cr, cg, cb});
-            std::shared_ptr<Transformable::Primitive::IPrimitive> sphere = std::make_shared<Transformable::Primitive::Sphere>(Transformable::Point3f{x, y, z}, r, material);
+            std::shared_ptr<Transformable::Primitive::IPrimitive> sphere = std::make_shared<Transformable::Primitive::Sphere>(Transformable::Point3d{x, y, z}, r, material);
             _scene->addPrimitive(sphere);
     }
 
@@ -93,7 +93,7 @@ namespace Scene
             setting.lookupValue("y", y);
             setting.lookupValue("z", z);
             setting.lookupValue("brightness", brightness);
-            std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Ambiant>(Display::Color{0, 0, 0}, brightness, Transformable::Point3f{x, y, z});
+            std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Ambient>(Display::Color{0, 0, 0}, brightness, Transformable::Point3d{x, y, z});
             _scene->addLight(light);
     }
 }
