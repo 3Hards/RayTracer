@@ -13,6 +13,7 @@
 #include "Plane.hpp"
 #include "FlatColor.hpp"
 #include "Translation.hpp"
+#include <iostream>
 
 int main()
 {
