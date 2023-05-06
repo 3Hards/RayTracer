@@ -38,7 +38,7 @@ namespace Transformable
                     _vector->setPos(pos);
                     Display::Color res = _vector->computeColor();
                     _displayer->addPixelToImage(Display::Pixel{res, Display::Point2i{(int)x, (int)y}});
-                    std::cout << "addPixel " << pos.x << " " << pos.y << " " << res._r << " " << res._g << " " << res._b << _vector->getAxis().x << " " << _vector->getAxis().y << " " << _vector->getAxis().z << std::endl;
+                    std::cout << "addPixel " << pos.x << " " << pos.y << " " << res._r << " " << res._g << " " << res._b << " " << _vector->getAxis().x << " " << _vector->getAxis().y << " " << _vector->getAxis().z << std::endl;
                 }
             }
             _displayer->exportImage();
