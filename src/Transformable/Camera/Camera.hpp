@@ -11,6 +11,7 @@
 #include <memory>
 #include "ICamera.hpp"
 #include "ATransformable.hpp"
+#include "ILibGraphicHandler.hpp"
 #include "IVector.hpp"
 
 namespace Transformable {
@@ -35,15 +36,17 @@ namespace Transformable {
                     unsigned int height = 1080,
                     unsigned int fov = 90
                 );
+                void render(std::shared_ptr<Raytracer::IVector> vector, std::string fileName) final;
+                void render(std::shared_ptr<Raytracer::IVector> vector) final;
                 Point3d getPos() final;
                 Point3d getAxis() final;
                 void setPos(Point3d pos) final;
                 void setAxis(Point3d axis) final;
-                std::vector<Point3d> computeAxis() final;
-                unsigned int getWidth() const final;
-                unsigned int getHeight() const final;
 
             private:
+                void render();
+                std::shared_ptr<Raytracer::IVector> _vector;
+                std::shared_ptr<Display::ILibGraphicHandler> _displayer;
                 unsigned int _fov;
                 unsigned int _width;
                 unsigned int _height;

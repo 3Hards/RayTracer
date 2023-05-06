@@ -18,6 +18,7 @@ int main()
 {
     std::unique_ptr<Scene::IScene> scene = std::make_unique<Scene::Scene>();
     std::shared_ptr<Transformable::Camera::ICamera> camera = std::make_shared<Transformable::Camera::Camera>(Transformable::Point3d{0, 0, 0}, Transformable::Point3d{0, 0, 1}, 200, 200, 90);
+    std::shared_ptr<Transformable::Camera::ICamera> camera2 = std::make_shared<Transformable::Camera::Camera>(Transformable::Point3d{0, 0, 0}, Transformable::Point3d{0, 0, 1}, 100, 100, 90);
     std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{255, 0, 0});
     std::shared_ptr<Material::IMaterial> material2 = std::make_shared<Material::FlatColor>(Display::Color{255, 255, 0});
     std::shared_ptr<Transformable::Primitive::IPrimitive> sphere = std::make_shared<Transformable::Primitive::Sphere>(Transformable::Point3d{125, 150, 400}, 40, material);

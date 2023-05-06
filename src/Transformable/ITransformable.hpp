@@ -7,14 +7,9 @@
 
 #pragma once
 
-namespace Transformable {
-    struct Point3d {
-        public:
-            double x;
-            double y;
-            double z;
-    };
+#include "Point3d.hpp"
 
+namespace Transformable {
     class ITransformable {
         public:
             virtual ~ITransformable() = default;

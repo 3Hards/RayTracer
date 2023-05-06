@@ -17,7 +17,7 @@ namespace Transformable {
             public:
                 Sphere(Point3d, double ray, std::shared_ptr<Material::IMaterial> material);
                 bool checkHit(std::shared_ptr<Raytracer::IVector>) final;
-                std::shared_ptr<Raytracer::IVector> getNormalVector() final;
+                Point3d getNormalVector() final;
             private:
                 double _ray;
         };

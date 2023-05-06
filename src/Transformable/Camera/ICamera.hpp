@@ -8,6 +8,7 @@
 #pragma once
 
 #include <vector>
+#include "IVector.hpp"
 #include "ITransformable.hpp"
 
 namespace Transformable {
@@ -15,9 +16,8 @@ namespace Transformable {
         class ICamera : public ITransformable {
             public:
                 virtual ~ICamera() = default;
-                virtual std::vector<Point3d> computeAxis() = 0;
-                virtual unsigned int getWidth() const = 0;
-                virtual unsigned int getHeight() const = 0;
+                virtual void render(std::shared_ptr<Raytracer::IVector> vector, std::string fileName) = 0;
+                virtual void render(std::shared_ptr<Raytracer::IVector> vector) = 0;
         };
     }
 }

@@ -22,7 +22,7 @@ namespace Transformable {
                 virtual bool checkHit(std::shared_ptr<Raytracer::IVector>) = 0;
                 virtual Transformable::Point3d getSpecular() = 0;
                 virtual Transformable::Point3d getMaterialBaseColor() = 0;
-                virtual std::shared_ptr<Raytracer::IVector> getNormalVector() = 0;
+                virtual Point3d getNormalVector() = 0;
         };
     }
 }

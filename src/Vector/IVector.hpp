@@ -22,8 +22,7 @@ namespace Transformable {
 namespace Raytracer {
     class IVector : public Transformable::ITransformable {
         public:
-            virtual void setPrimitives(std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>>) = 0;
-            virtual Display::Color computeColor(std::shared_ptr<Transformable::Light::ILight> light) = 0;
+            virtual Display::Color computeColor() = 0;
             virtual double getScalarRI() = 0;
             virtual Transformable::Point3d getLightColor() = 0;
     };
