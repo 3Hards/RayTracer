@@ -84,6 +84,7 @@ double Raytracer::Vector::computeScalarProduct(Transformable::Point3d fst, Trans
 
 void Raytracer::Vector::compute()
 {
+    /*
     Transformable::Point3d ambientLightColor = _light->getAmbientLightColor();
     Transformable::Point3d materialBaseColor = _hittedPrimitive->getMaterialBaseColor();
     Transformable::Point3d ambient = {
@@ -101,7 +102,14 @@ void Raytracer::Vector::compute()
     Transformable::Point3d lightColor = _light->getLightColor();
     Transformable::Point3d diffuse = {lightColor.x * materialBaseColor.x * _scalarNL, lightColor.y * materialBaseColor.y * _scalarNL, lightColor.z * materialBaseColor.z * _scalarNL};
     Transformable::Point3d specular = _hittedPrimitive->getSpecular();
-    _res = Display::Color{(int)((ambient.x + diffuse.x + specular.x) * 255), (int)((ambient.y + diffuse.y + specular.y) * 255), (int)((ambient.z + diffuse.z + specular.z) * 255)};
+    _res = Display::Color{(int)((ambient.x + diffuse.x + specular.x) * 255), (int)((ambient.y + diffuse.y + specular.y) * 255), (int)((ambient.z + diffuse.z + specular.z) * 255)};*/
+    Transformable::Point3d ambientLightColor = _light->getAmbientLightColor();
+    Transformable::Point3d materialBaseColor = _hittedPrimitive->getMaterialBaseColor();
+    _normal = _hittedPrimitive->getNormalVector();
+    Transformable::Point3d point = getPos();
+    double insentity = _normal.dot(Transformable::Point3d{0, 0.3, -1});
+    Display::Color color = {255, 0, 0};
+    _res = Display::Color {(int)(insentity * color._r), (int)(insentity * color._g), (int)(insentity * color._b)};
 }
 
 int Raytracer::Vector::checkValue(double value)
@@ -121,13 +129,15 @@ void Raytracer::Vector::checkHitLight()
     std::shared_ptr<Raytracer::IVector> SharedVector = shared_from_this();
 
     if (_light->checkHit(vector)) {
-         for (auto primitive : _primitives) {
-            if (primitive->checkHit(SharedVector)) {
+        /* don't work because we need to keep the nearest primitive
+        for (auto primitive : _primitives) {
+            if (primitive != _hittedPrimitive && primitive->checkHit(SharedVector)) {
                 _res = Display::Color{0, 0, 0};
                 _state = State::STOP;
                 return;
             }
         }
+        */
         compute();
     } else {
         _res = Display::Color{0, 0, 0};
