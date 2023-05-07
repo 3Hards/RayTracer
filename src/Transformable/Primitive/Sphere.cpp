@@ -23,18 +23,16 @@ bool Transformable::Primitive::Sphere::checkHit(std::shared_ptr<Raytracer::IVect
     Point3d vectorPos = vector->getPos();
     Point3d vectorAxis = vector->getAxis();
 
-    double a = dot(vectorAxis, vectorAxis);
-    Point3d dist = vectorPos - _pos;
-    double b = 2.0 * dot(vectorAxis, dist);
-    double c = dot(dist, dist) - _ray * _ray;
-    double discriminant = b * b - 4 * a * c;
+    double a = vectorAxis.dot(vectorAxis);
+    Point3d dist = vectorPos - getPos();
+    double b = 2.0 * dist.dot(vectorAxis);
+    double c = dist.dot(dist) - _ray * _ray;
+    double discriminant = b * b - 4.00 * a * c;
 
     if (discriminant < 0) {
         return false;
     }
-    double t1 = (-b - sqrt(discriminant)) / (2.0 * a);
-    double t2 = (-b + sqrt(discriminant)) / (2.0 * a);
-    double t = std::min(t1, t2);
+    double t = (-b - std::sqrt(discriminant)) / (2.0 * a);
     if (t < 0) {
         return false;
     }
@@ -44,8 +42,11 @@ bool Transformable::Primitive::Sphere::checkHit(std::shared_ptr<Raytracer::IVect
     return true;
 }
 
-std::shared_ptr<Raytracer::IVector> Transformable::Primitive::Sphere::getNormalVector()
+Transformable::Point3d Transformable::Primitive::Sphere::getNormalVector()
 {
     Transformable::Point3d lastHit = _lastHittedVector->getPos();
-    return std::make_shared<Raytracer::Vector>(_pos, Point3d{lastHit.x - _pos.x, lastHit.y - _pos.y, lastHit.z - _pos.z});
+    Transformable::Point3d pos = getPos();
+    Transformable::Point3d normal = {lastHit.x - pos.x, lastHit.y - pos.y, lastHit.z - pos.z};
+    normal.normalize();
+    return normal;
 }
