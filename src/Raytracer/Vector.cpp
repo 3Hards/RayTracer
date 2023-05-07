@@ -84,7 +84,6 @@ double Raytracer::Vector::computeScalarProduct(Transformable::Point3d fst, Trans
 
 void Raytracer::Vector::compute()
 {
-    /*
     Transformable::Point3d ambientLightColor = _light->getAmbientLightColor();
     Transformable::Point3d materialBaseColor = _hittedPrimitive->getMaterialBaseColor();
     Transformable::Point3d ambient = {
@@ -92,7 +91,7 @@ void Raytracer::Vector::compute()
         ambientLightColor.y * materialBaseColor.y,
         ambientLightColor.z * materialBaseColor.z
     };
-    _normal = _hittedPrimitive->getNormalVector()->getAxis();
+    _normal = _hittedPrimitive->getNormalVector();
     _scalarNL = computeScalarProduct(_normal, _axis);
     if (_scalarNL < 0) {
         _res = Display::Color{0, 0, 0};
@@ -102,14 +101,7 @@ void Raytracer::Vector::compute()
     Transformable::Point3d lightColor = _light->getLightColor();
     Transformable::Point3d diffuse = {lightColor.x * materialBaseColor.x * _scalarNL, lightColor.y * materialBaseColor.y * _scalarNL, lightColor.z * materialBaseColor.z * _scalarNL};
     Transformable::Point3d specular = _hittedPrimitive->getSpecular();
-    _res = Display::Color{(int)((ambient.x + diffuse.x + specular.x) * 255), (int)((ambient.y + diffuse.y + specular.y) * 255), (int)((ambient.z + diffuse.z + specular.z) * 255)};*/
-    Transformable::Point3d ambientLightColor = _light->getAmbientLightColor();
-    Transformable::Point3d materialBaseColor = _hittedPrimitive->getMaterialBaseColor();
-    _normal = _hittedPrimitive->getNormalVector();
-    Transformable::Point3d point = getPos();
-    double insentity = _normal.dot(Transformable::Point3d{0, 0.3, -1});
-    Display::Color color = {255, 0, 0};
-    _res = Display::Color {(int)(insentity * color._r), (int)(insentity * color._g), (int)(insentity * color._b)};
+    _res = Display::Color{(int)((ambient.x + diffuse.x + specular.x) * 255), (int)((ambient.y + diffuse.y + specular.y) * 255), (int)((ambient.z + diffuse.z + specular.z) * 255)};
 }
 
 int Raytracer::Vector::checkValue(double value)
