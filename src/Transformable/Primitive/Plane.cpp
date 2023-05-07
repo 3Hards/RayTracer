@@ -36,10 +36,9 @@ bool Plane::checkHit(std::shared_ptr<Raytracer::IVector> vector)
     }
 }
 
-std::shared_ptr<Raytracer::IVector> Plane::getNormalVector()
+Transformable::Point3d Plane::getNormalVector()
 {
-    Transformable::Point3d lastHit = _lastHittedVector->getPos();
-    return std::make_shared<Raytracer::Vector>(_pos, Point3d{lastHit.x - _pos.x, lastHit.y - _pos.y, lastHit.z - _pos.z});
+    return Point3d{0, 0, 1};
 }
 
     }
