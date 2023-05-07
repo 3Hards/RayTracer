@@ -50,7 +50,7 @@ namespace Scene {
         //camUp = 0 1 0
 
         double fovScale = std::tan((90 * M_PI / 180) / 2);
-        double aspectRatio = 1920 / 1080;
+        double aspectRatio = 1920.0 / 1080.0;
         double xx = (2 * ((double)x + 0.5) / 1920 - 1) * fovScale * aspectRatio;
         double yy = (1 - 2 * ((double)y + 0.5) / 1080) * fovScale;
 
