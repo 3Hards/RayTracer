@@ -42,7 +42,7 @@ namespace Transformable {
 
             double xNormalized = (2 * ((x + 0.5) / _width) - 1) * _fovScale * _aspectRatio * -1;
             double yNormalized = (1 - 2 * ((y + 0.5) / _height)) * _fovScale;
-            
+
             Transformable::Matrix3d rotationMatrix = Transformable::Matrix3d().rotateY(angleYRad).rotateX(angleXRad).rotateZ(angleZRad);
             Transformable::Point3d cameraDirectionRotated = rotationMatrix * _cameraDirection;
             Transformable::Point3d cameraUpRotated = rotationMatrix * _cameraUp;
@@ -76,6 +76,43 @@ namespace Transformable {
             rightVector = rotationMatrixZ * rightVector;
             rightVector = rightVector * distance;
             setPos(getPos() + rightVector);
+        }
+
+        void Camera::moveUp(double distance) {
+            Point3d upVector = {0, 0, 1};
+            Matrix3d rotationMatrix = Matrix3d().rotateY(_axis.y * M_PI / 180);
+            Matrix3d rotationMatrixX = Matrix3d().rotateX(_axis.x * M_PI / 180);
+            Matrix3d rotationMatrixZ = Matrix3d().rotateZ(_axis.z * M_PI / 180);
+
+            upVector = rotationMatrix * upVector;
+            upVector = rotationMatrixX * upVector;
+            upVector = rotationMatrixZ * upVector;
+            upVector = upVector * distance;
+            setPos(getPos() + upVector);
+        }
+
+        void Camera::rotateX(double angle) {
+            _axis.x += angle;
+            if (_axis.x > 360)
+                _axis.x = 0;
+            if (_axis.x < 0)
+                _axis.x = 360;
+        }
+
+        void Camera::rotateZ(double angle) {
+            _axis.z += angle;
+            if (_axis.z > 360)
+                _axis.z = 0;
+            if (_axis.z < 0)
+                _axis.z = 360;
+        }
+
+        void Camera::rotateY(double angle) {
+            _axis.y += angle;
+            if (_axis.y > 360)
+                _axis.y = 0;
+            if (_axis.y < 0)
+                _axis.y = 360;
         }
 
         unsigned int Camera::getWidth() const {
