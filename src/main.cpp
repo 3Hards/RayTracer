@@ -29,6 +29,7 @@ int main()
     std::shared_ptr<Transformable::Primitive::IPrimitive> sphere3 = std::make_shared<Transformable::Primitive::Sphere>(Transformable::Point3d{0, 4, 5}, 2.0f, material);
     std::shared_ptr<Transformable::Primitive::IPrimitive> sphere4 = std::make_shared<Transformable::Primitive::Sphere>(Transformable::Point3d{0, -4, 5}, 2.0f, material);
     std::shared_ptr<Transformable::Primitive::IPrimitive> plane = std::make_shared<Transformable::Primitive::Plane>(Transformable::Point3d{0, 0, -5}, 20.0f, 10.0f, Transformable::Point3d{0, 0, 0}, material2);
+    std::shared_ptr<Transformable::Primitive::IPrimitive> plane2 = std::make_shared<Transformable::Primitive::Plane>(Transformable::Point3d{10, 0, 2}, 20.0f, 10.0f, Transformable::Point3d{0, 90, 0}, material2);
     std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Ambient>(Display::Color{255, 255, 255}, (float)0.4, Transformable::Point3d{100, 0, 100});
 
     scene->addCamera(camera);
@@ -37,6 +38,7 @@ int main()
     scene->addPrimitive(sphere3);
     scene->addPrimitive(sphere4);
     scene->addPrimitive(plane);
+    scene->addPrimitive(plane2);
     scene->addLight(light);
     scene->playScene("test");
 
@@ -67,27 +69,27 @@ int main()
                 changed = true;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-                camera->setPos(Transformable::Point3d{camera->getPos().x, camera->getPos().y, camera->getPos().z + 0.5f});
+                camera->moveUp(0.5f);
                 changed = true;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
-                camera->setPos(Transformable::Point3d{camera->getPos().x, camera->getPos().y, camera->getPos().z - 0.5f});
+                camera->moveUp(-0.5f);
                 changed = true;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
-                camera->setAxis({camera->getAxis().x, camera->getAxis().y + 2.0f, camera->getAxis().z});
+                camera->rotateX(-2.0f);
                 changed = true;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
-                camera->setAxis({camera->getAxis().x, camera->getAxis().y - 2.0f, camera->getAxis().z});
+                camera->rotateX(-2.0f);
                 changed = true;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
-                camera->setAxis({camera->getAxis().x, camera->getAxis().y, camera->getAxis().z - 2.0f});
+                camera->rotateZ(-2.0f);
                 changed = true;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
-                camera->setAxis({camera->getAxis().x, camera->getAxis().y, camera->getAxis().z + 2.0f});
+                camera->rotateZ(2.0f);
                 changed = true;
             }
         }
