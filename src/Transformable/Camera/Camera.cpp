@@ -9,6 +9,10 @@
 #include "ATransformable.hpp"
 #include "Vector.hpp"
 
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
+
 namespace Transformable {
     namespace Camera {
 
@@ -24,17 +28,18 @@ namespace Transformable {
             _width = width;
             _height = height;
         }
-        std::vector<Point3d> Camera::computeAxis() {
-            std::vector<Point3d> axis;
-            //for the V1 of the camera, we create a rectangle
-            //the vectors do not start from the same origin, they go straight to the camera
 
-            for (unsigned int y = 0; y < _height; y++) {
-                for (unsigned int x = 0; x < _width; x++) {
-                    axis.push_back(_axis);
-                }
-            }
-            return axis;
+        Transformable::Point3d Camera::getRayAxis(int x, int y)
+        {
+            Transformable::Point3d cameraDirection = {0, 0, 1};
+            Transformable::Point3d cameraUp = {0, 1, 0};
+
+            double fovScale = std::tan((_fov * M_PI / 180) / 2);
+            double aspectRatio = _width / _height;
+            double xx = (2 * ((double)x + 0.5) / _width - 1) * fovScale * aspectRatio;
+            double yy = (1 - 2 * ((double)y + 0.5) / _height) * fovScale;
+            Point3d rayDir = (cameraDirection + (cameraUp * yy) + cameraUp.cross(cameraDirection) * xx).normalize();
+            return rayDir;
         }
 
         unsigned int Camera::getWidth() const {

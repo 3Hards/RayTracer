@@ -39,7 +39,7 @@ namespace Transformable {
                 Point3d getAxis() final;
                 void setPos(Point3d pos) final;
                 void setAxis(Point3d axis) final;
-                std::vector<Point3d> computeAxis() final;
+                Point3d Camera::getRayAxis(int x, int y);
                 unsigned int getWidth() const final;
                 unsigned int getHeight() const final;
 

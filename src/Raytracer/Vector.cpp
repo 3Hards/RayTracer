@@ -120,20 +120,8 @@ void Raytracer::Vector::checkHitLight()
     std::unique_ptr<Raytracer::IVector> vector = std::make_unique<Raytracer::Vector>(*this);
     std::shared_ptr<Raytracer::IVector> SharedVector = shared_from_this();
 
-    if (_light->checkHit(vector)) {
-        /* don't work because we need to keep the nearest primitive
-        for (auto primitive : _primitives) {
-            if (primitive != _hittedPrimitive && primitive->checkHit(SharedVector)) {
-                _res = Display::Color{0, 0, 0};
-                _state = State::STOP;
-                return;
-            }
-        }
-        */
-        compute();
-    } else {
-        _res = Display::Color{0, 0, 0};
-    }
+    _res = Display::Color{255, 0, 0};
+
 }
 
 void Raytracer::Vector::run()

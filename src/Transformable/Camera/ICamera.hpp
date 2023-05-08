@@ -15,7 +15,7 @@ namespace Transformable {
         class ICamera : public ITransformable {
             public:
                 virtual ~ICamera() = default;
-                virtual std::vector<Point3d> computeAxis() = 0;
+                virtual Point3d getRayAxis(int x, int y) = 0;
                 virtual unsigned int getWidth() const = 0;
                 virtual unsigned int getHeight() const = 0;
         };

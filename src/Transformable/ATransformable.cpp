@@ -44,4 +44,7 @@ namespace Transformable {
     Point3d operator/(Point3d a, double b) {
         return {a.x / b, a.y / b, a.z / b};
     }
+    Point3d operator*(double a, Point3d b) {
+        return {a * b.x, a * b.y, a * b.z};
+    }
 }
