@@ -44,6 +44,10 @@ namespace Transformable {
                 unsigned int getHeight() const final;
                 void moveForward(double distance);
                 void moveRight(double distance);
+                void moveUp(double distance);
+                void rotateX(double angle);
+                void rotateY(double angle);
+                void rotateZ(double angle);
 
             private:
                 unsigned int _fov;
