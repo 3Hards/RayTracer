@@ -5,6 +5,7 @@
 ** 3DMatrix
 */
 
+#include <array>
 #include "ITransformable.hpp"
 
 namespace Transformable {
@@ -26,10 +27,9 @@ namespace Transformable {
 
             const double& operator()(int i, int j) const;
 
-            private:
-                double data[3][3];
-
-        };
+        private:
+            std::array<std::array<double, 3>, 3> data;
+    };
 
     Point3d operator*(const Matrix3d& matrix, const Point3d& point);
 }
