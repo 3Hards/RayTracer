@@ -42,11 +42,17 @@ namespace Transformable {
                 Point3d Camera::getRayAxis(int x, int y);
                 unsigned int getWidth() const final;
                 unsigned int getHeight() const final;
+                void moveForward(double distance);
+                void moveRight(double distance);
 
             private:
                 unsigned int _fov;
                 unsigned int _width;
                 unsigned int _height;
+                double _aspectRatio;
+                double _fovScale;
+                Point3d _cameraDirection;
+                Point3d _cameraUp;
         };
     }
 }
