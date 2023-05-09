@@ -44,63 +44,43 @@ namespace Scene {
     void Scene::handle_events(Display::LibGraphicHandler &libGraphicHandler)
     {
         std::vector<Display::Event> events = libGraphicHandler.getEvents();
-
+        
+        for (auto eventMapping : _eventMappings) {
+            if (std::find(events.begin(), events.end(), eventMapping.first) != events.end()) {
+                eventMapping.second();
+            }
+        }
         for (auto event : events) {
-
-            if (event == Display::Event::KEYBORD_Z_PRESSED) {
-                _cameras[0]->moveForward(2);
-            }
-            if (event == Display::Event::KEYBORD_S_PRESSED) {
-                _cameras[0]->moveForward(-2);
-            }
-            if (event == Display::Event::KEYBORD_Q_PRESSED) {
-                _cameras[0]->moveRight(-2);
-            }
-            if (event == Display::Event::KEYBORD_D_PRESSED) {
-                _cameras[0]->moveRight(2);
-            }
-            if (event == Display::Event::KEYBORD_I_PRESSED) {
-                _cameras[0]->rotateY(-5);
-            }
-            if (event == Display::Event::KEYBORD_K_PRESSED) {
-                _cameras[0]->rotateY(5);
-            }
-            if (event == Display::Event::KEYBORD_J_PRESSED) {
-                _cameras[0]->rotateZ(-5);
-            }
-            if (event == Display::Event::KEYBORD_L_PRESSED) {
-                _cameras[0]->rotateZ(5);
-            }
-
-            if (event == Display::Event::KEYBORD_A_PRESSED) {
-                _cameras[0]->rotateX(-5);
-            }
-            if (event == Display::Event::KEYBORD_E_PRESSED) {
-                _cameras[0]->rotateX(5);
-            }
-
-            if (event == Display::Event::KEYBORD_SPACE_PRESSED) {
-                _cameras[0]->moveUp(2);
-            }
-            if (event == Display::Event::KEYBORD_SHIFT_PRESSED) {
-                _cameras[0]->moveUp(-2);
-            }
-
             if (event == Display::Event::KEYBORD_R_PRESSED) {
                 libGraphicHandler.exportImage();
             }
-
             if (event == Display::Event::KEYBORD_ESCAPE_PRESSED) {
                 libGraphicHandler.closeWindow();
             }
-
             if (event == Display::Event::WINDOW_RESIZED) {
                 std::pair<unsigned int, unsigned int> windowSize = libGraphicHandler.getWindowSize();
                 _cameras[0]->setWidth(windowSize.first);
                 _cameras[0]->setHeight(windowSize.second);
             }
-
         }
+    }
+
+    void Scene::setEventMappings()
+    {
+        _eventMappings = {
+            { Display::Event::KEYBORD_Z_PRESSED, [&]() { _cameras[0]->moveForward(2); }},
+            { Display::Event::KEYBORD_S_PRESSED, [&]() { _cameras[0]->moveForward(-2); }},
+            { Display::Event::KEYBORD_Q_PRESSED, [&]() { _cameras[0]->moveRight(-2); }},
+            { Display::Event::KEYBORD_D_PRESSED, [&]() { _cameras[0]->moveRight(2); }},
+            { Display::Event::KEYBORD_I_PRESSED, [&]() { _cameras[0]->rotateY(-2); }},
+            { Display::Event::KEYBORD_K_PRESSED, [&]() { _cameras[0]->rotateY(2); }},
+            { Display::Event::KEYBORD_J_PRESSED, [&]() { _cameras[0]->rotateZ(-2); }},
+            { Display::Event::KEYBORD_L_PRESSED, [&]() { _cameras[0]->rotateZ(2); }},
+            { Display::Event::KEYBORD_A_PRESSED, [&]() { _cameras[0]->rotateX(-2); }},
+            { Display::Event::KEYBORD_E_PRESSED, [&]() { _cameras[0]->rotateX(2); }},
+            { Display::Event::KEYBORD_SPACE_PRESSED, [&]() { _cameras[0]->moveUp(2); }},
+            { Display::Event::KEYBORD_SHIFT_PRESSED, [&]() { _cameras[0]->moveUp(-2); }}
+        };
     }
 
     void Scene::computeVectors(std::shared_ptr<Raytracer::IVector> vector)
@@ -130,6 +110,7 @@ namespace Scene {
         if (_lights.size() == 0 || _primitives.size() == 0 || _cameras.size() == 0) {
             return;
         }
+        setEventMappings();
         std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[0]->getPos(), Transformable::Point3d{0, 0, 0});
         vector->setPrimitives(_primitives);
         computeVectors(vector);

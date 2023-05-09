@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <memory>
+#include <functional>
 #include "IScene.hpp"
 #include "DisplayStructs.hpp"
 #include "LibGraphicHandler.hpp"
@@ -26,10 +27,12 @@ namespace Scene {
             Display::Pixel createPixel(Display::Color color, Display::Point2i position);
             void computeVectors(std::shared_ptr<Raytracer::IVector> vector);
             void handle_events(Display::LibGraphicHandler &libGraphicHandler);
+            void setEventMappings();
             std::string _filename;
             std::vector<std::shared_ptr<Transformable::Camera::ICamera>> _cameras;
             std::vector<std::shared_ptr<Transformable::Light::ILight>> _lights;
             std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> _primitives;
             std::vector<std::shared_ptr<Transformation::ITransformation>> _transformations;
+            std::vector<std::pair<Display::Event, std::function<void()>>> _eventMappings;
     };
 }
