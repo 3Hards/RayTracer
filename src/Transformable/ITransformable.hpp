@@ -10,29 +10,23 @@
 #include <cmath>
 
 namespace Transformable {
-    class Point3d {
+    struct Point3d {
         public:
             double x;
             double y;
             double z;
-            Point3d operator*(const Point3d a) {return {x * a.x, y * a.y, z * a.z};};
-            Point3d operator*(double a) {return {x * a, y * a, z * a};};
-            Point3d operator/(double a) {return {x / a, y / a, z / a};};
-            Point3d operator+(const Point3d a) {return {x + a.x, y + a.y, z + a.z};};
-            Point3d operator-(const Point3d a) {return {x - a.x, y - a.y, z - a.z};};
-            Point3d cross(const Point3d other) const {
-                return {y * other.z - z * other.y,
-                    z * other.x - x * other.z,
-                    x * other.y - y * other.x};
-            };
-            double len() const {
-                return std::sqrt(x * x + y * y + z * z);
-            }
-            Point3d normalized() const {
-                double length = len();
-                return {x / length, y / length, z / length};
-            };
+
+        Point3d normalize() const;
+        double dot(Point3d v) const;
+        Point3d cross(Point3d v) const;
+        double length() const;
     };
+
+    Point3d operator-(Point3d a, Point3d b);
+    Point3d operator+(Point3d a, Point3d b);
+    Point3d operator*(Point3d a, double b);
+    Point3d operator/(Point3d a, double b);
+    Point3d operator*(double a, Point3d b);
 
     class ITransformable {
         public:

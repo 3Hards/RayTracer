@@ -37,13 +37,14 @@ namespace Scene {
 
     void Scene::computeVectors(unsigned int camWidth, unsigned int camHeight)
     {
-        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[0]->getOrigin(), Transformable::Point3d{0, 0, 0});
+        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[0]->getPos(), Transformable::Point3d{0, 0, 0});
         vector->setPrimitives(_primitives);
         Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[0]->getWidth(), _cameras[0]->getHeight());
 
         for (unsigned int y = 0; y < camHeight; y++) {
             for (unsigned int x = 0; x < camWidth; x++) {
-                vector->setAxis(_cameras[0]->computeAxis(x, y));
+                vector->setPos(_cameras[0]->getPos());
+                vector->setAxis(_cameras[0]->getRayAxis((int)x, (int)y));
                 Raytracer::LightCalculator calculator(vector, _lights[0]);
                 Display::Point2i pixelPos = {(int)x, (int)y};
                 libGraphicHandler.addPixelToImage(createPixel(calculator.computePixel(), pixelPos));
