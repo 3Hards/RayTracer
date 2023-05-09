@@ -42,14 +42,25 @@ namespace Transformable {
                 Point3d getAxis() final;
                 void setPos(Point3d pos) final;
                 void setAxis(Point3d axis) final;
+                void moveForward(double distance);
+                void moveRight(double distance);
+                void moveUp(double distance);
+                void rotateX(double angle);
+                void rotateY(double angle);
+                void rotateZ(double angle);
 
             private:
+                Point3d getRayAxis(int x, int y);
                 void render();
                 std::shared_ptr<Raytracer::IVector> _vector;
                 std::shared_ptr<Display::ILibGraphicHandler> _displayer;
                 unsigned int _fov;
                 unsigned int _width;
                 unsigned int _height;
+                double _aspectRatio;
+                double _fovScale;
+                Point3d _cameraDirection;
+                Point3d _cameraUp;
         };
     }
 }

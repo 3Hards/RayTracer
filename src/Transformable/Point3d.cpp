@@ -50,7 +50,12 @@ Transformable::Point3d Transformable::Point3d::normalized() const {
     return {x / length, y / length, z / length};
 }
 
-double Transformable::Point3d::scalarProduct(const Point3d other) const {
+Transformable::Point3d Transformable::Point3d::operator+(double a) const
+{
+    return {x + a, y + a, z + a};
+}
+
+double Transformable::Point3d::dot(const Point3d other) const {
     Point3d fst = this->normalized();
     Point3d scd = other.normalized();
     return fst.x * scd.x + fst.y * scd.y + fst.z * scd.z;

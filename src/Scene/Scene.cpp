@@ -5,9 +5,14 @@
 ** Scene
 */
 
+#include <cmath>
 #include "Scene.hpp"
 #include "ITransformable.hpp"
 #include "Vector.hpp"
+
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
 
 namespace Scene {
 
@@ -46,11 +51,7 @@ namespace Scene {
 
     Display::Pixel Scene::createPixel(Display::Color color, Display::Point2i position)
     {
-        Display::Pixel pixel;
-
-        pixel._color = color;
-        pixel._pos._x = position._x;
-        pixel._pos._y = position._y;
+        Display::Pixel pixel(color, position);
         return pixel;
     }
 }
