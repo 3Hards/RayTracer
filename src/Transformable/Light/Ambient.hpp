@@ -12,7 +12,6 @@ namespace Transformable {
         class Ambient : public ALight {
             public:
                 Ambient(Display::Color, float brightness, Point3d pos);
-                bool checkHit(std::unique_ptr<Raytracer::IVector>&) final;
         };
     }
 }

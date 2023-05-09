@@ -27,7 +27,7 @@ Transformable::Point3d Transformable::Light::ALight::getAmbientLightColor()
     return _ambientColor;
 }
 
-Transformable::Point3d Transformable::Light::ALight::getLightColor()
+Transformable::Point3d Transformable::Light::ALight::getLightColor(std::shared_ptr<Raytracer::IVector>)
 {
     return _color;
 }
