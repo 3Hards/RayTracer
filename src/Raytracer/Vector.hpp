@@ -12,12 +12,6 @@
 #include "IPrimitive.hpp"
 
 namespace Raytracer {
-    enum class State {
-        INCIDENT,
-        LIGHT,
-        STOP
-    };
-
     class Vector : public IVector, public Transformable::ATransformable, public std::enable_shared_from_this<Raytracer::IVector> {
         public:
             Vector(Transformable::Point3d pos, Transformable::Point3d axis);
@@ -37,13 +31,11 @@ namespace Raytracer {
             Transformable::Point3d normalize();
             void hitPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive>);
             void checkHitPrimitives();
-            void checkHitLight();
             int checkValue(double value);
 
             double _scalarNL;
             Display::Color _res;
             Transformable::Point3d _incident;
-            State _state;
             std::vector<double> _distances;
             std::shared_ptr<Transformable::Light::ILight> _light;
             std::shared_ptr<Transformable::Primitive::IPrimitive> _hittedPrimitive;

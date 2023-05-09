@@ -96,7 +96,7 @@ namespace Scene
             brightness = setting.lookup("brightness");
             std::cout << "brightness: " << brightness << std::endl;
             std::cout << "x: " << x << " y: " << y << " z: " << z << " brightness: " << brightness << std::endl;
-            std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Ambient>(Display::Color{0, 0, 0}, brightness, Transformable::Point3d{(double)x, (double)y, (double)z});
+            std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Ambient>(Display::Color{255, 255, 255}, brightness, Transformable::Point3d{(double)x, (double)y, (double)z});
             std::cout << "Ambient light created" << std::endl;
             _scene->addLight(light);
     }

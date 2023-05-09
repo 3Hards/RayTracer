@@ -14,12 +14,12 @@
 #include "Plane.hpp"
 #include "FlatColor.hpp"
 #include "Translation.hpp"
-#include <iostream>
 #include "Rotation.hpp"
 #include "Director.hpp"
 
 int main()
 {
+
     Scene::Director director("Config/test.cfg");
     director.playScene();
     return 0;
