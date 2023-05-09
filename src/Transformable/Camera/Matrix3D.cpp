@@ -6,7 +6,7 @@
 */
 
 #include "ITransformable.hpp"
-#include "3DMatrix.hpp"
+#include "Matrix3D.hpp"
 
 namespace Transformable {
 

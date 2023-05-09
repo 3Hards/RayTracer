@@ -8,7 +8,7 @@
 #include "Camera.hpp"
 #include "ATransformable.hpp"
 #include "Vector.hpp"
-#include "3DMatrix.hpp"
+#include "Matrix3D.hpp"
 
 #ifndef M_PI
     #define M_PI 3.14159265358979323846
