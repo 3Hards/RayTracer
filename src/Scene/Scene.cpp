@@ -43,8 +43,9 @@ namespace Scene {
         if (_lights.size() == 0 || _primitives.size() == 0 || _cameras.size() == 0) {
             return;
         }
+        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_primitives, _lights);
         for (auto &camera : _cameras) {
-            camera->render(filename);
+            camera->render(vector, filename);
         }
     }
 

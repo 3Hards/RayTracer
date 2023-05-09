@@ -45,6 +45,7 @@ namespace Transformable
             for (unsigned int y = 0; y < _height; y++) {
                 for (unsigned int x = 0; x < _width; x++) {
                     _vector->setAxis(getRayAxis(x, y));
+                    std::cout << _vector->getAxis().x << " " << _vector->getAxis().y << " " << _vector->getAxis().z << std::endl;
                     _displayer->addPixelToImage(Display::Pixel{_vector->computeColor(), Display::Point2i{(int)x, (int)y}});
                 }
             }
