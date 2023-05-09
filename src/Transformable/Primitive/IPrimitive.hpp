@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <tuple>
 #include <memory>
 #include "ITransformable.hpp"
 #include "DisplayStructs.hpp"
@@ -20,7 +19,10 @@ namespace Transformable {
     namespace Primitive {
         class IPrimitive : public ITransformable {
             public:
-                virtual std::tuple<bool, Display::Color> checkHit(std::unique_ptr<Raytracer::IVector>&) = 0;
+                virtual bool checkHit(std::shared_ptr<Raytracer::IVector>) = 0;
+                virtual Transformable::Point3d getSpecular() = 0;
+                virtual Transformable::Point3d getMaterialBaseColor() = 0;
+                virtual Transformable::Point3d getNormalVector() = 0;
         };
     }
 }

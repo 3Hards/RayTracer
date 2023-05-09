@@ -29,25 +29,34 @@ namespace Transformable {
         class Camera : public ICamera, public ATransformable {
             public:
                 Camera(
-                    Point3f position = {0, 0, 0},
-                    Point3f axis = {0, 0, 0},
+                    Point3d position = {0, 0, 0},
+                    Point3d axis = {0, 0, 0},
                     unsigned int width = 1920,
                     unsigned int height = 1080,
                     unsigned int fov = 90
                 );
-                std::vector<std::shared_ptr<Raytracer::IVector>> computeVectors() final;
-                Point3f getPos() final;
-                Point3f getAxis() final;
-                void setPos(Point3f pos) final;
-                void setAxis(Point3f axis) final;
-                TransformableType getType() final;
+                Point3d getPos() final;
+                Point3d getAxis() final;
+                void setPos(Point3d pos) final;
+                void setAxis(Point3d axis) final;
+                Point3d getRayAxis(int x, int y);
                 unsigned int getWidth() const final;
                 unsigned int getHeight() const final;
+                void moveForward(double distance);
+                void moveRight(double distance);
+                void moveUp(double distance);
+                void rotateX(double angle);
+                void rotateY(double angle);
+                void rotateZ(double angle);
 
             private:
                 unsigned int _fov;
                 unsigned int _width;
                 unsigned int _height;
+                double _aspectRatio;
+                double _fovScale;
+                Point3d _cameraDirection;
+                Point3d _cameraUp;
         };
     }
 }

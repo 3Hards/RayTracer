@@ -1,25 +1,48 @@
 /*
 ** EPITECH PROJECT, 2023
-** _rayTracer
+** RayTracer
 ** File description:
 ** Sphere
 */
 
 #include <cmath>
+#include <memory>
 #include "Sphere.hpp"
+#include "Vector.hpp"
 
-Transformable::Primitive::Sphere::Sphere(Point3f pos, double _ray, std::shared_ptr<Material::IMaterial> material) : Transformable::Primitive::APrimitive(material, pos, {0, 0, 0}), _ray(_ray)
+Transformable::Primitive::Sphere::Sphere(Point3d pos, double _ray, std::shared_ptr<Material::IMaterial> material) : Transformable::Primitive::APrimitive(material, pos, {0, 0, 0}), _ray(_ray)
 {
 }
 
-//function that check if the vector hit the sphere
-std::tuple<bool, Display::Color> Transformable::Primitive::Sphere::checkHit(std::unique_ptr<Raytracer::IVector> &vector)
+bool Transformable::Primitive::Sphere::checkHit(std::shared_ptr<Raytracer::IVector> vector)
 {
-    Point3f vectorPos = vector->getPos();
-    double distance = sqrt(pow(vectorPos.x - _pos.x, 2) + pow(vectorPos.y - _pos.y, 2) + pow(vectorPos.z - _pos.z, 2));
+    Point3d vectorPos = vector->getPos();
+    Point3d vectorAxis = vector->getAxis();
 
-    if (distance <= _ray) {
-        return std::make_tuple(true, _material->getColor(vector));
+    double a = vectorAxis.dot(vectorAxis);
+    Point3d dist = vectorPos - getPos();
+    double b = 2.0 * dist.dot(vectorAxis);
+    double c = dist.dot(dist) - _ray * _ray;
+    double discriminant = b * b - 4.00 * a * c;
+
+    if (discriminant < 0) {
+        return false;
     }
-    return std::make_tuple(false, Display::Color{0, 0, 0});
+    double t = (-b - std::sqrt(discriminant)) / (2.0 * a);
+    if (t < 0) {
+        return false;
+    }
+    _lastHittedVector = vector;
+    Point3d hitPos = vectorPos + vectorAxis * t;
+    vector->setPos(hitPos);
+    return true;
+}
+
+Transformable::Point3d Transformable::Primitive::Sphere::getNormalVector()
+{
+    Transformable::Point3d lastHit = _lastHittedVector->getPos();
+    Transformable::Point3d pos = getPos();
+    Transformable::Point3d normal = {lastHit.x - pos.x, lastHit.y - pos.y, lastHit.z - pos.z};
+    normal.normalize();
+    return normal;
 }

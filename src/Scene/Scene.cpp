@@ -5,10 +5,17 @@
 ** Scene
 */
 
+#include <cmath>
 #include "Scene.hpp"
 #include "ITransformable.hpp"
-#include "TransformableStruct.hpp"
+#include "LightCalculator.hpp"
 #include "LibGraphicHandler.hpp"
+#include "IVector.hpp"
+#include "Vector.hpp"
+
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
 
 namespace Scene {
 
@@ -32,45 +39,39 @@ namespace Scene {
         _transformations.push_back(transformation);
     }
 
+    void Scene::computeVectors(unsigned int camWidth, unsigned int camHeight)
+    {
+        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[0]->getPos(), Transformable::Point3d{0, 0, 0});
+        vector->setPrimitives(_primitives);
+        Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[0]->getWidth(), _cameras[0]->getHeight());
+
+        for (unsigned int y = 0; y < camHeight; y++) {
+            for (unsigned int x = 0; x < camWidth; x++) {
+                vector->setPos(_cameras[0]->getPos());
+                vector->setAxis(_cameras[0]->getRayAxis((int)x, (int)y));
+                Raytracer::LightCalculator calculator(vector, _lights[0]);
+                Display::Point2i pixelPos = {(int)x, (int)y};
+                libGraphicHandler.addPixelToImage(createPixel(calculator.computePixel(), pixelPos));
+            }
+        }
+        libGraphicHandler.exportImage();
+    }
+
     void Scene::playScene(std::string const &filename)
     {
         _filename = filename;
-        Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[0]->getWidth(), _cameras[0]->getHeight());
-        std::vector<std::shared_ptr<Raytracer::IVector>> vectors;
 
-        //for the v2, don't forget to handle black screen return
-        if (_lights.size() == 0 || _primitives.size() == 0) {
+        if (_lights.size() == 0 || _primitives.size() == 0 || _cameras.size() == 0) {
             return;
         }
-        vectors = _cameras[0]->computeVectors();
-        if (vectors.size() == 0) {
-            return;
-        }
-        for (auto &vector : vectors) {
-            vector->setPrimitives(_primitives);
-            handleVectorAnswer(vector->run(_lights[0]));
-        }
-        libGraphicHandler.createImage(_pixels);
+        unsigned int camWidth = _cameras[0]->getWidth();
+        unsigned int camHeight = _cameras[0]->getHeight();
+        computeVectors(camWidth, camHeight);
     }
 
-    void Scene::handleVectorAnswer(std::tuple<bool, Display::Color, Transformable::Point3f> answer)
+    Display::Pixel Scene::createPixel(Display::Color color, Display::Point2i position)
     {
-        bool hasHitted = std::get<0>(answer);
-        Display::Color color = std::get<1>(answer);
-        Transformable::Point3f point = std::get<2>(answer);
-
-        if (hasHitted) {
-            addNewPixel(color, point);
-        }
-    }
-
-    void Scene::addNewPixel(Display::Color color, Transformable::Point3f position)
-    {
-        Display::Pixel pixel;
-
-        pixel._color = color;
-        pixel._pos._x = (int)position.x;
-        pixel._pos._y = (int)position.y;
-        _pixels.push_back(pixel);
+        Display::Pixel pixel(color, position);
+        return pixel;
     }
 }

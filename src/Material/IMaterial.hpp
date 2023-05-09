@@ -13,6 +13,7 @@
 namespace Material {
     class IMaterial {
         public:
-            virtual Display::Color getColor(std::unique_ptr<Raytracer::IVector>&) = 0;
+            virtual Transformable::Point3d getBaseColor() = 0;
+            virtual Transformable::Point3d computeSpecular(std::shared_ptr<Raytracer::IVector>) = 0;
     };
 }
