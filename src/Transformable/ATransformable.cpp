@@ -30,3 +30,18 @@ void Transformable::ATransformable::setAxis(Point3d axis)
 {
     _axis = axis;
 }
+
+namespace Transformable {
+    Point3d operator-(Point3d a, Point3d b) {
+        return {a.x - b.x, a.y - b.y, a.z - b.z};
+    }
+    Point3d operator+(Point3d a, Point3d b) {
+        return {a.x + b.x, a.y + b.y, a.z + b.z};
+    }
+    Point3d operator*(Point3d a, double b) {
+        return {a.x * b, a.y * b, a.z * b};
+    }
+    Point3d operator/(Point3d a, double b) {
+        return {a.x / b, a.y / b, a.z / b};
+    }
+}
