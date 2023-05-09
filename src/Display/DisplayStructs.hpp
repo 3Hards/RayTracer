@@ -10,30 +10,24 @@
 namespace Display {
     struct Color {
         public:
-            Color(int r, int g, int b)
+            Color(int r, int g, int b) : _r(r), _g(g), _b(b)
             {
-                if (r > 255)
-                    _r = 255;
-                else if (r < 0)
-                    _r = 0;
-                else
-                    _r = r;
-                if (g > 255)
-                    _g = 255;
-                else if (g < 0)
-                    _g = 0;
-                else
-                    _g = g;
-                if (b > 255)
-                    _b = 255;
-                else if (b < 0)
-                    _b = 0;
-                else
-                    _b = b;
+                cap(_r);
+                cap(_g);
+                cap(_b);
             }
             int _r;
             int _g;
             int _b;
+        private:
+            void cap(int &val)
+            {
+                if (val > 255) {
+                    val = 255;
+                } else if (val < 0) {
+                    val = 0;
+                }
+            }
     };
     struct Point2i {
         public:

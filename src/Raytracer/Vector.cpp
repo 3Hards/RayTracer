@@ -52,8 +52,8 @@ void Raytracer::Vector::hitPrimitive(std::shared_ptr<Transformable::Primitive::I
     if (_state == State::INCIDENT) {
         Transformable::Point3d hitPos = getPos();
         Transformable::Point3d lightPos = _light->getPos();
-        Transformable::Point3d axis{lightPos.x - hitPos.x, lightPos.y - hitPos.y, lightPos.z - hitPos.z};
-        setAxis(axis);
+        Transformable::Point3d axis{hitPos.x - lightPos.x, hitPos.y - lightPos.y, hitPos.z - lightPos.z};
+        setAxis(axis.normalize());
         _hittedPrimitive = primitive;
         _state = State::LIGHT;
     }
@@ -91,7 +91,7 @@ void Raytracer::Vector::compute()
         ambientLightColor.y * materialBaseColor.y,
         ambientLightColor.z * materialBaseColor.z
     };
-    _normal = _hittedPrimitive->getNormalVector()->getAxis();
+    _normal = _hittedPrimitive->getNormalVector();
     _scalarNL = computeScalarProduct(_normal, _axis);
     if (_scalarNL < 0) {
         _res = Display::Color{0, 0, 0};
@@ -121,13 +121,15 @@ void Raytracer::Vector::checkHitLight()
     std::shared_ptr<Raytracer::IVector> SharedVector = shared_from_this();
 
     if (_light->checkHit(vector)) {
-         for (auto primitive : _primitives) {
-            if (primitive->checkHit(SharedVector)) {
+        /* don't work because we need to keep the nearest primitive
+        for (auto primitive : _primitives) {
+            if (primitive != _hittedPrimitive && primitive->checkHit(SharedVector)) {
                 _res = Display::Color{0, 0, 0};
                 _state = State::STOP;
                 return;
             }
         }
+        */
         compute();
     } else {
         _res = Display::Color{0, 0, 0};

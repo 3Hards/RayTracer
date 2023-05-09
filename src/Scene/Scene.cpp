@@ -5,13 +5,17 @@
 ** Scene
 */
 
+#include <cmath>
 #include "Scene.hpp"
 #include "ITransformable.hpp"
 #include "LightCalculator.hpp"
 #include "LibGraphicHandler.hpp"
 #include "IVector.hpp"
 #include "Vector.hpp"
-#include "cmath"
+
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
 
 namespace Scene {
 
@@ -56,7 +60,6 @@ namespace Scene {
     void Scene::playScene(std::string const &filename)
     {
         _filename = filename;
-        std::vector<Transformable::Point3d> axis;
 
         if (_lights.size() == 0 || _primitives.size() == 0 || _cameras.size() == 0) {
             return;

@@ -17,14 +17,14 @@ namespace Transformable {
     namespace Primitive {
         class Plane : public APrimitive {
             public:
-                Plane(Point3d pos, double length, double width, std::shared_ptr<Material::IMaterial> material);
+                Plane(Point3d pos, double length, double width, Point3d axis, std::shared_ptr<Material::IMaterial> material);
                 bool checkHit(std::shared_ptr<Raytracer::IVector>) final;
-                std::shared_ptr<Raytracer::IVector> getNormalVector() final;
+                Transformable::Point3d getNormalVector() final;
 
             private:
-                double _depth;
                 double _length;
                 double _width;
+                Transformable::Point3d _normal;
         };
     }
 }
