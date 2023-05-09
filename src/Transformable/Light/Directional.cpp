@@ -11,7 +11,7 @@ Transformable::Light::Directional::Directional(Display::Color color, float brigh
 {
 }
 
-Transformable::Point3d Transformable::Light::Directional::getLightColor(std::shared_ptr<Raytracer::IVector>)
+Transformable::Point3d Transformable::Light::Directional::getLightDirection(std::shared_ptr<Raytracer::IVector>)
 {
-    _color * 
+    return _direction;
 }

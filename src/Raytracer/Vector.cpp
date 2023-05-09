@@ -24,14 +24,12 @@ void Raytracer::Vector::setPrimitives(std::vector<std::shared_ptr<Transformable:
 
 double Raytracer::Vector::getScalarRI()
 {
-    return (2 * _scalarNL * _normal.normalize() - _axis.normalize()).dot(_incident);
+    return (2 * _scalarNL * _normal.normalize() - _light->getLightDirection(shared_from_this()).normalize()).dot(_incident);
 }
 
 Transformable::Point3d Raytracer::Vector::getLightColor()
 {
-    std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
-
-    return _light->getLightColor(vector);
+    return _light->getLightColor();
 }
 
 void Raytracer::Vector::hitPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive> primitive)
@@ -54,7 +52,7 @@ void Raytracer::Vector::compute()
         ambientLightColor.z * materialBaseColor.z
     };
     _normal = _hittedPrimitive->getNormalVector();
-    _scalarNL = _normal.dot(_axis);
+    _scalarNL = _normal.dot(_light->getLightDirection(shared_from_this()));
     if (_scalarNL < 0) {
         _res = Display::Color{0, 0, 0};
         return;

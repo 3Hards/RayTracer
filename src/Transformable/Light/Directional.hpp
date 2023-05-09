@@ -12,7 +12,7 @@ namespace Transformable {
         class Directional : public ALight {
             public:
                 Directional(Display::Color, float brightness, Point3d pos, Point3d direction);
-                Transformable::Point3d getLightColor(std::shared_ptr<Raytracer::IVector>) final;
+                Transformable::Point3d getLightDirection(std::shared_ptr<Raytracer::IVector>) final;
             private:
                 Point3d _direction;
         };

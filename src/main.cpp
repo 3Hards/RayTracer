@@ -15,6 +15,7 @@
 #include "FlatColor.hpp"
 #include "Translation.hpp"
 #include "Rotation.hpp"
+#include "Directional.hpp"
 
 int main()
 {
@@ -28,7 +29,8 @@ int main()
     std::shared_ptr<Transformable::Primitive::IPrimitive> sphere4 = std::make_shared<Transformable::Primitive::Sphere>(Transformable::Point3d{0, -4, 5}, 2.0f, material);
     //std::shared_ptr<Transformable::Primitive::IPrimitive> plane = std::make_shared<Transformable::Primitive::Plane>(Transformable::Point3d{0, 0, -5}, 20.0f, 10.0f, Transformable::Point3d{0, 0, 0}, material2);
     //std::shared_ptr<Transformable::Primitive::IPrimitive> plane2 = std::make_shared<Transformable::Primitive::Plane>(Transformable::Point3d{10, 0, 2}, 20.0f, 10.0f, Transformable::Point3d{0, 90, 0}, material2);
-    std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Ambient>(Display::Color{255, 255, 255}, (float)0.4, Transformable::Point3d{100, 0, 100});
+    std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Directional>(Display::Color{255, 255, 255}, (float)0.4, Transformable::Point3d{100, 0, 100}, Transformable::Point3d{0, 1, 1});
+    //std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Ambient>(Display::Color{255, 255, 255}, (float)0.4, Transformable::Point3d{100, 0, 100});
 
     scene->addCamera(camera);
     scene->addPrimitive(sphere);

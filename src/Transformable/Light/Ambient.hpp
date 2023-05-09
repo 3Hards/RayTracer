@@ -12,6 +12,7 @@ namespace Transformable {
         class Ambient : public ALight {
             public:
                 Ambient(Display::Color, float brightness, Point3d pos);
+                Transformable::Point3d getLightDirection(std::shared_ptr<Raytracer::IVector>) final;
         };
     }
 }
