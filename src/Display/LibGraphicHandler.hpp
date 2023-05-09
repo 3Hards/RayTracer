@@ -24,6 +24,7 @@ namespace Display {
             void resizeWindow(unsigned int width, unsigned int height);
             bool isWindowOpen() final;
             std::vector<Event> getEvents();
+            std::pair<unsigned int, unsigned int> getWindowSize() final;
 
         private:
             void clearWindow();

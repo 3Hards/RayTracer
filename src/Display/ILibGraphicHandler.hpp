@@ -8,6 +8,7 @@
 #pragma once
 
 #include <vector>
+#include <utility>
 #include "DisplayStructs.hpp"
 
 namespace Display {
@@ -68,6 +69,9 @@ namespace Display {
         KEYBORD_SHIFT_PRESSED,
         KEYBORD_CTRL_PRESSED,
         KEYBORD_ALT_PRESSED,
+        //EVENTS
+        WINDOW_CLOSED,
+        WINDOW_RESIZED
     };
 
     class ILibGraphicHandler {
@@ -80,6 +84,6 @@ namespace Display {
             virtual void resizeWindow(unsigned int width, unsigned int height) = 0;
             virtual bool isWindowOpen() = 0;
             virtual std::vector<Event> getEvents() = 0;
+            virtual std::pair<unsigned int, unsigned int> getWindowSize() = 0;
     };
-
 }

@@ -41,16 +41,76 @@ namespace Scene {
         _transformations.push_back(transformation);
     }
 
-    void Scene::computeVectors(unsigned int camWidth, unsigned int camHeight)
+    void Scene::handle_events(Display::LibGraphicHandler &libGraphicHandler)
     {
-        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[0]->getPos(), Transformable::Point3d{0, 0, 0});
-        vector->setPrimitives(_primitives);
+        std::vector<Display::Event> events = libGraphicHandler.getEvents();
+
+        for (auto event : events) {
+
+            if (event == Display::Event::KEYBORD_Z_PRESSED) {
+                _cameras[0]->moveForward(5);
+            }
+            if (event == Display::Event::KEYBORD_S_PRESSED) {
+                _cameras[0]->moveForward(-5);
+            }
+            if (event == Display::Event::KEYBORD_Q_PRESSED) {
+                _cameras[0]->moveRight(-5);
+            }
+            if (event == Display::Event::KEYBORD_D_PRESSED) {
+                _cameras[0]->moveRight(5);
+            }
+            if (event == Display::Event::KEYBORD_I_PRESSED) {
+                _cameras[0]->rotateY(-5);
+            }
+            if (event == Display::Event::KEYBORD_K_PRESSED) {
+                _cameras[0]->rotateY(5);
+            }
+            if (event == Display::Event::KEYBORD_J_PRESSED) {
+                _cameras[0]->rotateZ(-5);
+            }
+            if (event == Display::Event::KEYBORD_L_PRESSED) {
+                _cameras[0]->rotateZ(5);
+            }
+
+            if (event == Display::Event::KEYBORD_A_PRESSED) {
+                _cameras[0]->rotateX(-5);
+            }
+            if (event == Display::Event::KEYBORD_E_PRESSED) {
+                _cameras[0]->rotateX(5);
+            }
+
+            if (event == Display::Event::KEYBORD_SPACE_PRESSED) {
+                _cameras[0]->moveUp(5);
+            }
+            if (event == Display::Event::KEYBORD_SHIFT_PRESSED) {
+                _cameras[0]->moveUp(-5);
+            }
+
+            if (event == Display::Event::KEYBORD_R_PRESSED) {
+                libGraphicHandler.exportImage();
+            }
+
+            if (event == Display::Event::KEYBORD_ESCAPE_PRESSED) {
+                libGraphicHandler.closeWindow();
+            }
+
+            if (event == Display::Event::WINDOW_RESIZED) {
+                std::pair<unsigned int, unsigned int> windowSize = libGraphicHandler.getWindowSize();
+                _cameras[0]->setWidth(windowSize.first);
+                _cameras[0]->setHeight(windowSize.second);
+            }
+
+        }
+    }
+
+    void Scene::computeVectors(std::shared_ptr<Raytracer::IVector> vector)
+    {
         Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[0]->getWidth(), _cameras[0]->getHeight());
         libGraphicHandler.createWindow("Raytracer", _cameras[0]->getWidth(), _cameras[0]->getHeight());
 
         while (libGraphicHandler.isWindowOpen()) {
-            for (unsigned int y = 0; y < camHeight; y++) {
-                for (unsigned int x = 0; x < camWidth; x++) {
+            for (unsigned int y = 0; y < _cameras[0]->getHeight(); y++) {
+                for (unsigned int x = 0; x < _cameras[0]->getWidth(); x++) {
                     vector->setPos(_cameras[0]->getPos());
                     vector->setAxis(_cameras[0]->getRayAxis((int)x, (int)y));
                     Raytracer::LightCalculator calculator(vector, _lights[0]);
@@ -58,7 +118,7 @@ namespace Scene {
                     libGraphicHandler.addPixelToBuffer(createPixel(calculator.computePixel(), pixelPos));
                 }
             }
-            std::vector<Display::Event> events = libGraphicHandler.getEvents();
+            handle_events(libGraphicHandler);
             libGraphicHandler.refreshWindow();
         }
     }
@@ -72,7 +132,9 @@ namespace Scene {
         }
         unsigned int camWidth = _cameras[0]->getWidth();
         unsigned int camHeight = _cameras[0]->getHeight();
-        computeVectors(camWidth, camHeight);
+        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[0]->getPos(), Transformable::Point3d{0, 0, 0});
+        vector->setPrimitives(_primitives);
+        computeVectors(vector);
     }
 
     Display::Pixel Scene::createPixel(Display::Color color, Display::Point2i position)
