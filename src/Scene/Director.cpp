@@ -16,7 +16,7 @@ Scene::Director::Director(std::string pathFile)
     libconfig::Config cfg;
     _pathFile = pathFile;
     try {
-        cfg.readFile(pathFile);
+        cfg.readFile(pathFile.c_str());
         const libconfig::Setting& root = cfg.getRoot();
         const libconfig::Setting& elements = root["elements"];
         libconfig::Setting& list = elements["list"];
@@ -24,6 +24,7 @@ Scene::Director::Director(std::string pathFile)
     }
     catch(const libconfig::FileIOException &fioex) {
         std::cerr << "I/O error while reading file." << std::endl;
+        std::cerr << fioex.what() << std::endl;
     }
     catch(const libconfig::ParseException &pex) {
         std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
