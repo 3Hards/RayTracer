@@ -52,8 +52,8 @@ void Raytracer::Vector::hitPrimitive(std::shared_ptr<Transformable::Primitive::I
     if (_state == State::INCIDENT) {
         Transformable::Point3d hitPos = getPos();
         Transformable::Point3d lightPos = _light->getPos();
-        Transformable::Point3d axis{lightPos.x - hitPos.x, lightPos.y - hitPos.y, lightPos.z - hitPos.z};
-        setAxis(axis);
+        Transformable::Point3d axis{hitPos.x - lightPos.x, hitPos.y - lightPos.y, hitPos.z - lightPos.z};
+        setAxis(axis.normalize());
         _hittedPrimitive = primitive;
         _state = State::LIGHT;
     }
