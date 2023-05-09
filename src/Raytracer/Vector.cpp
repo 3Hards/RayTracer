@@ -24,11 +24,7 @@ void Raytracer::Vector::setPrimitives(std::vector<std::shared_ptr<Transformable:
 
 double Raytracer::Vector::getScalarRI()
 {
-    Transformable::Point3d normal = normalize(_normal);
-    Transformable::Point3d axis = normalize(_axis);
-    Transformable::Point3d R = {2 * _scalarNL * normal.x - axis.x, 2 * _scalarNL * normal.y - axis.y,  2 * _scalarNL * normal.z - axis.z};
-
-    return computeScalarProduct(R, _incident);
+    return (2 * _scalarNL * _normal.normalize() - _axis.normalize()).dot(_incident);
 }
 
 Transformable::Point3d Raytracer::Vector::getLightColor()
@@ -36,17 +32,6 @@ Transformable::Point3d Raytracer::Vector::getLightColor()
     std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
 
     return _light->getLightColor(vector);
-}
-
-Transformable::Point3d Raytracer::Vector::normalize(Transformable::Point3d toNormalize)
-{
-    double length = std::sqrt(toNormalize.x * toNormalize.x + toNormalize.y * toNormalize.y + toNormalize.z * toNormalize.z);
-    return {toNormalize.x / length, toNormalize.y / length, toNormalize.z / length};
-}
-
-Transformable::Point3d Raytracer::Vector::normalize()
-{
-    return normalize(_axis);
 }
 
 void Raytracer::Vector::hitPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive> primitive)
@@ -59,14 +44,6 @@ void Raytracer::Vector::hitPrimitive(std::shared_ptr<Transformable::Primitive::I
     compute();
 }
 
-double Raytracer::Vector::computeScalarProduct(Transformable::Point3d fst, Transformable::Point3d scd)
-{
-    fst = normalize(fst);
-    scd = normalize(scd);
-    double res = fst.x * scd.x + fst.y * scd.y + fst.z * scd.z;
-    return res > 1 ? 1 : res;
-}
-
 void Raytracer::Vector::compute()
 {
     Transformable::Point3d ambientLightColor = _light->getAmbientLightColor();
@@ -77,7 +54,7 @@ void Raytracer::Vector::compute()
         ambientLightColor.z * materialBaseColor.z
     };
     _normal = _hittedPrimitive->getNormalVector();
-    _scalarNL = computeScalarProduct(_normal, _axis);
+    _scalarNL = _normal.dot(_axis);
     if (_scalarNL < 0) {
         _res = Display::Color{0, 0, 0};
         return;

@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** RayTracer
 ** File description:
-** ALight header
+** Ambient
 */
 
 #include "Ambient.hpp"
