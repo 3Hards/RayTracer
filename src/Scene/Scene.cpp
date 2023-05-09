@@ -48,16 +48,16 @@ namespace Scene {
         for (auto event : events) {
 
             if (event == Display::Event::KEYBORD_Z_PRESSED) {
-                _cameras[0]->moveForward(5);
+                _cameras[0]->moveForward(2);
             }
             if (event == Display::Event::KEYBORD_S_PRESSED) {
-                _cameras[0]->moveForward(-5);
+                _cameras[0]->moveForward(-2);
             }
             if (event == Display::Event::KEYBORD_Q_PRESSED) {
-                _cameras[0]->moveRight(-5);
+                _cameras[0]->moveRight(-2);
             }
             if (event == Display::Event::KEYBORD_D_PRESSED) {
-                _cameras[0]->moveRight(5);
+                _cameras[0]->moveRight(2);
             }
             if (event == Display::Event::KEYBORD_I_PRESSED) {
                 _cameras[0]->rotateY(-5);
@@ -80,10 +80,10 @@ namespace Scene {
             }
 
             if (event == Display::Event::KEYBORD_SPACE_PRESSED) {
-                _cameras[0]->moveUp(5);
+                _cameras[0]->moveUp(2);
             }
             if (event == Display::Event::KEYBORD_SHIFT_PRESSED) {
-                _cameras[0]->moveUp(-5);
+                _cameras[0]->moveUp(-2);
             }
 
             if (event == Display::Event::KEYBORD_R_PRESSED) {
