@@ -14,10 +14,6 @@ Transformable::Primitive::Sphere::Sphere(Point3d pos, double _ray, std::shared_p
 {
 }
 
-double dot(const Transformable::Point3d& a, const Transformable::Point3d& b) {
-    return a.x * b.x + a.y * b.y + a.z * b.z;
-}
-
 bool Transformable::Primitive::Sphere::checkHit(std::shared_ptr<Raytracer::IVector> vector)
 {
     Point3d vectorPos = vector->getPos();
