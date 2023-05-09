@@ -14,7 +14,7 @@
 #include "ILight.hpp"
 
 Raytracer::Vector::Vector(Transformable::Point3d pos, Transformable::Point3d axis)
-    : ATransformable(pos, axis), _res({0, 0, 0}), _incident({0, 0, 0}), _state(State::INCIDENT)
+    : ATransformable(pos, axis), _res({0, 0, 0}), _incident({0, 0, 0})
 {}
 
 void Raytracer::Vector::setPrimitives(std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> primitives)
@@ -33,7 +33,9 @@ double Raytracer::Vector::getScalarRI()
 
 Transformable::Point3d Raytracer::Vector::getLightColor()
 {
-    return _light->getLightColor();
+    std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
+
+    return _light->getLightColor(vector);
 }
 
 Transformable::Point3d Raytracer::Vector::normalize(Transformable::Point3d toNormalize)
@@ -49,29 +51,12 @@ Transformable::Point3d Raytracer::Vector::normalize()
 
 void Raytracer::Vector::hitPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive> primitive)
 {
-    if (_state == State::INCIDENT) {
-        Transformable::Point3d hitPos = getPos();
-        Transformable::Point3d lightPos = _light->getPos();
-        Transformable::Point3d axis{hitPos.x - lightPos.x, hitPos.y - lightPos.y, hitPos.z - lightPos.z};
-        setAxis(axis.normalize());
-        _hittedPrimitive = primitive;
-        _state = State::LIGHT;
-    }
-}
-
-void Raytracer::Vector::checkHitPrimitives()
-{
-    std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
-
-    for (auto primitive : _primitives) {
-        if (_hittedPrimitive != primitive && primitive->checkHit(vector)) {
-            hitPrimitive(primitive);
-            return;
-        }
-    }
-    //see later for nearest primitive
-    _res = Display::Color{0, 0, 0};
-    _state = State::STOP;
+    Transformable::Point3d hitPos = getPos();
+    Transformable::Point3d lightPos = _light->getPos();
+    Transformable::Point3d axis{hitPos.x - lightPos.x, hitPos.y - lightPos.y, hitPos.z - lightPos.z};
+    setAxis(axis.normalize());
+    _hittedPrimitive = primitive;
+    compute();
 }
 
 double Raytracer::Vector::computeScalarProduct(Transformable::Point3d fst, Transformable::Point3d scd)
@@ -95,10 +80,9 @@ void Raytracer::Vector::compute()
     _scalarNL = computeScalarProduct(_normal, _axis);
     if (_scalarNL < 0) {
         _res = Display::Color{0, 0, 0};
-        _state = State::STOP;
         return;
     }
-    Transformable::Point3d lightColor = _light->getLightColor();
+    Transformable::Point3d lightColor = getLightColor();
     Transformable::Point3d diffuse = {lightColor.x * materialBaseColor.x * _scalarNL, lightColor.y * materialBaseColor.y * _scalarNL, lightColor.z * materialBaseColor.z * _scalarNL};
     Transformable::Point3d specular = _hittedPrimitive->getSpecular();
     _res = Display::Color{(int)((ambient.x + diffuse.x + specular.x) * 255), (int)((ambient.y + diffuse.y + specular.y) * 255), (int)((ambient.z + diffuse.z + specular.z) * 255)};
@@ -115,34 +99,17 @@ int Raytracer::Vector::checkValue(double value)
     return (int)value;
 }
 
-void Raytracer::Vector::checkHitLight()
-{
-    std::unique_ptr<Raytracer::IVector> vector = std::make_unique<Raytracer::Vector>(*this);
-    std::shared_ptr<Raytracer::IVector> SharedVector = shared_from_this();
-
-    if (_light->checkHit(vector)) {
-        /* don't work because we need to keep the nearest primitive
-        for (auto primitive : _primitives) {
-            if (primitive != _hittedPrimitive && primitive->checkHit(SharedVector)) {
-                _res = Display::Color{0, 0, 0};
-                _state = State::STOP;
-                return;
-            }
-        }
-        */
-        compute();
-    } else {
-        _res = Display::Color{0, 0, 0};
-    }
-}
-
 void Raytracer::Vector::run()
 {
-    checkHitPrimitives();
-    if (_state == State::STOP) {
-        return;
+    std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
+
+    for (auto primitive : _primitives) {
+        if (_hittedPrimitive != primitive && primitive->checkHit(vector)) {
+            hitPrimitive(primitive);
+            return;
+        }
     }
-    checkHitLight();
+    _res = Display::Color{0, 0, 0};
 }
 
 Display::Color Raytracer::Vector::computeColor(std::shared_ptr<Transformable::Light::ILight> light)
@@ -154,7 +121,6 @@ Display::Color Raytracer::Vector::computeColor(std::shared_ptr<Transformable::Li
     _distances.clear();
     _light.reset();
     _hittedPrimitive.reset();
-    _state = State::INCIDENT;
     _scalarNL = 0;
     return _res;
 }
