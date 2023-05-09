@@ -130,8 +130,6 @@ namespace Scene {
         if (_lights.size() == 0 || _primitives.size() == 0 || _cameras.size() == 0) {
             return;
         }
-        unsigned int camWidth = _cameras[0]->getWidth();
-        unsigned int camHeight = _cameras[0]->getHeight();
         std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[0]->getPos(), Transformable::Point3d{0, 0, 0});
         vector->setPrimitives(_primitives);
         computeVectors(vector);
