@@ -5,6 +5,7 @@
 ** main
 */
 
+#include <iostream>
 #include "Vector.hpp"
 #include "Camera.hpp"
 #include "Scene.hpp"
@@ -14,6 +15,7 @@
 #include "Director.hpp"
 #include "FlatColor.hpp"
 #include "Translation.hpp"
+#include "Rotation.hpp"
 
 int main()
 {
