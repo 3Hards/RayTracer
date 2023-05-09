@@ -33,30 +33,30 @@ namespace Transformable {
                     Point3d axis = {0, 0, 0},
                     unsigned int width = 1920,
                     unsigned int height = 1080,
-                    double fov = 90
+                    unsigned int fov = 90
                 );
                 Point3d getPos() final;
                 Point3d getAxis() final;
                 void setPos(Point3d pos) final;
                 void setAxis(Point3d axis) final;
-                Point3d computeAxis(int x, int y) final;
+                Point3d getRayAxis(int x, int y);
                 unsigned int getWidth() const final;
                 unsigned int getHeight() const final;
-                Point3d getOrigin() const final;
+                void moveForward(double distance);
+                void moveRight(double distance);
+                void moveUp(double distance);
+                void rotateX(double angle);
+                void rotateY(double angle);
+                void rotateZ(double angle);
 
             private:
+                unsigned int _fov;
                 unsigned int _width;
                 unsigned int _height;
-                double _camFov;
-                double f;
-                double m11, m12, m13;
-                double m21, m22, m23;
-                double m31, m32, m33;
-                double m41, m42, m43;
-                //Point3d _m1;
-                //Point3d _m2;
-                //Point3d _m3;
-                //Point3d _m4;
+                double _aspectRatio;
+                double _fovScale;
+                Point3d _cameraDirection;
+                Point3d _cameraUp;
         };
     }
 }
