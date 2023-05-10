@@ -8,6 +8,7 @@
 #ifdef _WIN32
     #define _USE_MATH_DEFINES
 #endif
+#include <algorithm>
 #include <cmath>
 #include <array>
 #include "Vector.hpp"
@@ -77,13 +78,18 @@ int Raytracer::Vector::checkValue(double value)
 void Raytracer::Vector::run()
 {
     std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
+    std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> hittedPrimitives;
+    std::vector<double> hittedPrimitivesDistances;
 
     for (auto primitive : _primitives) {
-        if (_hittedPrimitive != primitive && primitive->checkHit(vector)) {
-            hitPrimitive(primitive);
-            return;
+        if (primitive->checkHit(vector)) {
+            hittedPrimitives.push_back(primitive);
+            Transformable::Point3d hitPoint;
+            hittedPrimitivesDistances.push_back();
         }
     }
+    
+    hitPrimitive(_primitives[0]);
     _res = Display::Color{0, 0, 0};
 }
 
