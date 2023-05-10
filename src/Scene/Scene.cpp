@@ -5,8 +5,12 @@
 ** Scene
 */
 
+#include <iostream>
 #include <cmath>
+#include <functional>
+#include <unordered_map>
 #include "Scene.hpp"
+#include "ILibGraphicHandler.hpp"
 #include "ITransformable.hpp"
 #include "LightCalculator.hpp"
 #include "LibGraphicHandler.hpp"
@@ -39,22 +43,63 @@ namespace Scene {
         _transformations.push_back(transformation);
     }
 
-    void Scene::computeVectors(unsigned int camWidth, unsigned int camHeight)
-    {
-        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[0]->getPos(), Transformable::Point3d{0, 0, 0});
-        vector->setPrimitives(_primitives);
-        Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[0]->getWidth(), _cameras[0]->getHeight());
+    const std::unordered_map<Display::Event, std::function<void(std::shared_ptr<Transformable::Camera::ICamera>&)>> _eventMappings = {
+        { Display::Event::KEYBORD_Z_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveForward(2); }},
+        { Display::Event::KEYBORD_S_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveForward(-2); }},
+        { Display::Event::KEYBORD_Q_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveRight(-2); }},
+        { Display::Event::KEYBORD_D_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveRight(2); }},
+        { Display::Event::KEYBORD_I_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateY(-2); }},
+        { Display::Event::KEYBORD_K_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateY(2); }},
+        { Display::Event::KEYBORD_J_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateZ(-2); }},
+        { Display::Event::KEYBORD_L_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateZ(2); }},
+        { Display::Event::KEYBORD_A_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateX(-2); }},
+        { Display::Event::KEYBORD_E_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateX(2); }},
+        { Display::Event::KEYBORD_SPACE_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveUp(2); }},
+        { Display::Event::KEYBORD_SHIFT_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveUp(-2); }}
+    };
 
-        for (unsigned int y = 0; y < camHeight; y++) {
-            for (unsigned int x = 0; x < camWidth; x++) {
-                vector->setPos(_cameras[0]->getPos());
-                vector->setAxis(_cameras[0]->getRayAxis((int)x, (int)y));
-                Raytracer::LightCalculator calculator(vector, _lights[0]);
-                Display::Point2i pixelPos = {(int)x, (int)y};
-                libGraphicHandler.addPixelToImage(createPixel(calculator.computePixel(), pixelPos));
+    void Scene::handle_events(Display::LibGraphicHandler &libGraphicHandler)
+    {
+        std::vector<Display::Event> events = libGraphicHandler.getEvents();
+        
+        for (auto event : events) {
+            if (_eventMappings.find(event) != _eventMappings.end()) {
+                _eventMappings.at(event)(_cameras[0]);
             }
         }
-        libGraphicHandler.exportImage();
+        for (auto event : events) {
+            if (event == Display::Event::KEYBORD_R_PRESSED) {
+                libGraphicHandler.exportImage();
+            }
+            if (event == Display::Event::KEYBORD_ESCAPE_PRESSED) {
+                libGraphicHandler.closeWindow();
+            }
+            if (event == Display::Event::WINDOW_RESIZED) {
+                std::pair<unsigned int, unsigned int> windowSize = libGraphicHandler.getWindowSize();
+                _cameras[0]->setWidth(windowSize.first);
+                _cameras[0]->setHeight(windowSize.second);
+            }
+        }
+    }
+
+    void Scene::computeVectors(std::shared_ptr<Raytracer::IVector> vector)
+    {
+        Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[0]->getWidth(), _cameras[0]->getHeight());
+        libGraphicHandler.createWindow("Raytracer", _cameras[0]->getWidth(), _cameras[0]->getHeight());
+
+        while (libGraphicHandler.isWindowOpen()) {
+            for (unsigned int y = 0; y < _cameras[0]->getHeight(); y++) {
+                for (unsigned int x = 0; x < _cameras[0]->getWidth(); x++) {
+                    vector->setPos(_cameras[0]->getPos());
+                    vector->setAxis(_cameras[0]->getRayAxis((int)x, (int)y));
+                    Raytracer::LightCalculator calculator(vector, _lights[0]);
+                    Display::Point2i pixelPos = {(int)x, (int)y};
+                    libGraphicHandler.addPixelToBuffer(createPixel(calculator.computePixel(), pixelPos));
+                }
+            }
+            handle_events(libGraphicHandler);
+            libGraphicHandler.refreshWindow();
+        }
     }
 
     void Scene::playScene(std::string const &filename)
@@ -64,9 +109,9 @@ namespace Scene {
         if (_lights.size() == 0 || _primitives.size() == 0 || _cameras.size() == 0) {
             return;
         }
-        unsigned int camWidth = _cameras[0]->getWidth();
-        unsigned int camHeight = _cameras[0]->getHeight();
-        computeVectors(camWidth, camHeight);
+        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[0]->getPos(), Transformable::Point3d{0, 0, 0});
+        vector->setPrimitives(_primitives);
+        computeVectors(vector);
     }
 
     Display::Pixel Scene::createPixel(Display::Color color, Display::Point2i position)

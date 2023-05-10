@@ -53,6 +53,8 @@ else()
     target_link_libraries(${PROJECT_NAME} PRIVATE
         config++
         sfml-graphics
+        sfml-window
+        sfml-system
     )
 
 endif()
