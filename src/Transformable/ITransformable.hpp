@@ -16,7 +16,7 @@ namespace Transformable {
             double y;
             double z;
 
-        Point3d normalize() const;
+        Point3d normalize();
         double dot(Point3d v) const;
         Point3d cross(Point3d v) const;
         double length() const;
