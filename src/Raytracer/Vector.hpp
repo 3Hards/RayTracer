@@ -24,13 +24,9 @@ namespace Raytracer {
             void setPos(Transformable::Point3d pos) final;
             void setAxis(Transformable::Point3d axis) final;
         private:
-            double computeScalarProduct(Transformable::Point3d fst, Transformable::Point3d scd);
             void compute();
             void run();
-            Transformable::Point3d normalize(Transformable::Point3d);
-            Transformable::Point3d normalize();
             void hitPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive>);
-            void checkHitPrimitives();
             int checkValue(double value);
 
             double _scalarNL;
