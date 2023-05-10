@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.25)
 
+set(PROJECT_NAME raytracer)
+
 project(
-    Raytracer
+    ${PROJECT_NAME}
     VERSION 1.0
     DESCRIPTION "Tek2 | OOP | Raytracer"
     LANGUAGES CXX
@@ -11,20 +13,70 @@ project(
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(LIBDIR ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/lib)
+
+add_executable(${PROJECT_NAME})
 
 if(UNIX)
-    add_compile_options(-Wall -Wextra -Werror)
+    target_compile_options(${PROJECT_NAME} PRIVATE -W -Wall -Wextra -Werror)
 elseif(WIN32)
-    add_compile_options(/W4)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4)
 endif()
 
-add_executable(raytracer ${SRC_DIR}/main.cpp)
+##################### lib ##########################
 
-##################### CUSTUM CMD ##########################
+if (WIN32)
+    
+    include(ExternalProject)
+
+    include("Dependencies/build-libconfig.cmake")
+    include("Dependencies/build-SFML.cmake")
+
+    target_include_directories(
+        ${PROJECT_NAME} PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/lib/include
+    )
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        ${LIBDIR}/lib/libconfig.lib
+        ${LIBDIR}/lib/libconfig++.lib
+        ${LIBDIR}/lib/sfml-graphics-d.lib
+        ${LIBDIR}/lib/sfml-window-d.lib
+        ${LIBDIR}/lib/sfml-system-d.lib
+    )
+
+else()
+
+    find_library(SFML_GRAPHICS sfml-graphics)
+    find_library(LIBCONFIG++ libconfig++)
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        config++
+        sfml-graphics
+        sfml-window
+        sfml-system
+    )
+
+endif()
+
+##################### SRC #################################
+
+add_subdirectory(src)
+
+##################### CUSTOM CMD ##########################
 
 add_custom_command(
-    TARGET raytracer
+    TARGET ${PROJECT_NAME}
     POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:raytracer> ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+if (WIN32)
+
+    add_custom_command(
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBDIR}/bin ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+
+endif()

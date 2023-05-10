@@ -6,5 +6,10 @@
 build/*
 lib/*
 *.sln
+CMakeFiles
+CMakeCache.txt
+Makefile
+cmake_install.cmake
 /raytracer
 *.exe
+Dependencies/lib/*

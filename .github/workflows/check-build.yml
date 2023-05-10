@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - '*'
+      - '!main'
   pull_request:
     branches:
       - '*'
@@ -14,6 +15,9 @@ jobs:
     container: epitechcontent/epitest-docker:latest
     steps:
       - uses: actions/checkout@v2
+      - name: install-Libconfig++
+        run: |
+          sudo dnf install -y libconfig-devel
       - name: Build
         run: |
           set -e
@@ -25,3 +29,18 @@ jobs:
         run: |
           set -e
           ls -l raytracer
+
+  windows-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build .
+          cd ..
+      - name: Check Files
+        run: |
+          ls -l raytracer.exe
