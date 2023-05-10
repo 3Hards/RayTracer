@@ -12,7 +12,7 @@
 
 int App::run(std::list<std::string> args)
 {
-    if (args.size() != 1) {
+    if (args.size() < 1) {
         std::cerr << "Usage: ./raytracer [config_file]" << std::endl;
         return 84;
     }

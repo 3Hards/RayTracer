@@ -19,11 +19,6 @@ Scene::Director::Director(std::string pathFile)
     const libconfig::Setting& elements = root["elements"];
     libconfig::Setting& list = elements["list"];
     _builder = std::make_shared<Builder>(list);
-
-}
-
-Scene::Director::~Director()
-{
 }
 
 bool Scene::Director::playScene()
