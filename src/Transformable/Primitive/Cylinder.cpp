@@ -2,19 +2,18 @@
 ** EPITECH PROJECT, 2023
 ** RayTracer
 ** File description:
-** Sphere
+** Cylinder
 */
 
-#include <cmath>
-#include <memory>
-#include "Sphere.hpp"
-#include "Vector.hpp"
+#include "Cylinder.hpp"
 
-Transformable::Primitive::Sphere::Sphere(Point3d pos, double _ray, std::shared_ptr<Material::IMaterial> material) : Transformable::Primitive::APrimitive(material, pos, {90, 0, 0}), _ray(_ray)
+
+Transformable::Primitive::Cylinder::Cylinder(Point3d pos, Point3d axis, double ray, double height, std::shared_ptr<Material::IMaterial> material) : Transformable::Primitive::APrimitive(material, pos, {0, 0, 0}), _ray(ray), _height(height), _axis(axis)
 {
+    _axis.normalize();
 }
 
-bool Transformable::Primitive::Sphere::checkHit(std::shared_ptr<Raytracer::IVector> vector)
+bool Transformable::Primitive::Cylinder::checkHit(std::shared_ptr<Raytracer::IVector> vector)
 {
     Point3d vectorPos = vector->getPos();
     Point3d vectorAxis = vector->getAxis();
@@ -38,7 +37,7 @@ bool Transformable::Primitive::Sphere::checkHit(std::shared_ptr<Raytracer::IVect
     return true;
 }
 
-Transformable::Point3d Transformable::Primitive::Sphere::getNormalVector()
+Transformable::Point3d Transformable::Primitive::Cylinder::getNormalVector()
 {
     Transformable::Point3d lastHit = _lastHittedVector->getPos();
     Transformable::Point3d pos = getPos();
