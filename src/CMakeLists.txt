@@ -4,6 +4,7 @@ target_include_directories(raytracer PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 
 target_sources(raytracer PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/App.cpp"
 )
 
 add_subdirectory(Transformable)
