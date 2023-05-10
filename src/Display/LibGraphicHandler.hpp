@@ -30,7 +30,6 @@ namespace Display {
         private:
             void clearWindow();
             bool folderChecker();
-            void bindEvent();
             void checkKeyboardEvents();
             void checkOtherEvents();
             std::string _fileName;
