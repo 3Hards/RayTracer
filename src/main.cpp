@@ -5,20 +5,10 @@
 ** main
 */
 
-#include "Vector.hpp"
-#include "Camera.hpp"
-#include "Scene.hpp"
-#include "Ambient.hpp"
-#include "Sphere.hpp"
-#include "Plane.hpp"
-#include "FlatColor.hpp"
-#include "Translation.hpp"
-#include "Rotation.hpp"
-#include "Director.hpp"
+#include "App.hpp"
 
-int main()
+int main(int, char **av)
 {
-    Scene::Director director("Config/test.cfg");
-    director.playScene();
-    return 0;
+    App app;
+    return app.run(av);
 }
