@@ -26,9 +26,9 @@ Scene::Director::~Director()
 {
 }
 
-void Scene::Director::playScene()
+bool Scene::Director::playScene()
 {
     std::string _path = _pathFile.substr(_pathFile.find_last_of("/") + 1);
     _path = _path.substr(0, _path.find_last_of("."));
-    _builder->getScene()->playScene(_path);
+    return _builder->getScene()->playScene(_path);
 }
