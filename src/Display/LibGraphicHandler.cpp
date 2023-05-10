@@ -6,6 +6,7 @@
 */
 
 #include <filesystem>
+#include <fstream>
 #include "LibGraphicHandler.hpp"
 
 namespace Display {
@@ -81,11 +82,28 @@ namespace Display {
         );
     }
 
+    void LibGraphicHandler::saveToPPM(std::string _filePath)
+    {
+        std::ofstream file(_filePath);
+
+        file << "P3" << std::endl;
+        file << _width << " " << _height << std::endl;
+        file << "255" << std::endl;
+        for (unsigned int y = 0; y < _height; y++) {
+            for (unsigned int x = 0; x < _width; x++) {
+                sf::Color color = _image.getPixel(x, y);
+                file << (int)color.r << " " << (int)color.g << " " << (int)color.b << " ";
+            }
+            file << std::endl;
+        }
+        file.close();
+    }
+
     void LibGraphicHandler::exportImage()
     {
         if (folderChecker() == true) {
-            std::string _filePath = "./screenshots/" + _fileName + ".png";
-            _image.saveToFile(_filePath);
+            std::string _filePath = "./screenshots/" + _fileName + ".ppm";
+            saveToPPM(_filePath);
         }
     }
 
