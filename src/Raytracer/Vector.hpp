@@ -16,7 +16,7 @@ namespace Raytracer {
         public:
             Vector(Transformable::Point3d pos, Transformable::Point3d axis);
             void setPrimitives(std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>>) final;
-            Display::Color computeColor(std::shared_ptr<Transformable::Light::ILight> light) final;
+            Display::Color computeColor(std::vector<std::shared_ptr<Transformable::Light::ILight>> lights) final;
             double getScalarRI() final;
             Transformable::Point3d getLightColor() final;
             Transformable::Point3d getPos() final;
@@ -34,9 +34,8 @@ namespace Raytracer {
             int checkValue(double value);
 
             double _scalarNL;
-            Display::Color _res;
+            Transformable::Point3d _res;
             Transformable::Point3d _incident;
-            std::vector<double> _distances;
             std::shared_ptr<Transformable::Light::ILight> _light;
             std::shared_ptr<Transformable::Primitive::IPrimitive> _hittedPrimitive;
             Transformable::Point3d _normal;

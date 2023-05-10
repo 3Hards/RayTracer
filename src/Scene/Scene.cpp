@@ -12,7 +12,6 @@
 #include "Scene.hpp"
 #include "ILibGraphicHandler.hpp"
 #include "ITransformable.hpp"
-#include "LightCalculator.hpp"
 #include "LibGraphicHandler.hpp"
 #include "IVector.hpp"
 #include "Vector.hpp"
@@ -92,7 +91,6 @@ namespace Scene {
                 for (unsigned int x = 0; x < _cameras[0]->getWidth(); x++) {
                     vector->setPos(_cameras[0]->getPos());
                     vector->setAxis(_cameras[0]->getRayAxis((int)x, (int)y));
-                    Raytracer::LightCalculator calculator(vector, _lights[0]);
                     Display::Point2i pixelPos = {(int)x, (int)y};
                     libGraphicHandler.addPixelToBuffer(createPixel(calculator.computePixel(), pixelPos));
                 }

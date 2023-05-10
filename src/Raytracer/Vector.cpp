@@ -79,13 +79,13 @@ void Raytracer::Vector::compute()
     _normal = _hittedPrimitive->getNormalVector();
     _scalarNL = computeScalarProduct(_normal, _axis);
     if (_scalarNL < 0) {
-        _res = Display::Color{0, 0, 0};
+        _res = Transformable::Point3d{0, 0, 0};
         return;
     }
     Transformable::Point3d lightColor = getLightColor();
     Transformable::Point3d diffuse = {lightColor.x * materialBaseColor.x * _scalarNL, lightColor.y * materialBaseColor.y * _scalarNL, lightColor.z * materialBaseColor.z * _scalarNL};
     Transformable::Point3d specular = _hittedPrimitive->getSpecular();
-    _res = Display::Color{(int)((ambient.x + diffuse.x + specular.x) * 255), (int)((ambient.y + diffuse.y + specular.y) * 255), (int)((ambient.z + diffuse.z + specular.z) * 255)};
+    _res = ambient + diffuse + specular;
 }
 
 int Raytracer::Vector::checkValue(double value)
@@ -109,20 +109,21 @@ void Raytracer::Vector::run()
             return;
         }
     }
-    _res = Display::Color{0, 0, 0};
+    _res = Transformable::Point3d{0, 0, 0};
 }
 
-Display::Color Raytracer::Vector::computeColor(std::shared_ptr<Transformable::Light::ILight> light)
+Display::Color Raytracer::Vector::computeColor(std::vector<std::shared_ptr<Transformable::Light::ILight>> lights)
 {
-    _light = light;
-    _incident = _axis;
-    run();
+    Transformable::Point3d res{0, 0, 0};
 
-    _distances.clear();
-    _light.reset();
-    _hittedPrimitive.reset();
-    _scalarNL = 0;
-    return _res;
+    _incident = _axis;
+    for (auto light : lights) {
+        _light = light;
+        run();
+        res = res + _res;
+    }
+    res = res * 255;
+    return Display::Color((int)res.x, (int)res.y, (int)res.z);
 }
 
 Transformable::Point3d Raytracer::Vector::getPos()
