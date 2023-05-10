@@ -92,29 +92,29 @@ Transformable::Primitive::Cone::Cone(Point3d pos, double height, double angle, d
 // }
 
 
-// bool Transformable::Primitive::Cone::checkHit(std::shared_ptr<Raytracer::IVector> vector)
-// {
-//     Point3d vectorPos = vector->getPos();
-//     Point3d vectorAxis = vector->getAxis();
+bool Transformable::Primitive::Cone::checkHit(std::shared_ptr<Raytracer::IVector> vector)
+{
+    Point3d vectorPos = vector->getPos();
+    Point3d vectorAxis = vector->getAxis();
 
-//     double a = vectorAxis.x * vectorAxis.x + vectorAxis.y * vectorAxis.y - _cosAngle * _cosAngle * vectorAxis.z * vectorAxis.z;
-//     Point3d dist = vectorPos - getPos();
-//     double b = 2.0 * (vectorAxis.x * dist.x + vectorAxis.y * dist.y - _cosAngle * _cosAngle * vectorAxis.z * dist.z);
-//     double c = dist.x * dist.x + dist.y * dist.y - _cosAngle * _cosAngle * dist.z * dist.z;
-//     double discriminant = b * b - 4.00 * a * c;
+    double a = vectorAxis.x * vectorAxis.x + vectorAxis.y * vectorAxis.y - _cosAngle * _cosAngle * vectorAxis.z * vectorAxis.z;
+    Point3d dist = vectorPos - getPos();
+    double b = 2.0 * (vectorAxis.x * dist.x + vectorAxis.y * dist.y - _cosAngle * _cosAngle * vectorAxis.z * dist.z);
+    double c = dist.x * dist.x + dist.y * dist.y - _cosAngle * _cosAngle * dist.z * dist.z;
+    double discriminant = b * b - 4.00 * a * c;
 
-//     if (discriminant < 0) {
-//         return false;
-//     }
-//     double t = (-b - std::sqrt(discriminant)) / (2.0 * a);
-//     if (t < 0) {
-//         return false;
-//     }
-//     _lastHittedVector = vector;
-//     Point3d hitPos = vectorPos + vectorAxis * t;
-//     vector->setPos(hitPos);
-//     return true;
-// }
+    if (discriminant < 0) {
+        return false;
+    }
+    double t = (-b - std::sqrt(discriminant)) / (2.0 * a);
+    if (t < 0) {
+        return false;
+    }
+    _lastHittedVector = vector;
+    Point3d hitPos = vectorPos + vectorAxis * t;
+    vector->setPos(hitPos);
+    return true;
+}
 
 
 
