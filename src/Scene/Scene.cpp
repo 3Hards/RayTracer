@@ -43,13 +43,28 @@ namespace Scene {
         _transformations.push_back(transformation);
     }
 
+    const std::unordered_map<Display::Event, std::function<void(std::shared_ptr<Transformable::Camera::ICamera>&)>> _eventMappings = {
+        { Display::Event::KEYBORD_Z_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveForward(2); }},
+        { Display::Event::KEYBORD_S_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveForward(-2); }},
+        { Display::Event::KEYBORD_Q_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveRight(-2); }},
+        { Display::Event::KEYBORD_D_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveRight(2); }},
+        { Display::Event::KEYBORD_I_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateY(-2); }},
+        { Display::Event::KEYBORD_K_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateY(2); }},
+        { Display::Event::KEYBORD_J_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateZ(-2); }},
+        { Display::Event::KEYBORD_L_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateZ(2); }},
+        { Display::Event::KEYBORD_A_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateX(-2); }},
+        { Display::Event::KEYBORD_E_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateX(2); }},
+        { Display::Event::KEYBORD_SPACE_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveUp(2); }},
+        { Display::Event::KEYBORD_SHIFT_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveUp(-2); }}
+    };
+
     void Scene::handle_events(Display::LibGraphicHandler &libGraphicHandler)
     {
         std::vector<Display::Event> events = libGraphicHandler.getEvents();
         
-        for (auto eventMapping : _eventMappings) {
-            if (std::find(events.begin(), events.end(), eventMapping.first) != events.end()) {
-                eventMapping.second(_cameras[0]);
+        for (auto event : events) {
+            if (_eventMappings.find(event) != _eventMappings.end()) {
+                _eventMappings.at(event)(_cameras[0]);
             }
         }
         for (auto event : events) {
@@ -66,21 +81,6 @@ namespace Scene {
             }
         }
     }
-
-    const std::unordered_map<Display::Event, std::function<void(std::shared_ptr<Transformable::Camera::ICamera>&)>> _eventMappings = {
-        { Display::Event::KEYBORD_Z_PRESSED, [&](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveForward(2); }},
-        { Display::Event::KEYBORD_S_PRESSED, [&](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveForward(-2); }},
-        { Display::Event::KEYBORD_Q_PRESSED, [&](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveRight(-2); }},
-        { Display::Event::KEYBORD_D_PRESSED, [&](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveRight(2); }},
-        { Display::Event::KEYBORD_I_PRESSED, [&](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateY(-2); }},
-        { Display::Event::KEYBORD_K_PRESSED, [&](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateY(2); }},
-        { Display::Event::KEYBORD_J_PRESSED, [&](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateZ(-2); }},
-        { Display::Event::KEYBORD_L_PRESSED, [&](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateZ(2); }},
-        { Display::Event::KEYBORD_A_PRESSED, [&](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateX(-2); }},
-        { Display::Event::KEYBORD_E_PRESSED, [&](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateX(2); }},
-        { Display::Event::KEYBORD_SPACE_PRESSED, [&](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveUp(2); }},
-        { Display::Event::KEYBORD_SHIFT_PRESSED, [&](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveUp(-2); }}
-    };
 
     void Scene::computeVectors(std::shared_ptr<Raytracer::IVector> vector)
     {
