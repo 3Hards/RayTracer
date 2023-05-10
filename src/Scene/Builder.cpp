@@ -12,6 +12,7 @@
 #include "FlatColor.hpp"
 #include "Ambient.hpp"
 #include "Plane.hpp"
+#include "Directional.hpp"
 
 namespace Scene
 {
@@ -83,6 +84,24 @@ namespace Scene
         z = setting.lookup("z");
         brightness = setting.lookup("brightness");
         std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Ambient>(Display::Color{255, 255, 255}, brightness, Transformable::Point3d{(double)x, (double)y, (double)z});
+        _scene->addLight(light);
+    }
+
+    void Builder::createDirectionalLight(libconfig::Setting& setting)
+    {
+        int x, y, z;
+        double brightness;
+        int ax, ay, az;
+        x = setting.lookup("x");
+        y = setting.lookup("y");
+        z = setting.lookup("z");
+        brightness = setting.lookup("brightness");
+        const libconfig::Setting& axis = setting.lookup("axis");
+        ax = axis.lookup("x");
+        ay = axis.lookup("y");
+        az = axis.lookup("z");
+        std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Directional>(Display::Color{255, 255, 255},
+            brightness, Transformable::Point3d{(double)x, (double)y, (double)z}, Transformable::Point3d{(double)ax, (double)ay, (double)az});
         _scene->addLight(light);
     }
 
