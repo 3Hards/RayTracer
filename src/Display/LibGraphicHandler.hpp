@@ -42,6 +42,5 @@ namespace Display {
             unsigned int _width;
             unsigned int _height;
             std::vector<Display::Event> _events;
-            std::unordered_map<sf::Keyboard::Key, Display::Event> _keyboardMappings;
     };
 }

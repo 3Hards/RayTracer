@@ -15,60 +15,58 @@ namespace Display {
         _height(height)
     {
         _image.create(_width, _height, sf::Color::Black);
-        bindEvent();
     }
 
-    void LibGraphicHandler::bindEvent()
-    {
-        _keyboardMappings[sf::Keyboard::Num1] = Event::KEYBORD_1_PRESSED;
-        _keyboardMappings[sf::Keyboard::Num2] = Event::KEYBORD_2_PRESSED;
-        _keyboardMappings[sf::Keyboard::Num3] = Event::KEYBORD_3_PRESSED;
-        _keyboardMappings[sf::Keyboard::Num4] = Event::KEYBORD_4_PRESSED;
-        _keyboardMappings[sf::Keyboard::Num5] = Event::KEYBORD_5_PRESSED;
-        _keyboardMappings[sf::Keyboard::Num6] = Event::KEYBORD_6_PRESSED;
-        _keyboardMappings[sf::Keyboard::Num7] = Event::KEYBORD_7_PRESSED;
-        _keyboardMappings[sf::Keyboard::Num8] = Event::KEYBORD_8_PRESSED;
-        _keyboardMappings[sf::Keyboard::Num9] = Event::KEYBORD_9_PRESSED;
-        _keyboardMappings[sf::Keyboard::Num0] = Event::KEYBORD_0_PRESSED;
-        _keyboardMappings[sf::Keyboard::A] = Event::KEYBORD_A_PRESSED;
-        _keyboardMappings[sf::Keyboard::B] = Event::KEYBORD_B_PRESSED;
-        _keyboardMappings[sf::Keyboard::C] = Event::KEYBORD_C_PRESSED;
-        _keyboardMappings[sf::Keyboard::D] = Event::KEYBORD_D_PRESSED;
-        _keyboardMappings[sf::Keyboard::E] = Event::KEYBORD_E_PRESSED;
-        _keyboardMappings[sf::Keyboard::F] = Event::KEYBORD_F_PRESSED;
-        _keyboardMappings[sf::Keyboard::G] = Event::KEYBORD_G_PRESSED;
-        _keyboardMappings[sf::Keyboard::H] = Event::KEYBORD_H_PRESSED;
-        _keyboardMappings[sf::Keyboard::I] = Event::KEYBORD_I_PRESSED;
-        _keyboardMappings[sf::Keyboard::J] = Event::KEYBORD_J_PRESSED;
-        _keyboardMappings[sf::Keyboard::K] = Event::KEYBORD_K_PRESSED;
-        _keyboardMappings[sf::Keyboard::L] = Event::KEYBORD_L_PRESSED;
-        _keyboardMappings[sf::Keyboard::M] = Event::KEYBORD_M_PRESSED;
-        _keyboardMappings[sf::Keyboard::N] = Event::KEYBORD_N_PRESSED;
-        _keyboardMappings[sf::Keyboard::O] = Event::KEYBORD_O_PRESSED;
-        _keyboardMappings[sf::Keyboard::P] = Event::KEYBORD_P_PRESSED;
-        _keyboardMappings[sf::Keyboard::Q] = Event::KEYBORD_Q_PRESSED;
-        _keyboardMappings[sf::Keyboard::R] = Event::KEYBORD_R_PRESSED;
-        _keyboardMappings[sf::Keyboard::S] = Event::KEYBORD_S_PRESSED;
-        _keyboardMappings[sf::Keyboard::T] = Event::KEYBORD_T_PRESSED;
-        _keyboardMappings[sf::Keyboard::U] = Event::KEYBORD_U_PRESSED;
-        _keyboardMappings[sf::Keyboard::V] = Event::KEYBORD_V_PRESSED;
-        _keyboardMappings[sf::Keyboard::W] = Event::KEYBORD_W_PRESSED;
-        _keyboardMappings[sf::Keyboard::X] = Event::KEYBORD_X_PRESSED;
-        _keyboardMappings[sf::Keyboard::Y] = Event::KEYBORD_Y_PRESSED;
-        _keyboardMappings[sf::Keyboard::Z] = Event::KEYBORD_Z_PRESSED;
-        _keyboardMappings[sf::Keyboard::Up] = Event::KEYBORD_UP_PRESSED;
-        _keyboardMappings[sf::Keyboard::Down] = Event::KEYBORD_DOWN_PRESSED;
-        _keyboardMappings[sf::Keyboard::Left] = Event::KEYBORD_LEFT_PRESSED;
-        _keyboardMappings[sf::Keyboard::Right] = Event::KEYBORD_RIGHT_PRESSED;
-        _keyboardMappings[sf::Keyboard::Space] = Event::KEYBORD_SPACE_PRESSED;
-        _keyboardMappings[sf::Keyboard::Enter] = Event::KEYBORD_ENTER_PRESSED;
-        _keyboardMappings[sf::Keyboard::BackSpace] = Event::KEYBORD_BACKSPACE_PRESSED;
-        _keyboardMappings[sf::Keyboard::Tab] = Event::KEYBORD_TAB_PRESSED;
-        _keyboardMappings[sf::Keyboard::Escape] = Event::KEYBORD_ESCAPE_PRESSED;
-        _keyboardMappings[sf::Keyboard::LShift] = Event::KEYBORD_SHIFT_PRESSED;
-        _keyboardMappings[sf::Keyboard::LControl] = Event::KEYBORD_CTRL_PRESSED;
-        _keyboardMappings[sf::Keyboard::LAlt] = Event::KEYBORD_ALT_PRESSED;
-    }
+    const std::unordered_map<sf::Keyboard::Key, Display::Event> _keyboardMappings = {
+        {sf::Keyboard::Num1, Event::KEYBORD_1_PRESSED},
+        {sf::Keyboard::Num2, Event::KEYBORD_2_PRESSED},
+        {sf::Keyboard::Num3, Event::KEYBORD_3_PRESSED},
+        {sf::Keyboard::Num4, Event::KEYBORD_4_PRESSED},
+        {sf::Keyboard::Num5, Event::KEYBORD_5_PRESSED},
+        {sf::Keyboard::Num6, Event::KEYBORD_6_PRESSED},
+        {sf::Keyboard::Num7, Event::KEYBORD_7_PRESSED},
+        {sf::Keyboard::Num8, Event::KEYBORD_8_PRESSED},
+        {sf::Keyboard::Num9, Event::KEYBORD_9_PRESSED},
+        {sf::Keyboard::Num0, Event::KEYBORD_0_PRESSED},
+        {sf::Keyboard::A, Event::KEYBORD_A_PRESSED},
+        {sf::Keyboard::B, Event::KEYBORD_B_PRESSED},
+        {sf::Keyboard::C, Event::KEYBORD_C_PRESSED},
+        {sf::Keyboard::D, Event::KEYBORD_D_PRESSED},
+        {sf::Keyboard::E, Event::KEYBORD_E_PRESSED},
+        {sf::Keyboard::F, Event::KEYBORD_F_PRESSED},
+        {sf::Keyboard::G, Event::KEYBORD_G_PRESSED},
+        {sf::Keyboard::H, Event::KEYBORD_H_PRESSED},
+        {sf::Keyboard::I, Event::KEYBORD_I_PRESSED},
+        {sf::Keyboard::J, Event::KEYBORD_J_PRESSED},
+        {sf::Keyboard::K, Event::KEYBORD_K_PRESSED},
+        {sf::Keyboard::L, Event::KEYBORD_L_PRESSED},
+        {sf::Keyboard::M, Event::KEYBORD_M_PRESSED},
+        {sf::Keyboard::N, Event::KEYBORD_N_PRESSED},
+        {sf::Keyboard::O, Event::KEYBORD_O_PRESSED},
+        {sf::Keyboard::P, Event::KEYBORD_P_PRESSED},
+        {sf::Keyboard::Q, Event::KEYBORD_Q_PRESSED},
+        {sf::Keyboard::R, Event::KEYBORD_R_PRESSED},
+        {sf::Keyboard::S, Event::KEYBORD_S_PRESSED},
+        {sf::Keyboard::T, Event::KEYBORD_T_PRESSED},
+        {sf::Keyboard::U, Event::KEYBORD_U_PRESSED},
+        {sf::Keyboard::V, Event::KEYBORD_V_PRESSED},
+        {sf::Keyboard::W, Event::KEYBORD_W_PRESSED},
+        {sf::Keyboard::X, Event::KEYBORD_X_PRESSED},
+        {sf::Keyboard::Y, Event::KEYBORD_Y_PRESSED},
+        {sf::Keyboard::Z, Event::KEYBORD_Z_PRESSED},
+        {sf::Keyboard::Up, Event::KEYBORD_UP_PRESSED},
+        {sf::Keyboard::Down, Event::KEYBORD_DOWN_PRESSED},
+        {sf::Keyboard::Left, Event::KEYBORD_LEFT_PRESSED},
+        {sf::Keyboard::Right, Event::KEYBORD_RIGHT_PRESSED},
+        {sf::Keyboard::Space, Event::KEYBORD_SPACE_PRESSED},
+        {sf::Keyboard::Enter, Event::KEYBORD_ENTER_PRESSED},
+        {sf::Keyboard::BackSpace, Event::KEYBORD_BACKSPACE_PRESSED},
+        {sf::Keyboard::Tab, Event::KEYBORD_TAB_PRESSED},
+        {sf::Keyboard::Escape, Event::KEYBORD_ESCAPE_PRESSED},
+        {sf::Keyboard::LShift, Event::KEYBORD_SHIFT_PRESSED},
+        {sf::Keyboard::LControl, Event::KEYBORD_CTRL_PRESSED},
+        {sf::Keyboard::LAlt, Event::KEYBORD_ALT_PRESSED}
+    };
 
     void LibGraphicHandler::addPixelToBuffer(Pixel pixel)
     {
