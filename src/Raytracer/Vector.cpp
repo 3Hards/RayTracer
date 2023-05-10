@@ -75,29 +75,20 @@ int Raytracer::Vector::checkValue(double value)
     return (int)value;
 }
 
-#include <iostream>
 void Raytracer::Vector::run()
 {
     std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
     std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> hittedPrimitives;
     std::vector<double> hittedPrimitivesDistances;
     std::vector<Transformable::Point3d> hittedPoints;
-    int c = 0;
 
     for (auto primitive : _primitives) {
         if (primitive->checkHit(vector)) {
-            c += 1;
             hittedPrimitives.push_back(primitive);
             Transformable::Point3d sub = _pos - _origin;
             hittedPrimitivesDistances.push_back(sub.length());
             hittedPoints.push_back(_pos);
             _pos = _origin;
-        }
-    }
-    if (c == 2) {
-        std::cout << "double hit" << std::endl;
-        for (auto distance : hittedPrimitivesDistances) {
-            std::cout << distance << std::endl;
         }
     }
     if (hittedPrimitives.size() == 0) {
