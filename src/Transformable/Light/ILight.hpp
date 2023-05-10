@@ -18,7 +18,8 @@ namespace Transformable {
             public:
                 virtual ~ILight() = default;
                 virtual Transformable::Point3d getAmbientLightColor() = 0;
-                virtual Transformable::Point3d getLightColor(std::shared_ptr<Raytracer::IVector>) = 0;
+                virtual Transformable::Point3d getLightColor() = 0;
+                virtual Transformable::Point3d getLightDirection(std::shared_ptr<Raytracer::IVector>) = 0;
         };
     }
 }

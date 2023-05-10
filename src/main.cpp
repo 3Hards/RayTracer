@@ -5,7 +5,6 @@
 ** main
 */
 
-#include <iostream>
 #include "Vector.hpp"
 #include "Camera.hpp"
 #include "Scene.hpp"
@@ -19,7 +18,6 @@
 
 int main()
 {
-
     Scene::Director director("Config/test.cfg");
     director.playScene();
     return 0;
