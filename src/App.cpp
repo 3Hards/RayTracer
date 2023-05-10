@@ -8,19 +8,13 @@
 #include "App.hpp"
 #include "Director.hpp"
 
-App::App()
+int App::run(char **arguments)
 {
-}
-
-App::~App()
-{
-}
-
-int App::run(char **av)
-{
-    if (av[1] == NULL) return 84;
+    if (arguments == NULL || arguments[1] == NULL) {
+        return 84;
+    }
     try {
-        Scene::Director director(av[1]);
+        Scene::Director director(arguments[1]);
         director.playScene();
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -28,4 +22,3 @@ int App::run(char **av)
     }
     return 0;
 }
-

@@ -11,10 +11,5 @@
 
 class App {
     public:
-        App();
-        ~App();
         int run(char **av);
-
-    protected:
-    private:
 };
