@@ -5,10 +5,10 @@
 ** App
 */
 
-#include "App.hpp"
-#include "Director.hpp"
 #include <iostream>
 #include <list>
+#include "App.hpp"
+#include "Director.hpp"
 
 int App::run(std::list<std::string> args)
 {
