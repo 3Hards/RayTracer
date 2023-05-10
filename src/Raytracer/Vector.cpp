@@ -84,17 +84,21 @@ void Raytracer::Vector::run()
     for (auto primitive : _primitives) {
         if (primitive->checkHit(vector)) {
             hittedPrimitives.push_back(primitive);
-            Transformable::Point3d hitPoint;
-            hittedPrimitivesDistances.push_back();
+            Transformable::Point3d sub = _pos - _origin;
+            hittedPrimitivesDistances.push_back(sub.length());
         }
     }
-    
-    hitPrimitive(_primitives[0]);
-    _res = Display::Color{0, 0, 0};
+    if (hittedPrimitives.size() == 0) {
+        _res = Display::Color{0, 0, 0};
+        return;
+    }
+    int i = std::distance(std::begin(_primitives), std::min_element(std::begin(_primitives), std::end(_primitives)));
+    hitPrimitive(_primitives[i]);
 }
 
 Display::Color Raytracer::Vector::computeColor(std::shared_ptr<Transformable::Light::ILight> light)
 {
+    _origin = _pos;
     _light = light;
     _incident = _axis;
     run();
