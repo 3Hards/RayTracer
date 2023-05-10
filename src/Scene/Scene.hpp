@@ -13,6 +13,7 @@
 #include "IScene.hpp"
 #include "DisplayStructs.hpp"
 #include "LibGraphicHandler.hpp"
+#include "ILibGraphicHandler.hpp"
 
 namespace Scene {
     class Scene : public IScene {

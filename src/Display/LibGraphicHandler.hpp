@@ -9,6 +9,8 @@
 
 #include <vector>
 #include <string>
+#include <unordered_map>
+#include <functional>
 #include <SFML/Graphics.hpp>
 #include "ILibGraphicHandler.hpp"
 
@@ -29,6 +31,9 @@ namespace Display {
         private:
             void clearWindow();
             bool folderChecker();
+            void bindEvent();
+            void checkKeyboardEvents();
+            void checkOtherEvents();
             std::string _fileName;
             sf::Image _image;
             sf::RenderWindow _window;
@@ -37,5 +42,7 @@ namespace Display {
             sf::Event _event;
             unsigned int _width;
             unsigned int _height;
+            std::vector<Display::Event> _events;
+            std::unordered_map<sf::Keyboard::Key, std::function<void()>> _keyboardMappings;
     };
 }
