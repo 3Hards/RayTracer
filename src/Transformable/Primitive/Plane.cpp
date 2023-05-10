@@ -41,6 +41,7 @@ namespace Transformable {
             double angleX = getAxis().x * M_PI / 180.0;
             double angleY = getAxis().y * M_PI / 180.0;
             double angleZ = getAxis().z * M_PI / 180.0;
+           
             _normal = rotateVector(_normal, angleX, angleY, angleZ);
             Point3d dimensions = {_length, _width, 0.0};
             dimensions = rotateVector(dimensions, angleX, angleY, angleZ);
@@ -67,7 +68,7 @@ namespace Transformable {
             }
             Point3d hitPos = vectorPos + vectorAxis * t;
             Point3d localHitPos = rotateVector(hitPos - getPos(), -getAxis().x, -getAxis().y, -getAxis().z);
-            if (localHitPos.x >= 0 && localHitPos.x <= _length && localHitPos.y >= 0 && localHitPos.y <= _width) {
+            if (localHitPos.x <= _length / 2.0 && localHitPos.x >= -_length / 2.0 && localHitPos.y <= _width / 2.0 && localHitPos.y >= -_width / 2.0) {
                 _lastHittedVector = vector;
                 vector->setPos(hitPos);
                 return true;
