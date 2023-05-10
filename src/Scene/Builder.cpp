@@ -4,7 +4,7 @@
 ** File description:
 ** Builder
 */
-#include <iostream>
+
 #include "Builder.hpp"
 #include "Scene.hpp"
 #include "Camera.hpp"
@@ -27,8 +27,6 @@ namespace Scene
     {
         return _scene;
     }
-
-    //Private
 
     void Builder::buildObject(libconfig::Setting& setting)
     {

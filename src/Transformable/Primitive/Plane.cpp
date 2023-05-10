@@ -36,7 +36,7 @@ namespace Transformable {
             Point3d vectorBS = rotatedPointS - rotatedPointB;
 
             _normal = vectorBR.cross(vectorBS);
-            _normal.normalize();
+            _normal = _normal.normalize();
         }
 
         Point3d Plane::rotatePoint3D(const Point3d& point, double angleX, double angleY, double angleZ)
