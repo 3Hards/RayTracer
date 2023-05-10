@@ -92,7 +92,7 @@ namespace Scene {
                     vector->setPos(_cameras[0]->getPos());
                     vector->setAxis(_cameras[0]->getRayAxis((int)x, (int)y));
                     Display::Point2i pixelPos = {(int)x, (int)y};
-                    libGraphicHandler.addPixelToBuffer(createPixel(calculator.computePixel(), pixelPos));
+                    libGraphicHandler.addPixelToBuffer(createPixel(vector->computeColor(_lights), pixelPos));
                 }
             }
             handle_events(libGraphicHandler);

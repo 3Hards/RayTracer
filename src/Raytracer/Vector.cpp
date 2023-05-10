@@ -8,6 +8,7 @@
 #ifdef _WIN32
     #define _USE_MATH_DEFINES
 #endif
+#include <iostream>
 #include <cmath>
 #include <array>
 #include "Vector.hpp"
@@ -54,6 +55,7 @@ void Raytracer::Vector::compute()
     _normal = _hittedPrimitive->getNormalVector();
     _scalarNL = _normal.dot(_light->getLightDirection(shared_from_this()));
     if (_scalarNL < 0) {
+        std::cout << "scalar " << std::endl;
         _res = Transformable::Point3d{0, 0, 0};
         return;
     }
