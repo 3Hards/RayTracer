@@ -7,18 +7,21 @@
 
 #include "App.hpp"
 #include "Director.hpp"
+#include <iostream>
+#include <list>
 
-int App::run(char **arguments)
+int App::run(std::list<std::string> args)
 {
-    if (arguments == NULL || arguments[1] == NULL) {
+    if (args.size() != 1) {
+        std::cerr << "Usage: ./raytracer [config_file]" << std::endl;
         return 84;
     }
     try {
-        Scene::Director director(arguments[1]);
+        Scene::Director director(args.back());
         director.playScene();
+        return 0;
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
         return 84;
     }
-    return 0;
 }

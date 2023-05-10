@@ -10,6 +10,9 @@
 int main(int, char **av)
 {
     App app;
-    
-    return app.run(av);
+    std::list<std::string> args;
+
+    for (int i = 1; av[i]; i++)
+        args.push_back(av[i]);
+    return app.run(args);
 }

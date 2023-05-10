@@ -7,9 +7,10 @@
 
 #pragma once
 #include <iostream>
+#include <list>
 #include "Director.hpp"
 
 class App {
     public:
-        int run(char **av);
+        int run(std::list<std::string> args);
 };
