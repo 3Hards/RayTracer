@@ -34,6 +34,5 @@ namespace Scene
             };
             std::shared_ptr<Scene::IScene> _scene;
             libconfig::Setting& _list;
-
     };
 }
