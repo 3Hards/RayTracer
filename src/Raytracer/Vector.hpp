@@ -30,6 +30,7 @@ namespace Raytracer {
             int checkValue(double value);
 
             double _scalarNL;
+            Transformable::Point3d _origin;
             Display::Color _res;
             Transformable::Point3d _incident;
             std::vector<double> _distances;
