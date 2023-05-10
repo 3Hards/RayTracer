@@ -42,6 +42,8 @@ namespace Transformable {
                 Point3d getRayAxis(int x, int y);
                 unsigned int getWidth() const final;
                 unsigned int getHeight() const final;
+                void setWidth(unsigned int width) final;
+                void setHeight(unsigned int height) final;
                 void moveForward(double distance);
                 void moveRight(double distance);
                 void moveUp(double distance);
