@@ -8,6 +8,7 @@
 #ifdef _WIN32
     #define _USE_MATH_DEFINES
 #endif
+#include <algorithm>
 #include <cmath>
 #include <array>
 #include "Vector.hpp"
@@ -77,18 +78,31 @@ int Raytracer::Vector::checkValue(double value)
 void Raytracer::Vector::run()
 {
     std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
+    std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> hittedPrimitives;
+    std::vector<double> hittedPrimitivesDistances;
+    std::vector<Transformable::Point3d> hittedPoints;
 
     for (auto primitive : _primitives) {
-        if (_hittedPrimitive != primitive && primitive->checkHit(vector)) {
-            hitPrimitive(primitive);
-            return;
+        if (primitive->checkHit(vector)) {
+            hittedPrimitives.push_back(primitive);
+            Transformable::Point3d sub = _pos - _origin;
+            hittedPrimitivesDistances.push_back(sub.length());
+            hittedPoints.push_back(_pos);
+            _pos = _origin;
         }
     }
-    _res = Display::Color{0, 0, 0};
+    if (hittedPrimitives.size() == 0) {
+        _res = Display::Color{0, 0, 0};
+        return;
+    }
+    int i = std::distance(std::begin(hittedPrimitivesDistances), std::min_element(std::begin(hittedPrimitivesDistances), std::end(hittedPrimitivesDistances)));
+    _pos = hittedPoints[i];
+    hitPrimitive(hittedPrimitives[i]);
 }
 
 Display::Color Raytracer::Vector::computeColor(std::shared_ptr<Transformable::Light::ILight> light)
 {
+    _origin = _pos;
     _light = light;
     _incident = _axis;
     run();
