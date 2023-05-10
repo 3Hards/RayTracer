@@ -14,7 +14,6 @@ Transformable::Primitive::Sphere::Sphere(Point3d pos, double _ray, std::shared_p
 {
 }
 
-#include <iostream>
 bool Transformable::Primitive::Sphere::checkHit(std::shared_ptr<Raytracer::IVector> vector)
 {
     Point3d vectorPos = vector->getPos();
@@ -33,7 +32,6 @@ bool Transformable::Primitive::Sphere::checkHit(std::shared_ptr<Raytracer::IVect
     if (t < 0) {
         return false;
     }
-    std::cout << "init " << vector->getAxis().y << std::endl,
     _lastHittedVector = vector;
     Point3d hitPos = vectorPos + vectorAxis * t;
     vector->setPos(hitPos);
@@ -42,7 +40,6 @@ bool Transformable::Primitive::Sphere::checkHit(std::shared_ptr<Raytracer::IVect
 
 Transformable::Point3d Transformable::Primitive::Sphere::getNormalVector()
 {
-    std::cout << "use " << std::endl;
     Transformable::Point3d lastHit = _lastHittedVector->getPos();
     Transformable::Point3d pos = getPos();
     Transformable::Point3d normal = {lastHit.x - pos.x, lastHit.y - pos.y, lastHit.z - pos.z};

@@ -75,25 +75,38 @@ int Raytracer::Vector::checkValue(double value)
     return (int)value;
 }
 
+#include <iostream>
 void Raytracer::Vector::run()
 {
     std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
     std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> hittedPrimitives;
     std::vector<double> hittedPrimitivesDistances;
+    std::vector<Transformable::Point3d> hittedPoints;
+    int c = 0;
 
     for (auto primitive : _primitives) {
         if (primitive->checkHit(vector)) {
+            c += 1;
             hittedPrimitives.push_back(primitive);
             Transformable::Point3d sub = _pos - _origin;
             hittedPrimitivesDistances.push_back(sub.length());
+            hittedPoints.push_back(_pos);
+            _pos = _origin;
+        }
+    }
+    if (c == 2) {
+        std::cout << "double hit" << std::endl;
+        for (auto distance : hittedPrimitivesDistances) {
+            std::cout << distance << std::endl;
         }
     }
     if (hittedPrimitives.size() == 0) {
         _res = Display::Color{0, 0, 0};
         return;
     }
-    int i = std::distance(std::begin(_primitives), std::min_element(std::begin(_primitives), std::end(_primitives)));
-    hitPrimitive(_primitives[i]);
+    int i = std::distance(std::begin(hittedPrimitivesDistances), std::min_element(std::begin(hittedPrimitivesDistances), std::end(hittedPrimitivesDistances)));
+    _pos = hittedPoints[i];
+    hitPrimitive(hittedPrimitives[i]);
 }
 
 Display::Color Raytracer::Vector::computeColor(std::shared_ptr<Transformable::Light::ILight> light)
