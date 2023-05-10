@@ -38,7 +38,15 @@ void Raytracer::Vector::hitPrimitive(std::shared_ptr<Transformable::Primitive::I
     Transformable::Point3d hitPos = getPos();
     Transformable::Point3d lightPos = _light->getPos();
     Transformable::Point3d axis{hitPos.x - lightPos.x, hitPos.y - lightPos.y, hitPos.z - lightPos.z};
+    std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
+
     setAxis(axis.normalize());
+    for (auto primitive : _primitives) {
+        if (primitive->checkHit(vector)) {
+            _res = Display::Color{0, 0, 0};
+            return;
+        }
+    }
     _hittedPrimitive = primitive;
     compute();
 }
