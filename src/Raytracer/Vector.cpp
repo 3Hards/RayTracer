@@ -75,7 +75,6 @@ int Raytracer::Vector::checkValue(double value)
     return (int)value;
 }
 
-#include <iostream>
 void Raytracer::Vector::run()
 {
     std::shared_ptr<Raytracer::IVector> vector = shared_from_this();
