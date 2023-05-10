@@ -5,7 +5,6 @@
 ** main
 */
 
-#include <iostream>
 #include "Vector.hpp"
 #include "Camera.hpp"
 #include "Scene.hpp"

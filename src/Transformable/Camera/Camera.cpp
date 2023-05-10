@@ -52,7 +52,8 @@ namespace Transformable {
             return rayDirection;
         }
 
-        void Camera::moveForward(double distance) {
+        void Camera::moveForward(double distance)
+        {
             Point3d forwardVector = {1, 0, 0};
 
             Matrix3d rotationMatrixX = Matrix3d().rotateX(_axis.x * M_PI / 180);
@@ -67,7 +68,8 @@ namespace Transformable {
             setPos(getPos() + forwardVector);
         }
 
-        void Camera::moveRight(double distance) {
+        void Camera::moveRight(double distance)
+        {
             Point3d rightVector = {0, 1, 0};
 
             Matrix3d rotationMatrixX = Matrix3d().rotateX(_axis.x * M_PI / 180);
@@ -82,7 +84,8 @@ namespace Transformable {
             setPos(getPos() + rightVector);
         }
 
-        void Camera::moveUp(double distance) {
+        void Camera::moveUp(double distance)
+        {
             Point3d resultVector = {0, 0, 1};
 
             Matrix3d rotationMatrixX = Matrix3d().rotateX(_axis.x * M_PI / 180);
@@ -98,7 +101,8 @@ namespace Transformable {
             setPos(getPos() + resultVector);
         }
 
-        void Camera::rotateX(double angle) {
+        void Camera::rotateX(double angle)
+        {
             _axis.x += angle;
             if (_axis.x > 360)
                 _axis.x = 0;
@@ -106,7 +110,8 @@ namespace Transformable {
                 _axis.x = 360;
         }
 
-        void Camera::rotateZ(double angle) {
+        void Camera::rotateZ(double angle)
+        {
             _axis.z += angle;
             if (_axis.z > 360)
                 _axis.z = 0;
@@ -114,7 +119,8 @@ namespace Transformable {
                 _axis.z = 360;
         }
 
-        void Camera::rotateY(double angle) {
+        void Camera::rotateY(double angle)
+        {
             _axis.y += angle;
             if (_axis.y > 360)
                 _axis.y = 0;
@@ -122,11 +128,25 @@ namespace Transformable {
                 _axis.y = 360;
         }
 
-        unsigned int Camera::getWidth() const {
+        void Camera::setWidth(unsigned int width)
+        {
+            _width = width;
+            _aspectRatio = (double)_width / (double)_height;
+        }
+
+        void Camera::setHeight(unsigned int height)
+        {
+            _height = height;
+            _aspectRatio = (double)_width / (double)_height;
+        }
+
+        unsigned int Camera::getWidth() const
+        {
             return _width;
         }
 
-        unsigned int Camera::getHeight() const {
+        unsigned int Camera::getHeight() const
+        {
             return _height;
         }
 
@@ -138,11 +158,13 @@ namespace Transformable {
             return ATransformable::getAxis();
         }
 
-        void Camera::setPos(Point3d pos) {
+        void Camera::setPos(Point3d pos)
+        {
             ATransformable::setPos(pos);
         }
 
-        void Camera::setAxis(Point3d axis) {
+        void Camera::setAxis(Point3d axis)
+        {
             ATransformable::setAxis(axis);
         }
     }

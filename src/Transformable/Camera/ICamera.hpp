@@ -18,6 +18,8 @@ namespace Transformable {
                 virtual Point3d getRayAxis(int x, int y) = 0;
                 virtual unsigned int getWidth() const = 0;
                 virtual unsigned int getHeight() const = 0;
+                virtual void setWidth(unsigned int width) = 0;
+                virtual void setHeight(unsigned int height) = 0;
                 virtual void moveForward(double distance) = 0;
                 virtual void moveRight(double distance) = 0;
                 virtual void moveUp(double distance) = 0;

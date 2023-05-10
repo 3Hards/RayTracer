@@ -5,6 +5,8 @@
 ** ALight header
 */
 
+#pragma once
+
 #include "ILight.hpp"
 #include "ATransformable.hpp"
 
@@ -14,7 +16,7 @@ namespace Transformable {
             public:
                 ALight(Display::Color, float brightness, Point3d pos);
                 Transformable::Point3d getAmbientLightColor() final;
-                Transformable::Point3d getLightColor(std::shared_ptr<Raytracer::IVector>) override;
+                Transformable::Point3d getLightColor() final;
                 Point3d getPos() final;
                 Point3d getAxis() final;
                 void setPos(Point3d pos) final;
