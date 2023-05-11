@@ -30,10 +30,12 @@ namespace Raytracer {
             int checkValue(double value);
 
             double _scalarNL;
-            Transformable::Point3d _res;
+            Transformable::Point3d _origin;
+            Display::Color _res;
             Transformable::Point3d _incident;
             std::shared_ptr<Transformable::Light::ILight> _light;
             std::shared_ptr<Transformable::Primitive::IPrimitive> _hittedPrimitive;
+            std::vector<Transformable::Point3d> _lightColors;
             Transformable::Point3d _normal;
             std::vector<std::shared_ptr<Transformable::Primitive::IPrimitive>> _primitives;
     };

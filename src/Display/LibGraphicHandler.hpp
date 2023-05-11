@@ -32,6 +32,7 @@ namespace Display {
             bool folderChecker();
             void checkKeyboardEvents();
             void checkOtherEvents();
+            void saveToPPM(std::string _filePath);
             std::string _fileName;
             sf::Image _image;
             sf::RenderWindow _window;
