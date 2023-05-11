@@ -77,7 +77,8 @@ namespace Display {
     class ILibGraphicHandler {
         public:
             virtual void addPixelToBuffer(Pixel pixel) = 0;
-            virtual void exportImage() = 0;
+            virtual void exportImagePPM() = 0;
+            virtual void exportImagePNG() = 0;
             virtual void closeWindow() = 0;
             virtual void createWindow(const std::string &name, unsigned int width, unsigned int height) = 0;
             virtual void refreshWindow() = 0;
