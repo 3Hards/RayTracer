@@ -52,7 +52,7 @@ bool Transformable::Primitive::Cone::checkHit(std::shared_ptr<Raytracer::IVector
         return false;
     }
     double t1 = (-b - std::sqrt(discriminant)) / (2.0 * a);
-    double t2 = (-b + std::sqrt(discriminant)) / (2.0 * a);
+    // double t2 = (-b + std::sqrt(discriminant)) / (2.0 * a);
     Point3d hitPos = vectorPos + vector->getAxis() * t1;
     if (hitPos.z >= getPos().z && hitPos.z <= getPos().z + _height) {
         if (checkHitBaseCircle(vector)) {
@@ -79,7 +79,7 @@ bool Transformable::Primitive::Cone::checkHit(std::shared_ptr<Raytracer::IVector
 Transformable::Point3d Transformable::Primitive::Cone::getNormalVector()
 {
     Point3d I = getPos() + Point3d{0, 0, _height};
-    Point3d P = getPos();
+    // Point3d P = getPos();
     Point3d A = getPos() + Point3d{_radius, 0, _height};
     Point3d normal = I - A;
     normal.normalize();
