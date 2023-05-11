@@ -24,6 +24,7 @@ namespace Scene
             ~Builder() = default;
             std::shared_ptr<Scene::IScene> getScene() final;
         private:
+            void transformation(std::shared_ptr<Transformable::ITransformable> transformable, libconfig::Setting& setting);
             void buildObject(libconfig::Setting& setting);
             void createCamera(libconfig::Setting& setting);
             void createSphere(libconfig::Setting& setting);
