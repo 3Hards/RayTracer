@@ -22,7 +22,7 @@
 
 namespace Scene {
 
-    Scene::Scene() : _changeScene(false) {}
+    Scene::Scene() : _changeScene(false), _currentCamera(0) {}
 
     void Scene::addCamera(std::shared_ptr<Transformable::Camera::ICamera> camera)
     {
@@ -59,13 +59,22 @@ namespace Scene {
         { Display::Event::KEYBOARD_SHIFT_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveUp(-2); }}
     };
 
+    void Scene::switchCamera(Display::Event event)
+    {
+        size_t targetCamera = _currentCamera;
+        targetCamera = static_cast<int>((int)event - (int)Display::Event::KEYBOARD_1_PRESSED);
+        if (targetCamera < _cameras.size() && targetCamera != _currentCamera) {
+            _currentCamera = targetCamera;
+        }
+    }
+
     void Scene::handle_events(Display::LibGraphicHandler &libGraphicHandler)
     {
         std::vector<Display::Event> events = libGraphicHandler.getEvents();
         
         for (auto event : events) {
             if (_eventMappings.find(event) != _eventMappings.end()) {
-                _eventMappings.at(event)(_cameras[0]);
+                _eventMappings.at(event)(_cameras[_currentCamera]);
             }
         }
         for (auto event : events) {
@@ -77,25 +86,28 @@ namespace Scene {
             }
             if (event == Display::Event::WINDOW_RESIZED) {
                 std::pair<unsigned int, unsigned int> windowSize = libGraphicHandler.getWindowSize();
-                _cameras[0]->setWidth(windowSize.first);
-                _cameras[0]->setHeight(windowSize.second);
+                _cameras[_currentCamera]->setWidth(windowSize.first);
+                _cameras[_currentCamera]->setHeight(windowSize.second);
             }
             if (event == Display::Event::KEYBOARD_RIGHT_PRESSED) {
                 _changeScene = true;
+            }
+            if (event >= Display::Event::KEYBOARD_1_PRESSED && event <= Display::Event::KEYBOARD_9_PRESSED) {
+                switchCamera(event);
             }
         }
     }
 
     void Scene::computeVectors(std::shared_ptr<Raytracer::IVector> vector)
     {
-        Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[0]->getWidth(), _cameras[0]->getHeight());
-        libGraphicHandler.createWindow("Raytracer", _cameras[0]->getWidth(), _cameras[0]->getHeight());
+        Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[_currentCamera]->getWidth(), _cameras[_currentCamera]->getHeight());
+        libGraphicHandler.createWindow("Raytracer", _cameras[_currentCamera]->getWidth(), _cameras[_currentCamera]->getHeight());
 
         while (libGraphicHandler.isWindowOpen() && _changeScene == false) {
-            for (unsigned int y = 0; y < _cameras[0]->getHeight(); y++) {
-                for (unsigned int x = 0; x < _cameras[0]->getWidth(); x++) {
-                    vector->setPos(_cameras[0]->getPos());
-                    vector->setAxis(_cameras[0]->getRayAxis((int)x, (int)y));
+            for (unsigned int y = 0; y < _cameras[_currentCamera]->getHeight(); y++) {
+                for (unsigned int x = 0; x < _cameras[_currentCamera]->getWidth(); x++) {
+                    vector->setPos(_cameras[_currentCamera]->getPos());
+                    vector->setAxis(_cameras[_currentCamera]->getRayAxis((int)x, (int)y));
                     Display::Point2i pixelPos = {(int)x, (int)y};
                     libGraphicHandler.addPixelToBuffer(createPixel(vector->computeColor(_lights), pixelPos));
                 }
@@ -112,7 +124,7 @@ namespace Scene {
         if (_lights.size() == 0 || _primitives.size() == 0 || _cameras.size() == 0) {
             return true;
         }
-        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[0]->getPos(), Transformable::Point3d{0, 0, 0});
+        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[_currentCamera]->getPos(), Transformable::Point3d{0, 0, 0});
         vector->setPrimitives(_primitives);
         computeVectors(vector);
         return _changeScene;
