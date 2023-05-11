@@ -107,7 +107,7 @@ add_custom_command(
 add_custom_command(
     TARGET ${PROJECT_NAME}
     POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:primiZizi> ${CMAKE_CURRENT_SOURCE_DIR}/Plugins
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:primiZizi> ${CMAKE_CURRENT_SOURCE_DIR}/plugins
 )
 
 if (WIN32)
