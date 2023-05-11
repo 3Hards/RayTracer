@@ -5,7 +5,6 @@
 ** Builder
 */
 
-#include <iostream>
 #include "Builder.hpp"
 #include "Scene.hpp"
 #include "Camera.hpp"
@@ -49,11 +48,10 @@ namespace Scene
     {
         std::shared_ptr<Transformation::ITransformation> transformation;
         std::string type;
-        double x, y, z;
+        int x, y, z;
 
         try {
-            libconfig::Setting &transformationD = setting.lookup("transformation");
-            std::cout << "transformation" << std::endl;
+            const libconfig::Setting &transformationD = setting.lookup("transformation");
             type = std::string(transformationD.lookup("type"));
             x = transformationD.lookup("x");
             y = transformationD.lookup("y");
