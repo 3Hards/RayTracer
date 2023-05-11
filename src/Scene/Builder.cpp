@@ -5,6 +5,7 @@
 ** Builder
 */
 
+#include <iostream>
 #include "Builder.hpp"
 #include "Scene.hpp"
 #include "Camera.hpp"
@@ -13,6 +14,7 @@
 #include "Ambient.hpp"
 #include "Plane.hpp"
 #include "Directional.hpp"
+#include "Cylinder.hpp"
 
 namespace Scene
 {
@@ -40,6 +42,31 @@ namespace Scene
         } catch (libconfig::SettingNotFoundException &e) {
             throw std::runtime_error("Missing settings in " + type);
         }
+    }
+
+    void Builder::createCylinder(libconfig::Setting &setting)
+    {
+        int x, y, z;
+        int ray;
+        int height;
+        const libconfig::Setting &axis = setting["axis"];
+        int ax, ay, az;
+        x = setting.lookup("x");
+        y = setting.lookup("y");
+        z = setting.lookup("z");
+        ray = setting.lookup("ray");
+        height = setting.lookup("height");
+        ax = axis.lookup("x");
+        ay = axis.lookup("y");
+        az = axis.lookup("z");
+        const libconfig::Setting &color = setting["color"];
+        int r, g, b;
+        r = color.lookup("r");
+        g = color.lookup("g");
+        b = color.lookup("b");
+        std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{r, g, b});
+        std::shared_ptr<Transformable::Primitive::IPrimitive> cylinder = std::make_shared<Transformable::Primitive::Cylinder>(Transformable::Point3d{(double)x, (double)y, (double)z}, Transformable::Point3d{(double)ax, (double)ay, (double)az}, (double)ray, (double)height, material);
+        _scene->addPrimitive(cylinder);
     }
 
     void Builder::createCamera(libconfig::Setting& setting)
