@@ -7,10 +7,9 @@
 
 #pragma once
 
-class IDirector {
-    public:
-        virtual void playScene() = 0;
-
-    protected:
-    private:
-};
+namespace Scene {
+    class IDirector {
+        public:
+            virtual bool playScene() = 0;
+    };
+}

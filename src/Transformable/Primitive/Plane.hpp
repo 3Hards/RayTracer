@@ -22,6 +22,7 @@ namespace Transformable {
                 Transformable::Point3d getNormalVector() final;
 
             private:
+                Point3d rotatePoint3D(const Point3d& point, double angleX, double angleY, double angleZ);
                 double _length;
                 double _width;
                 Transformable::Point3d _normal;
