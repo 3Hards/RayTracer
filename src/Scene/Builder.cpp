@@ -33,7 +33,13 @@ namespace Scene
     {
         std::string type;
         setting.lookupValue("type", type);
-        _map.at(type)(setting);
+        try {
+            _map.at(type)(setting);
+        } catch (std::out_of_range &e) {
+            throw std::runtime_error("Unknown type : " + type);
+        } catch (libconfig::SettingNotFoundException &e) {
+            throw std::runtime_error("Missing settings in " + type);
+        }
     }
 
     void Builder::createCamera(libconfig::Setting& setting)
