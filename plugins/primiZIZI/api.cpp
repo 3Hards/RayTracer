@@ -20,15 +20,18 @@ extern "C"
     /**
     * @brief The Api cpp
     *
-    * The api cpp is the extern C function that will be called by the core
+    * The api cpp is the extern C function that will be called by the raytracer
     *
     */
-    EXPORT Transformable::Primitive::IPrimitive *getGameModule(Transformable::Point3d pos, double ray, std::shared_ptr<Material::IMaterial> material)
+    EXPORT Transformable::Primitive::IPrimitive *createPrimitive(Transformable::Point3d pos, double ray, Material::IMaterial *material)
     {
-        return new Transformable::Primitive::PrimiZizi(pos, ray, material);
+        std::shared_ptr<Material::IMaterial> materialShared = std::shared_ptr<Material::IMaterial>(material);
+        Transformable::Primitive::PrimiZizi *primitive = new Transformable::Primitive::PrimiZizi(pos, ray, materialShared);
+        Transformable::Primitive::IPrimitive* primitivePtr = primitive;
+        return primitivePtr;
     }
 
-    EXPORT void destroyGameModule(Transformable::Primitive::IPrimitive *primitiveModule)
+    EXPORT void deletePrimitive(Transformable::Primitive::IPrimitive *primitiveModule)
     {
         if (auto module = dynamic_cast<Transformable::Primitive::PrimiZizi*>(primitiveModule)) {
             delete module;
@@ -45,7 +48,7 @@ extern "C"
     */
     EXPORT const char *getName()
     {
-        return "primiZizi";
+        return "primiBite";
     }
 
     /**

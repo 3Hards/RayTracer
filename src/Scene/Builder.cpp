@@ -5,6 +5,8 @@
 ** Builder
 */
 
+#include <iostream>
+#include <filesystem>
 #include "Builder.hpp"
 #include "Scene.hpp"
 #include "Camera.hpp"
@@ -13,12 +15,28 @@
 #include "Ambient.hpp"
 #include "Plane.hpp"
 #include "Directional.hpp"
+#include "LibLoader.hpp"
+
+namespace App {
+    enum class PluginType {
+        PRIMITIVE,
+        MATERIAL,
+        LIGHT,
+        CAMERA,
+        BUILDER,
+        DIRECTOR,
+        SCENE,
+        TRANSFORMATION,
+        VECTOR
+    };
+}
 
 namespace Scene
 {
     Builder::Builder(libconfig::Setting& list) : _list(list)
     {
         _scene = std::make_shared<Scene>();
+        loadPluginsPath();
         for (int i = 0; i < _list.getLength(); i++) {
             buildObject(_list[i]);
         }
@@ -62,6 +80,74 @@ namespace Scene
         ry = res.lookup("y");
         std::shared_ptr<Transformable::Camera::ICamera> camera = std::make_shared<Transformable::Camera::Camera>(Transformable::Point3d{(double)x, (double)y, (double)z}, Transformable::Point3d{(double)ax, (double)ay, (double)az}, (double)rx, (double)ry, (double)fov);
         _scene->addCamera(camera);
+    }
+
+    void Builder::loadPluginsPath()
+    {
+        std::string path = "./plugins";
+        #ifdef _WIN32
+            std::string fileExtension = ".dll";
+        #elif __linux__
+            std::string fileExtension = ".so";
+        #endif
+
+        for (const auto & entry : std::filesystem::directory_iterator(path)) {
+            if (entry.path().extension() == fileExtension) {
+                const std::string _filePath = entry.path().string();
+                auto pluginTypeFunc = App::LibLoader<App::PluginType>::getInstance().getSymbol("getType", _filePath);
+                if (pluginTypeFunc == nullptr)
+                {
+                    throw std::runtime_error("Error while loading plugin type");
+                } else if (pluginTypeFunc() == App::PluginType::PRIMITIVE) {
+                    _pluginsPath.push_back(_filePath);
+                }
+                _pluginsPath.push_back(_filePath);
+            }
+        }
+    }
+
+    void Builder::addCustomPrimitive(libconfig::Setting& setting)
+    {
+        int x, y, z;
+        std::string type = setting.lookup("type");
+        std::string name = setting.lookup("name");
+        std::string path = "";
+
+        for (auto &pluginPath : _pluginsPath) {
+            auto nameFunc = App::LibLoader<char *>::getInstance().getSymbol("getName", pluginPath);
+            if (nameFunc == nullptr) {
+                throw std::runtime_error("Error while loading plugin name");
+            }
+            if (nameFunc() == name) {
+                path = pluginPath;
+                break;
+            } else {
+                continue;
+            }
+        }
+        if (path == "") {
+            throw std::runtime_error("Plugin not found");
+        }
+        x = setting.lookup("x");
+        y = setting.lookup("y");
+        z = setting.lookup("z");
+        int r = setting.lookup("r");
+        const libconfig::Setting& color = setting.lookup("color");
+        int red = color.lookup("r");
+        int green = color.lookup("g");
+        int blue = color.lookup("b");
+
+        Material::FlatColor *material = new Material::FlatColor(Display::Color{red, green, blue});
+        auto primitiveCreator = App::LibLoader<Transformable::Primitive::IPrimitive *, Transformable::Point3d, double, Material::IMaterial*>::getInstance().getSymbol("createPrimitive", path);
+        if (primitiveCreator == nullptr || material == NULL) {
+                throw std::runtime_error("Error while loading primitive creator");
+        }
+        Transformable::Primitive::IPrimitive *pluginPrimitive = primitiveCreator(Transformable::Point3d{(double)x, (double)y, (double)z}, r, material);
+        if (pluginPrimitive == nullptr) {
+            throw std::runtime_error("Primitive creation failed");
+        }
+        std::shared_ptr<Transformable::Primitive::IPrimitive> customPrimitive(pluginPrimitive);
+        _scene->addPrimitive(customPrimitive);
     }
 
     void Builder::createSphere(libconfig::Setting& setting)

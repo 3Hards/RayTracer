@@ -10,6 +10,7 @@
 #include <libconfig.h++>
 #include <unordered_map>
 #include <functional>
+#include <vector>
 #include "IBuilder.hpp"
 #include "IScene.hpp"
 #include "Scene.hpp"
@@ -29,15 +30,18 @@ namespace Scene
             void createPlane(libconfig::Setting& setting);
             void createAmbientLight(libconfig::Setting& setting);
             void createDirectionalLight(libconfig::Setting& setting);
-            const std::unordered_map<std::string, std::function<void(libconfig::Setting&)>> _map = {
+            void addCustomPrimitive(libconfig::Setting& setting);
+            void loadPluginsPath();
+            std::unordered_map<std::string, std::function<void(libconfig::Setting&)>> _map = {
                 {"Camera", std::bind(&Builder::createCamera, this, std::placeholders::_1)},
                 {"Sphere", std::bind(&Builder::createSphere, this, std::placeholders::_1)},
                 {"Ambiant", std::bind(&Builder::createAmbientLight, this, std::placeholders::_1)},
                 {"Directional", std::bind(&Builder::createDirectionalLight, this, std::placeholders::_1)},
-                {"Plane", std::bind(&Builder::createPlane, this, std::placeholders::_1)}
+                {"Plane", std::bind(&Builder::createPlane, this, std::placeholders::_1)},
+                {"PlugIn", std::bind(&Builder::addCustomPrimitive, this, std::placeholders::_1)}
             };
             std::shared_ptr<Scene::IScene> _scene;
             libconfig::Setting& _list;
-
+            std::vector<std::string> _pluginsPath;
     };
 }
