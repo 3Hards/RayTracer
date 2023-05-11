@@ -7,6 +7,7 @@ This repository is a repository containing our second year project at Epitech Th
 
 * Introduce
 * How Build
+* Implement config file 
 * Screenshots
 * Features
 * Dependancy
@@ -24,6 +25,34 @@ cmake ..
 cmake --build .
 ```
 
+# Implement config file 
+
+Create a .cfg file in the Config folder.
+Create a list of elements in this list you can add all the objects you want to see in your scene.
+A primitive object must contain a type, X, Y, Z positions. An AxisX, AxisY, AxisZ to choose the rotation of the primitive. Of course the size according to the primitive as the radius for the sphere characterize by r or width and lenght for the plane. Obviously the color in RGB.
+
+Example:
+
+```
+elements:
+{
+    list = (
+        {
+            type = "Plane";
+            x = 50;
+            y = 0;
+            z = 30;
+            AxisX = 0;
+            AxisY = 90;
+            AxisZ = 0;
+            width = 50;
+            length = 50;
+            color = { r = 255, g = 255, b = 0, };
+        },
+    );
+};
+```
+            
 # Screenshots
 
 # Features
