@@ -7,7 +7,8 @@
 
 #pragma once
 
-#include <vector>
+#include <iostream>
+#include <list>
 #include "Director.hpp"
 
 class App {
