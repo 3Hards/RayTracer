@@ -7,6 +7,7 @@ target_sources(raytracer PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/App.cpp"
 )
 
+add_subdirectory(App)
 add_subdirectory(Transformable)
 add_subdirectory(Scene)
 add_subdirectory(Raytracer)
