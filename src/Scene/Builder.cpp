@@ -229,16 +229,12 @@ namespace Scene
         y = setting.lookup("y");
         z = setting.lookup("z");
         brightness = setting.lookup("brightness");
-<<<<<<< HEAD
-        std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Ambient>(Display::Color{255, 255, 255}, brightness, Transformable::Point3d{(double)x, (double)y, (double)z});
-        transformation(light, setting);
-=======
         const libconfig::Setting& color = setting.lookup("color");
         int r = color.lookup("r");
         int g = color.lookup("g");
         int b = color.lookup("b");
         std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Ambient>(Display::Color{r, g, b}, brightness, Transformable::Point3d{(double)x, (double)y, (double)z});
->>>>>>> dev
+        transformation(light, setting);
         _scene->addLight(light);
     }
 
