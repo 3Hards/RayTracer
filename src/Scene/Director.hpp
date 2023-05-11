@@ -16,8 +16,7 @@ namespace Scene {
     class Director : public IDirector {
         public:
             Director(std::string pathFile);
-            ~Director();
-            void playScene();
+            bool playScene() final;
         private:
             std::shared_ptr<IBuilder> _builder;
             std::string _pathFile;

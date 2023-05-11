@@ -19,7 +19,7 @@ namespace Scene {
     class IScene {
         public:
             virtual ~IScene() = default;
-            virtual void playScene(std::string const &filename) = 0;
+            virtual bool playScene(std::string const &filename) = 0;
             virtual void addCamera(std::shared_ptr<Transformable::Camera::ICamera> camera) = 0;
             virtual void addLight(std::shared_ptr<Transformable::Light::ILight> light) = 0;
             virtual void addPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive> primitive) = 0;

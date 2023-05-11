@@ -11,6 +11,7 @@
 #include "Sphere.hpp"
 #include "FlatColor.hpp"
 #include "Ambient.hpp"
+#include "Plane.hpp"
 #include "Directional.hpp"
 
 namespace Scene
@@ -28,13 +29,17 @@ namespace Scene
         return _scene;
     }
 
-    //Private
-
     void Builder::buildObject(libconfig::Setting& setting)
     {
         std::string type;
         setting.lookupValue("type", type);
-        _map.at(type)(setting);
+        try {
+            _map.at(type)(setting);
+        } catch (std::out_of_range &e) {
+            throw std::runtime_error("Unknown type : " + type);
+        } catch (libconfig::SettingNotFoundException &e) {
+            throw std::runtime_error("Missing settings in " + type);
+        }
     }
 
     void Builder::createCamera(libconfig::Setting& setting)
@@ -46,7 +51,6 @@ namespace Scene
         const libconfig::Setting &res = setting["resolution"];
         int rx, ry;
         std::string transType;
-
         x = setting.lookup("x");
         y = setting.lookup("y");
         z = setting.lookup("z");
@@ -107,4 +111,26 @@ namespace Scene
         _scene->addLight(light);
     }
 
+    void Builder::createPlane(libconfig::Setting& setting)
+    {
+        int x, y, z;
+        int AxisX, AxisY, AxisZ;
+        int width, length;
+        std::string type = setting.lookup("type");
+        x = setting.lookup("x");
+        y = setting.lookup("y");
+        z = setting.lookup("z");
+        AxisX = setting.lookup("AxisX");
+        AxisY = setting.lookup("AxisY");
+        AxisZ = setting.lookup("AxisZ");
+        width = setting.lookup("width");
+        length = setting.lookup("length");
+        const libconfig::Setting& color = setting.lookup("color");
+        int red = color.lookup("r");
+        int green = color.lookup("g");
+        int blue = color.lookup("b");
+        std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{red, green, blue});
+        std::shared_ptr<Transformable::Primitive::IPrimitive> plane = std::make_shared<Transformable::Primitive::Plane>(Transformable::Point3d{(double)x, (double)y, (double)z}, width, length, Transformable::Point3d{(double)AxisX, (double)AxisY, (double)AxisZ}, material);
+        _scene->addPrimitive(plane);
+    }
 }
