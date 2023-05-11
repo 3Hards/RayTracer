@@ -7,22 +7,28 @@
 
 #include "Cone.hpp"
 
-Transformable::Primitive::Cone::Cone(Point3d pos, double height, double radius, Point3d Axis, std::shared_ptr<Material::IMaterial> material)
-    : Transformable::Primitive::APrimitive(material, pos, Axis), _radius(radius), _height(height)
+Transformable::Primitive::Cone::Cone(Point3d pos, double height, double radius, Point3d axis, std::shared_ptr<Material::IMaterial> material)
+    : Transformable::Primitive::APrimitive(material, pos, axis), _radius(radius), _height(height)
 {
-    double angleX = getAxis().x * M_PI / 180.0;
-    double angleY = getAxis().y * M_PI / 180.0;
-    double angleZ = getAxis().z * M_PI / 180.0;
-    Point3d pointB = getPos();
-    Point3d pointR = {getPos().x + _radius / 2.0, getPos().y, getPos().z};
-    Point3d pointS = {getPos().x, getPos().y + _height / 2.0, getPos().z};
-    Point3d rotatedPointB = rotatePoint3D(pointB, angleX, angleY, angleZ);
-    Point3d rotatedPointR = rotatePoint3D(pointR, angleX, angleY, angleZ);
-    Point3d rotatedPointS = rotatePoint3D(pointS, angleX, angleY, angleZ);
-    Point3d vectorBR; 
-    vectorBR = rotatedPointR - rotatedPointB;
-    Point3d vectorBS;
-    vectorBS = rotatedPointS - rotatedPointB;
+    // Appliquer la rotation à la position du cone
+    setPos(rotatePoint3D(pos, axis.x, axis.y, axis.z));
+
+    // Appliquer la rotation aux points qui définissent le cone
+    Point3d topPoint = {0, _height, 0};
+    topPoint = rotatePoint3D(topPoint, axis.x, axis.y, axis.z);
+    Point3d baseCenter = {0, 0, 0};
+    baseCenter = rotatePoint3D(baseCenter, axis.x, axis.y, axis.z);
+    Point3d basePoint1 = {baseCenter.x + _radius, 0, baseCenter.z};
+    basePoint1 = rotatePoint3D(basePoint1, axis.x, axis.y, axis.z);
+    Point3d basePoint2 = {baseCenter.x, 0, baseCenter.z + _radius};
+    basePoint2 = rotatePoint3D(basePoint2, axis.x, axis.y, axis.z);
+
+    // Recalculer les valeurs en fonction des nouveaux points
+    _height = topPoint.y;
+    _radius = std::max((basePoint1 - baseCenter).length(), (basePoint2 - baseCenter).length());
+
+    // Stocker les valeurs recalculées
+    _axis = axis;
 }
 
 namespace Transformable

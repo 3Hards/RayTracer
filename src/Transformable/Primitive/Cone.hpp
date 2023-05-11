@@ -26,6 +26,7 @@ namespace Transformable {
                 bool checkHitBaseCircle(std::shared_ptr<Raytracer::IVector>);
                 double _radius;
                 double _height;
+                Point3d _axis;
         };
     }
 }
