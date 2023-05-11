@@ -5,6 +5,8 @@
 ** AMaterial header
 */
 
+#pragma once
+
 #include "IMaterial.hpp"
 
 namespace Material {

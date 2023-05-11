@@ -108,20 +108,13 @@ void Raytracer::Vector::run()
 Display::Color Raytracer::Vector::computeFinalColor()
 {
     Transformable::Point3d finalColor = {0, 0, 0};
+    Transformable::Point3d ambient = _light->getAmbientLightColor() * _hittedPrimitive->getMaterialBaseColor() * 0.5;
 
-    Transformable::Point3d ambient = {
-        _light->getAmbientLightColor().x * _hittedPrimitive->getMaterialBaseColor().x * 0.5,
-        _light->getAmbientLightColor().y * _hittedPrimitive->getMaterialBaseColor().y * 0.5,
-        _light->getAmbientLightColor().z * _hittedPrimitive->getMaterialBaseColor().z * 0.5
-    };
     for (const auto& color : _lightColors) {
-        finalColor.x += color.x;
-        finalColor.y += color.y;
-        finalColor.z += color.z;
+        finalColor = finalColor + color;
     }
-    finalColor.x += ambient.x + _hittedPrimitive->getSpecular().x;
-    finalColor.y += ambient.y + _hittedPrimitive->getSpecular().y;
-    finalColor.z += ambient.z + _hittedPrimitive->getSpecular().z;
+
+    finalColor = finalColor + ambient + _hittedPrimitive->getSpecular();
     double maxColor = std::max({finalColor.x, finalColor.y, finalColor.z});
     if (maxColor > 1.0) {
         finalColor.x /= maxColor;

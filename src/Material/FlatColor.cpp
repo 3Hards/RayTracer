@@ -7,5 +7,5 @@
 
 #include "FlatColor.hpp"
 
-Material::FlatColor::FlatColor(Display::Color color) : AMaterial(color, 35, 0)
+Material::FlatColor::FlatColor(Display::Color color) : AMaterial(color, 0, 0)
 {}

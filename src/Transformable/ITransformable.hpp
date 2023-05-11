@@ -27,6 +27,7 @@ namespace Transformable {
     Point3d operator*(Point3d a, double b);
     Point3d operator/(Point3d a, double b);
     Point3d operator*(double a, Point3d b);
+    Point3d operator*(Point3d a, Point3d b);
 
     class ITransformable {
         public:

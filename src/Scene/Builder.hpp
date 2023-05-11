@@ -13,6 +13,7 @@
 #include "IBuilder.hpp"
 #include "IScene.hpp"
 #include "Scene.hpp"
+#include "IMaterial.hpp"
 
 namespace Scene
 {
@@ -24,6 +25,7 @@ namespace Scene
             std::shared_ptr<Scene::IScene> getScene() final;
         private:
             void buildObject(libconfig::Setting& setting);
+            std::shared_ptr<Material::IMaterial> createMaterial(libconfig::Setting& setting);
             void createCamera(libconfig::Setting& setting);
             void createSphere(libconfig::Setting& setting);
             void createPlane(libconfig::Setting& setting);

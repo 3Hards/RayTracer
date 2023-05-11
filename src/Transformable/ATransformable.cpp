@@ -47,6 +47,9 @@ namespace Transformable {
     Point3d operator*(double a, Point3d b) {
         return {a * b.x, a * b.y, a * b.z};
     }
+    Point3d operator*(Point3d a, Point3d b) {
+        return {a.x * b.x, a.y * b.y, a.z * b.z};
+    }
     Point3d Point3d::normalize() const {
         double length = sqrt(x * x + y * y + z * z);
         return {x / length, y / length, z / length};

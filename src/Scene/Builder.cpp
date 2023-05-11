@@ -5,6 +5,7 @@
 ** Builder
 */
 
+#include <iostream>
 #include "Builder.hpp"
 #include "Scene.hpp"
 #include "Camera.hpp"
@@ -13,6 +14,7 @@
 #include "Ambient.hpp"
 #include "Plane.hpp"
 #include "Directional.hpp"
+#include "Reflect.hpp"
 
 namespace Scene
 {
@@ -40,6 +42,28 @@ namespace Scene
         } catch (libconfig::SettingNotFoundException &e) {
             throw std::runtime_error("Missing settings in " + type);
         }
+    }
+
+    std::shared_ptr<Material::IMaterial> Builder::createMaterial(libconfig::Setting& setting)
+    {
+        std::string type = setting.lookup("type");
+        libconfig::Setting& color = setting.lookup("color");
+        int r, g, b;
+        std::shared_ptr<Material::IMaterial> material;
+
+        r = color.lookup("r");
+        g = color.lookup("g");
+        b = color.lookup("b");
+        if (type == "FlatColor") {
+            material = std::make_shared<Material::FlatColor>(Display::Color(r, g, b));
+        } else if (type == "Reflect") {
+            std::cout << "reflect" << std::endl;
+            material = std::make_shared<Material::Reflect>(Display::Color(r, g, b));
+        }
+        if (!material) {
+            throw std::runtime_error("Wrong material type");
+        }
+        return material;
     }
 
     void Builder::createCamera(libconfig::Setting& setting)
@@ -72,12 +96,8 @@ namespace Scene
         y = setting.lookup("y");
         z = setting.lookup("z");
         int r = setting.lookup("r");
-        const libconfig::Setting& color = setting.lookup("color");
-        int red = color.lookup("r");
-        int green = color.lookup("g");
-        int blue = color.lookup("b");
-        std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{red, green, blue});
-        std::shared_ptr<Transformable::Primitive::IPrimitive> sphere = std::make_shared<Transformable::Primitive::Sphere>(Transformable::Point3d{(double)x, (double)y, (double)z}, r, material);
+        libconfig::Setting& material = setting.lookup("material");
+        std::shared_ptr<Transformable::Primitive::IPrimitive> sphere = std::make_shared<Transformable::Primitive::Sphere>(Transformable::Point3d{(double)x, (double)y, (double)z}, r, createMaterial(material));
         _scene->addPrimitive(sphere);
     }
 
@@ -125,12 +145,8 @@ namespace Scene
         AxisZ = setting.lookup("AxisZ");
         width = setting.lookup("width");
         length = setting.lookup("length");
-        const libconfig::Setting& color = setting.lookup("color");
-        int red = color.lookup("r");
-        int green = color.lookup("g");
-        int blue = color.lookup("b");
-        std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{red, green, blue});
-        std::shared_ptr<Transformable::Primitive::IPrimitive> plane = std::make_shared<Transformable::Primitive::Plane>(Transformable::Point3d{(double)x, (double)y, (double)z}, width, length, Transformable::Point3d{(double)AxisX, (double)AxisY, (double)AxisZ}, material);
+        libconfig::Setting& material = setting.lookup("material");
+        std::shared_ptr<Transformable::Primitive::IPrimitive> plane = std::make_shared<Transformable::Primitive::Plane>(Transformable::Point3d{(double)x, (double)y, (double)z}, width, length, Transformable::Point3d{(double)AxisX, (double)AxisY, (double)AxisZ}, createMaterial(material));
         _scene->addPrimitive(plane);
     }
 }
