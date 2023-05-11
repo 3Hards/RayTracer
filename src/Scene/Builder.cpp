@@ -78,7 +78,9 @@ namespace Scene
         } else if (type == "translation") {
             transformation = std::make_shared<Transformation::Translation>(Transformable::Point3d{(double)x, (double)y, (double)z});
         }
-        transformation->applyTransformation(transformable);
+        if (transformation) {
+            transformation->applyTransformation(transformable);
+        }
     }
 
     void Builder::createCylinder(libconfig::Setting &setting)
