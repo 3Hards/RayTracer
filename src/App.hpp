@@ -13,5 +13,11 @@
 
 class App {
     public:
+
+        /**
+         * @brief Run the app
+         * @param args
+         * @return int
+        */
         int run(std::list<std::string> args);
 };
