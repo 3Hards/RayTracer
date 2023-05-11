@@ -66,7 +66,7 @@ namespace Scene
 
         try {
             const libconfig::Setting &transformationD = setting.lookup("transformation");
-            type = std::string(transformationD.lookup("type"));
+            setting.lookupValue("type", type);
             x = transformationD.lookup("x");
             y = transformationD.lookup("y");
             z = transformationD.lookup("z");
@@ -74,9 +74,9 @@ namespace Scene
             return;
         }
         if (type == "rotation") {
-            transformation = std::make_shared<Transformation::Rotation>(Transformable::Point3d(x, y, z));
+            transformation = std::make_shared<Transformation::Rotation>(Transformable::Point3d{(double)x, (double)y, (double)z});
         } else if (type == "translation") {
-            transformation = std::make_shared<Transformation::Translation>(Transformable::Point3d(x, y, z));
+            transformation = std::make_shared<Transformation::Translation>(Transformable::Point3d{(double)x, (double)y, (double)z});
         }
         transformation->applyTransformation(transformable);
     }
