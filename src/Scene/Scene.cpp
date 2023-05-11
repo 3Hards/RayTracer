@@ -22,7 +22,7 @@
 
 namespace Scene {
 
-    Scene::Scene() : _changeScene(false), _currentCamera(0) {}
+    Scene::Scene() :  _currentCamera(0), _changeScene(false) {}
 
     void Scene::addCamera(std::shared_ptr<Transformable::Camera::ICamera> camera)
     {
