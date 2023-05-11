@@ -31,9 +31,9 @@ namespace Scene {
             /**
              * @brief Play the scene
              * @param filename
-             * @return void
+             * @return bool
             */
-            virtual void playScene(std::string const &filename) = 0;
+            virtual bool playScene(std::string const &filename) = 0;
 
             /**
              * @brief Add a camera to the scene

@@ -17,8 +17,8 @@ namespace Scene
     public:
         /**
          * @brief Play the scene
-         * @return
+         * @return bool
         */
-        virtual void playScene() = 0;
+        virtual bool playScene() = 0;
     };
 }
