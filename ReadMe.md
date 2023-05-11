@@ -7,6 +7,7 @@ This repository is a repository containing our second year project at Epitech Th
 
 * Introduce
 * How Build
+* Camera Controler
 * Implement config file 
 * Screenshots
 * Features
@@ -53,6 +54,10 @@ elements:
 };
 ```
             
+# Camera Controler
+
+```Z, Q, S, D``` for move in space and ```I, J, K, L``` for Axis vision rotate. Press ```Space``` to go up and ```shift``` to go down. 
+
 # Screenshots
 
 # Features
