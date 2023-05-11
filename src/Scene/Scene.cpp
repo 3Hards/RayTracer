@@ -22,6 +22,8 @@
 
 namespace Scene {
 
+    Scene::Scene() :  _currentCamera(0), _changeScene(false) {}
+
     void Scene::addCamera(std::shared_ptr<Transformable::Camera::ICamera> camera)
     {
         _cameras.push_back(camera);
@@ -43,19 +45,65 @@ namespace Scene {
     }
 
     const std::unordered_map<Display::Event, std::function<void(std::shared_ptr<Transformable::Camera::ICamera>&)>> _eventMappings = {
-        { Display::Event::KEYBORD_Z_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveForward(2); }},
-        { Display::Event::KEYBORD_S_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveForward(-2); }},
-        { Display::Event::KEYBORD_Q_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveRight(-2); }},
-        { Display::Event::KEYBORD_D_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveRight(2); }},
-        { Display::Event::KEYBORD_I_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateY(-2); }},
-        { Display::Event::KEYBORD_K_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateY(2); }},
-        { Display::Event::KEYBORD_J_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateZ(-2); }},
-        { Display::Event::KEYBORD_L_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateZ(2); }},
-        { Display::Event::KEYBORD_A_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateX(-2); }},
-        { Display::Event::KEYBORD_E_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateX(2); }},
-        { Display::Event::KEYBORD_SPACE_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveUp(2); }},
-        { Display::Event::KEYBORD_SHIFT_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveUp(-2); }}
+        { Display::Event::KEYBOARD_Z_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveForward(2); }},
+        { Display::Event::KEYBOARD_S_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveForward(-2); }},
+        { Display::Event::KEYBOARD_Q_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveRight(-2); }},
+        { Display::Event::KEYBOARD_D_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveRight(2); }},
+        { Display::Event::KEYBOARD_I_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateY(-2); }},
+        { Display::Event::KEYBOARD_K_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateY(2); }},
+        { Display::Event::KEYBOARD_J_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateZ(-2); }},
+        { Display::Event::KEYBOARD_L_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateZ(2); }},
+        { Display::Event::KEYBOARD_A_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateX(-2); }},
+        { Display::Event::KEYBOARD_E_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->rotateX(2); }},
+        { Display::Event::KEYBOARD_SPACE_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveUp(2); }},
+        { Display::Event::KEYBOARD_SHIFT_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveUp(-2); }}
     };
+
+    const std::unordered_map<Display::Event, std::size_t> _cameraEventNb = {
+        { Display::Event::KEYBOARD_1_PRESSED, 0 },
+        { Display::Event::KEYBOARD_2_PRESSED, 1 },
+        { Display::Event::KEYBOARD_3_PRESSED, 2 },
+        { Display::Event::KEYBOARD_4_PRESSED, 3 },
+        { Display::Event::KEYBOARD_5_PRESSED, 4 },
+        { Display::Event::KEYBOARD_6_PRESSED, 5 },
+        { Display::Event::KEYBOARD_7_PRESSED, 6 },
+        { Display::Event::KEYBOARD_8_PRESSED, 7 },
+        { Display::Event::KEYBOARD_9_PRESSED, 8 },
+        { Display::Event::KEYBOARD_0_PRESSED, 9 },
+        { Display::Event::KEYBOARD_UP_PRESSED, 0 },
+        { Display::Event::KEYBOARD_DOWN_PRESSED, 0 }
+
+    };
+
+    size_t Scene::getCameraNb(Display::Event event)
+    {
+        size_t targetCamera = _currentCamera;
+
+        if (event == Display::Event::KEYBOARD_UP_PRESSED)
+        {
+            targetCamera = (_currentCamera + 1) % _cameras.size();
+        }
+        else if (event == Display::Event::KEYBOARD_DOWN_PRESSED)
+        {
+            targetCamera = (_currentCamera - 1) % _cameras.size();
+        } else
+        {
+            targetCamera = _cameraEventNb.at(event);
+        }
+        return targetCamera;
+    }
+
+    void Scene::switchCamera(Display::Event event)
+    {
+        try {
+            size_t targetCamera = getCameraNb(event);
+            if (targetCamera < _cameras.size() && targetCamera != _currentCamera) {
+                _currentCamera = targetCamera;
+            }
+        } catch (const std::out_of_range& e) {
+            std::cerr << "Camera " << _cameraEventNb.at(event) << " doesn't exist" << std::endl;
+        }
+    }
 
     void Scene::handle_events(Display::LibGraphicHandler &libGraphicHandler)
     {
@@ -63,34 +111,40 @@ namespace Scene {
         
         for (auto event : events) {
             if (_eventMappings.find(event) != _eventMappings.end()) {
-                _eventMappings.at(event)(_cameras[0]);
+                _eventMappings.at(event)(_cameras[_currentCamera]);
             }
         }
         for (auto event : events) {
-            if (event == Display::Event::KEYBORD_R_PRESSED) {
+            if (event == Display::Event::KEYBOARD_R_PRESSED) {
                 libGraphicHandler.exportImage();
             }
-            if (event == Display::Event::KEYBORD_ESCAPE_PRESSED) {
+            if (event == Display::Event::KEYBOARD_ESCAPE_PRESSED) {
                 libGraphicHandler.closeWindow();
             }
             if (event == Display::Event::WINDOW_RESIZED) {
                 std::pair<unsigned int, unsigned int> windowSize = libGraphicHandler.getWindowSize();
-                _cameras[0]->setWidth(windowSize.first);
-                _cameras[0]->setHeight(windowSize.second);
+                _cameras[_currentCamera]->setWidth(windowSize.first);
+                _cameras[_currentCamera]->setHeight(windowSize.second);
+            }
+            if (event == Display::Event::KEYBOARD_RIGHT_PRESSED) {
+                _changeScene = true;
+            }
+            if (_cameraEventNb.find(event) != _cameraEventNb.end()) {
+                switchCamera(event);
             }
         }
     }
 
     void Scene::computeVectors(std::shared_ptr<Raytracer::IVector> vector)
     {
-        Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[0]->getWidth(), _cameras[0]->getHeight());
-        libGraphicHandler.createWindow("Raytracer", _cameras[0]->getWidth(), _cameras[0]->getHeight());
+        Display::LibGraphicHandler libGraphicHandler(_filename, _cameras[_currentCamera]->getWidth(), _cameras[_currentCamera]->getHeight());
+        libGraphicHandler.createWindow("Raytracer", _cameras[_currentCamera]->getWidth(), _cameras[_currentCamera]->getHeight());
 
-        while (libGraphicHandler.isWindowOpen()) {
-            for (unsigned int y = 0; y < _cameras[0]->getHeight(); y++) {
-                for (unsigned int x = 0; x < _cameras[0]->getWidth(); x++) {
-                    vector->setPos(_cameras[0]->getPos());
-                    vector->setAxis(_cameras[0]->getRayAxis((int)x, (int)y));
+        while (libGraphicHandler.isWindowOpen() && _changeScene == false) {
+            for (unsigned int y = 0; y < _cameras[_currentCamera]->getHeight(); y++) {
+                for (unsigned int x = 0; x < _cameras[_currentCamera]->getWidth(); x++) {
+                    vector->setPos(_cameras[_currentCamera]->getPos());
+                    vector->setAxis(_cameras[_currentCamera]->getRayAxis((int)x, (int)y));
                     Display::Point2i pixelPos = {(int)x, (int)y};
                     libGraphicHandler.addPixelToBuffer(createPixel(vector->computeColor(_lights), pixelPos));
                 }
@@ -100,16 +154,17 @@ namespace Scene {
         }
     }
 
-    void Scene::playScene(std::string const &filename)
+    bool Scene::playScene(std::string const &filename)
     {
         _filename = filename;
 
         if (_lights.size() == 0 || _primitives.size() == 0 || _cameras.size() == 0) {
-            return;
+            return true;
         }
-        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[0]->getPos(), Transformable::Point3d{0, 0, 0});
+        std::shared_ptr<Raytracer::IVector> vector = std::make_shared<Raytracer::Vector>(_cameras[_currentCamera]->getPos(), Transformable::Point3d{0, 0, 0});
         vector->setPrimitives(_primitives);
         computeVectors(vector);
+        return _changeScene;
     }
 
     Display::Pixel Scene::createPixel(Display::Color color, Display::Point2i position)

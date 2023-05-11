@@ -20,6 +20,5 @@ namespace Scene
          * @return
         */
         virtual void playScene() = 0;
-
     };
 }
