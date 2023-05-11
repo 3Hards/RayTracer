@@ -89,13 +89,7 @@ namespace Display {
              * @return void
             */
             virtual void addPixelToBuffer(Pixel pixel) = 0;
-
-            /**
-             * @brief export the image
-             * @return void
-            */
-            virtual void exportImage() = 0;
-
+        
             /**
              * @brief export the image in PPM format
              * @return void
@@ -107,7 +101,7 @@ namespace Display {
              * @return void
             */
             virtual void exportImagePNG() = 0;
-      
+
             /**
              * @brief close the window
              * @return void
