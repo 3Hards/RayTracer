@@ -7,8 +7,7 @@
 
 #pragma once
 
-#include <iostream>
-#include <list>
+#include <vector>
 #include "Director.hpp"
 
 class App {
@@ -20,4 +19,9 @@ class App {
          * @return int
         */
         int run(std::list<std::string> args);
+        App(std::vector<std::string> args);
+    private:
+        void incrementPathId();
+        std::vector<std::string> _args;
+        int _pathId;
 };
