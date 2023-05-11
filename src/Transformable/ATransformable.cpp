@@ -60,4 +60,7 @@ namespace Transformable {
     double Point3d::length() const {
         return sqrt(x * x + y * y + z * z);
     }
+    double Point3d::SqrtLength() const {
+        return x * x + y * y + z * z;
+    }
 }

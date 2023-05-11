@@ -17,6 +17,7 @@
 #include "Directional.hpp"
 #include "Rotation.hpp"
 #include "Translation.hpp"
+#include "Cone.hpp"
 #include "LibLoader.hpp"
 #include "Cylinder.hpp"
 
@@ -54,13 +55,7 @@ namespace Scene
     {
         std::string type;
         setting.lookupValue("type", type);
-        try {
-            _map.at(type)(setting);
-        } catch (std::out_of_range &e) {
-            throw std::runtime_error("Unknown type : " + type);
-        } catch (libconfig::SettingNotFoundException &e) {
-            throw std::runtime_error("Missing settings in " + type);
-        }
+        _map.at(type)(setting);
     }
 
     void Builder::transformation(std::shared_ptr<Transformable::ITransformable> transformable, libconfig::Setting& setting)
@@ -219,6 +214,29 @@ namespace Scene
         std::shared_ptr<Transformable::Primitive::IPrimitive> sphere = std::make_shared<Transformable::Primitive::Sphere>(Transformable::Point3d{(double)x, (double)y, (double)z}, r, material);
         transformation(sphere, setting);
         _scene->addPrimitive(sphere);
+    }
+
+    void Builder::createCone(libconfig::Setting& setting)
+    {
+        int x, y, z;
+        int AxisX, AxisY, AxisZ, height, radius;
+        std::string type = setting.lookup("type");
+        x = setting.lookup("x");
+        y = setting.lookup("y");
+        z = setting.lookup("z");
+        AxisX = setting.lookup("AxisX");
+        AxisY = setting.lookup("AxisY");
+        AxisZ = setting.lookup("AxisZ");
+        height = setting.lookup("height");
+        radius = setting.lookup("radius");
+        const libconfig::Setting& color = setting.lookup("color");
+        int red = color.lookup("r");
+        int green = color.lookup("g");
+        int blue = color.lookup("b");
+        std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{red, green, blue});
+        std::shared_ptr<Transformable::Primitive::IPrimitive> cone = std::make_shared<Transformable::Primitive::Cone>(Transformable::Point3d{(double)x, (double)y, (double)z}, height, radius, Transformable::Point3d{(double)AxisX, (double)AxisY, (double)AxisZ}, material);
+        transformation(cone, setting);
+        _scene->addPrimitive(cone);
     }
 
     void Builder::createAmbientLight(libconfig::Setting& setting)
