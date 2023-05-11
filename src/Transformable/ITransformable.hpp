@@ -20,6 +20,7 @@ namespace Transformable {
         double dot(Point3d v) const;
         Point3d cross(Point3d v) const;
         double length() const;
+        double SqrtLength() const;
     };
 
     Point3d operator-(Point3d a, Point3d b);

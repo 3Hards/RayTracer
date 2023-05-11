@@ -17,16 +17,14 @@ namespace Transformable {
     namespace Primitive {
         class Cone : public APrimitive {
             public:
-                Cone(Point3d, double angle, double height, double ray, std::shared_ptr<Material::IMaterial> material);
+                Cone(Point3d pos, double height, double radius, Point3d Axis, std::shared_ptr<Material::IMaterial> material);
                 bool checkHit(std::shared_ptr<Raytracer::IVector>) final;
                 Transformable::Point3d getNormalVector() final;
 
             private:
-                double _ray;
-                double _cosAngle;
+                bool checkHitBaseCircle(std::shared_ptr<Raytracer::IVector>);
                 double _radius;
                 double _height;
         };
     }
 }
-

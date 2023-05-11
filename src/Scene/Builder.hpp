@@ -29,12 +29,14 @@ namespace Scene
             void createPlane(libconfig::Setting& setting);
             void createAmbientLight(libconfig::Setting& setting);
             void createDirectionalLight(libconfig::Setting& setting);
+            void createCone(libconfig::Setting& setting);
             const std::unordered_map<std::string, std::function<void(libconfig::Setting&)>> _map = {
                 {"Camera", std::bind(&Builder::createCamera, this, std::placeholders::_1)},
                 {"Sphere", std::bind(&Builder::createSphere, this, std::placeholders::_1)},
                 {"Ambiant", std::bind(&Builder::createAmbientLight, this, std::placeholders::_1)},
                 {"Directional", std::bind(&Builder::createDirectionalLight, this, std::placeholders::_1)},
-                {"Plane", std::bind(&Builder::createPlane, this, std::placeholders::_1)}
+                {"Plane", std::bind(&Builder::createPlane, this, std::placeholders::_1)},
+                {"Cone", std::bind(&Builder::createCone, this, std::placeholders::_1)}
             };
             std::shared_ptr<Scene::IScene> _scene;
             libconfig::Setting& _list;
