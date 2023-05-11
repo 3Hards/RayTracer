@@ -96,7 +96,16 @@ namespace Display {
             */
             virtual void exportImage() = 0;
 
+            /**
+             * @brief export the image in PPM format
+             * @return void
+            */
             virtual void exportImagePPM() = 0;
+
+            /**
+             * @brief export the image in PNG format
+             * @return void
+            */
             virtual void exportImagePNG() = 0;
       
             /**
