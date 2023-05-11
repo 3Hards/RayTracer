@@ -7,10 +7,19 @@
 
 #pragma once
 
-class IDirector {
+namespace Scene
+{
+    /**
+     * @brief Interface for the director
+    */
+    class IDirector
+    {
     public:
+        /**
+         * @brief Play the scene
+         * @return
+        */
         virtual void playScene() = 0;
 
-    protected:
-    private:
-};
+    };
+}
