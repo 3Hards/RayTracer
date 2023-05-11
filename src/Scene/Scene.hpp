@@ -31,6 +31,7 @@ namespace Scene {
             void computeVectors(std::shared_ptr<Raytracer::IVector> vector);
             void handle_events(Display::LibGraphicHandler &libGraphicHandler);
             void switchCamera(Display::Event event);
+            size_t getCameraNb(Display::Event event);
             std::string _filename;
             std::vector<std::shared_ptr<Transformable::Camera::ICamera>> _cameras;
             std::vector<std::shared_ptr<Transformable::Light::ILight>> _lights;

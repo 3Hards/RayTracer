@@ -70,13 +70,33 @@ namespace Scene {
         { Display::Event::KEYBOARD_8_PRESSED, 7 },
         { Display::Event::KEYBOARD_9_PRESSED, 8 },
         { Display::Event::KEYBOARD_0_PRESSED, 9 },
+        { Display::Event::KEYBOARD_UP_PRESSED, 0 },
+        { Display::Event::KEYBOARD_DOWN_PRESSED, 0 }
+
     };
+
+    size_t Scene::getCameraNb(Display::Event event)
+    {
+        size_t targetCamera = _currentCamera;
+
+        if (event == Display::Event::KEYBOARD_UP_PRESSED)
+        {
+            targetCamera = (_currentCamera + 1) % _cameras.size();
+        }
+        else if (event == Display::Event::KEYBOARD_DOWN_PRESSED)
+        {
+            targetCamera = (_currentCamera - 1) % _cameras.size();
+        } else
+        {
+            targetCamera = _cameraEventNb.at(event);
+        }
+        return targetCamera;
+    }
 
     void Scene::switchCamera(Display::Event event)
     {
         try {
-            size_t targetCamera = _currentCamera;
-            targetCamera = _cameraEventNb.at(event);
+            size_t targetCamera = getCameraNb(event);
             if (targetCamera < _cameras.size() && targetCamera != _currentCamera) {
                 _currentCamera = targetCamera;
             }
