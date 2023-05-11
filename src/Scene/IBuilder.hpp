@@ -12,9 +12,16 @@
 
 namespace Scene
 {
+    /**
+     * @brief Interface for the builder
+    */
     class IBuilder
     {
         public:
+            /**
+             * @brief Get the Scene
+             * @return std::shared_ptr<Scene::IScene> Scene
+            */
             virtual std::shared_ptr<Scene::IScene> getScene() = 0;
     };
 }

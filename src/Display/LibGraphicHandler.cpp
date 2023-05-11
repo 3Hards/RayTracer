@@ -15,6 +15,7 @@ namespace Display {
         _width(width),
         _height(height)
     {
+        _fileName = extractFileName();
         _image.create(_width, _height, sf::Color::Black);
     }
 
@@ -69,6 +70,15 @@ namespace Display {
         {sf::Keyboard::LAlt, Event::KEYBOARD_ALT_PRESSED}
     };
 
+    std::string LibGraphicHandler::extractFileName()
+    {
+        size_t found = _fileName.find_last_of("/\\");
+        if (found != std::string::npos) {
+            _fileName = _fileName.substr(found + 1);
+        }
+        return _fileName;
+    }
+
     void LibGraphicHandler::addPixelToBuffer(Pixel pixel)
     {
         _image.setPixel(
@@ -99,11 +109,19 @@ namespace Display {
         file.close();
     }
 
-    void LibGraphicHandler::exportImage()
+    void LibGraphicHandler::exportImagePPM()
     {
         if (folderChecker() == true) {
             std::string _filePath = "./screenshots/" + _fileName + ".ppm";
             saveToPPM(_filePath);
+        }
+    }
+
+    void LibGraphicHandler::exportImagePNG()
+    {
+        if (folderChecker() == true) {
+            std::string _filePath = "./screenshots/" + _fileName + ".png";
+            _image.saveToFile(_filePath);
         }
     }
 
