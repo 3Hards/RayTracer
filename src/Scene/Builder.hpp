@@ -30,6 +30,7 @@ namespace Scene
             void createPlane(libconfig::Setting& setting);
             void createAmbientLight(libconfig::Setting& setting);
             void createDirectionalLight(libconfig::Setting& setting);
+            void createCone(libconfig::Setting& setting);
             void createCylinder(libconfig::Setting& setting);
             void addCustomPrimitive(libconfig::Setting& setting);
             void loadPluginsPath();
@@ -39,6 +40,7 @@ namespace Scene
                 {"Ambiant", std::bind(&Builder::createAmbientLight, this, std::placeholders::_1)},
                 {"Directional", std::bind(&Builder::createDirectionalLight, this, std::placeholders::_1)},
                 {"Plane", std::bind(&Builder::createPlane, this, std::placeholders::_1)},
+                {"Cone", std::bind(&Builder::createCone, this, std::placeholders::_1)},
                 {"PlugIn", std::bind(&Builder::addCustomPrimitive, this, std::placeholders::_1)},
                 {"Cylinder", std::bind(&Builder::createCylinder, this, std::placeholders::_1)}
             };
