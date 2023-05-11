@@ -59,12 +59,29 @@ namespace Scene {
         { Display::Event::KEYBOARD_SHIFT_PRESSED, [](std::shared_ptr<Transformable::Camera::ICamera>& cam) { cam->moveUp(-2); }}
     };
 
+    const std::unordered_map<Display::Event, std::size_t> _cameraEventNb = {
+        { Display::Event::KEYBOARD_1_PRESSED, 0 },
+        { Display::Event::KEYBOARD_2_PRESSED, 1 },
+        { Display::Event::KEYBOARD_3_PRESSED, 2 },
+        { Display::Event::KEYBOARD_4_PRESSED, 3 },
+        { Display::Event::KEYBOARD_5_PRESSED, 4 },
+        { Display::Event::KEYBOARD_6_PRESSED, 5 },
+        { Display::Event::KEYBOARD_7_PRESSED, 6 },
+        { Display::Event::KEYBOARD_8_PRESSED, 7 },
+        { Display::Event::KEYBOARD_9_PRESSED, 8 },
+        { Display::Event::KEYBOARD_0_PRESSED, 9 },
+    };
+
     void Scene::switchCamera(Display::Event event)
     {
-        size_t targetCamera = _currentCamera;
-        targetCamera = static_cast<int>((int)event - (int)Display::Event::KEYBOARD_1_PRESSED);
-        if (targetCamera < _cameras.size() && targetCamera != _currentCamera) {
-            _currentCamera = targetCamera;
+        try {
+            size_t targetCamera = _currentCamera;
+            targetCamera = _cameraEventNb.at(event);
+            if (targetCamera < _cameras.size() && targetCamera != _currentCamera) {
+                _currentCamera = targetCamera;
+            }
+        } catch (const std::out_of_range& e) {
+            std::cerr << "Camera " << _cameraEventNb.at(event) << " doesn't exist" << std::endl;
         }
     }
 
@@ -92,7 +109,7 @@ namespace Scene {
             if (event == Display::Event::KEYBOARD_RIGHT_PRESSED) {
                 _changeScene = true;
             }
-            if (event >= Display::Event::KEYBOARD_1_PRESSED && event <= Display::Event::KEYBOARD_9_PRESSED) {
+            if (_cameraEventNb.find(event) != _cameraEventNb.end()) {
                 switchCamera(event);
             }
         }
