@@ -13,6 +13,9 @@
 
 namespace Display {
 
+    /**
+     * @brief Enum of all the events that can be triggered
+    */
     enum class Event {
         //MOUSE EVENTS
         MOUSE_LEFT_PRESSED,
@@ -74,16 +77,70 @@ namespace Display {
         WINDOW_RESIZED
     };
 
+    /**
+     * @brief Interface of the graphic handler
+    */
     class ILibGraphicHandler {
         public:
+
+            /**
+             * @brief add a pixel to the buffer
+             * @param pixel is the pixel to add
+             * @return void
+            */
             virtual void addPixelToBuffer(Pixel pixel) = 0;
+
+            /**
+             * @brief export the image
+             * @return void
+            */
             virtual void exportImage() = 0;
+
+            /**
+             * @brief close the window
+             * @return void
+            */
             virtual void closeWindow() = 0;
+
+            /**
+             * @brief create the window
+             * @param name is the name of the window
+             * @param width is the width of the window
+             * @param height is the height of the window
+             * @return void
+            */
             virtual void createWindow(const std::string &name, unsigned int width, unsigned int height) = 0;
+
+            /**
+             * @brief refresh the window
+             * @return void
+            */
             virtual void refreshWindow() = 0;
+
+            /**
+             * @brief resize the window
+             * @param width is the width of the window
+             * @param height is the height of the window
+             * @return void
+            */
             virtual void resizeWindow(unsigned int width, unsigned int height) = 0;
+
+            /**
+             * @brief check if the window is open
+             * @return true if the window is open, false otherwise
+            */
             virtual bool isWindowOpen() = 0;
+
+            /**
+             * @brief get the events
+             * @return a vector of events
+            */
             virtual std::vector<Event> getEvents() = 0;
+
+            /**
+             * @brief get the window size
+             * @return a pair of unsigned int
+            */
             virtual std::pair<unsigned int, unsigned int> getWindowSize() = 0;
     };
 }
