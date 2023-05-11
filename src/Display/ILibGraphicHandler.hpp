@@ -96,6 +96,9 @@ namespace Display {
             */
             virtual void exportImage() = 0;
 
+            virtual void exportImagePPM() = 0;
+            virtual void exportImagePNG() = 0;
+      
             /**
              * @brief close the window
              * @return void

@@ -17,7 +17,8 @@ namespace Display {
     class LibGraphicHandler : public ILibGraphicHandler {
         public:
             LibGraphicHandler(std::string fileName, unsigned int width, unsigned int height);
-            void exportImage() final;
+            void exportImagePPM()final;
+            void exportImagePNG() final;
             void addPixelToBuffer(Pixel pixel) final;
             void closeWindow() final;
             void createWindow(const std::string &name, unsigned int width, unsigned int height);
@@ -28,6 +29,7 @@ namespace Display {
             std::pair<unsigned int, unsigned int> getWindowSize() final;
 
         private:
+            std::string extractFileName();
             void clearWindow();
             bool folderChecker();
             void checkKeyboardEvents();

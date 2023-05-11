@@ -116,7 +116,10 @@ namespace Scene {
         }
         for (auto event : events) {
             if (event == Display::Event::KEYBOARD_R_PRESSED) {
-                libGraphicHandler.exportImage();
+                libGraphicHandler.exportImagePPM();
+            }
+            if (event == Display::Event::KEYBOARD_P_PRESSED) {
+                libGraphicHandler.exportImagePNG();
             }
             if (event == Display::Event::KEYBOARD_ESCAPE_PRESSED) {
                 libGraphicHandler.closeWindow();
