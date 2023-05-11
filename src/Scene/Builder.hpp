@@ -39,7 +39,7 @@ namespace Scene
                 {"Ambiant", std::bind(&Builder::createAmbientLight, this, std::placeholders::_1)},
                 {"Directional", std::bind(&Builder::createDirectionalLight, this, std::placeholders::_1)},
                 {"Plane", std::bind(&Builder::createPlane, this, std::placeholders::_1)},
-                {"PlugIn", std::bind(&Builder::addCustomPrimitive, this, std::placeholders::_1)}
+                {"PlugIn", std::bind(&Builder::addCustomPrimitive, this, std::placeholders::_1)},
                 {"Cylinder", std::bind(&Builder::createCylinder, this, std::placeholders::_1)}
             };
             std::shared_ptr<Scene::IScene> _scene;
