@@ -15,7 +15,7 @@ namespace Transformable {
     namespace Primitive {
         class Cylinder : public APrimitive {
             public:
-                Cylinder(Point3d pos, Point3d axis, double ray, double height, std::shared_ptr<Material::IMaterial> material);
+                Cylinder(Point3d pos, Point3d axis, double _ray, double height, std::shared_ptr<Material::IMaterial> material);
                 bool checkHit(std::shared_ptr<Raytracer::IVector>) final;
                 Transformable::Point3d getNormalVector() final;
             private:
