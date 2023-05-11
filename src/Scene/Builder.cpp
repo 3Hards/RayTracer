@@ -67,7 +67,6 @@ namespace Scene
         std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{r, g, b});
         std::shared_ptr<Transformable::Primitive::IPrimitive> cylinder = std::make_shared<Transformable::Primitive::Cylinder>(Transformable::Point3d{(double)x, (double)y, (double)z}, Transformable::Point3d{(double)ax, (double)ay, (double)az}, (double)ray, (double)height, material);
         _scene->addPrimitive(cylinder);
-        std::cout << "Cylender created" << std::endl;
     }
 
     void Builder::createCamera(libconfig::Setting& setting)
