@@ -5,19 +5,11 @@
 ** Cylinder
 */
 
-#include "Cylinder.hpp"
-
-/*
-** EPITECH PROJECT, 2023
-** RayTracer
-** File description:
-** Sphere
-*/
-
 #include <cmath>
 #include <memory>
 #include "Sphere.hpp"
 #include "Vector.hpp"
+#include "Cylinder.hpp"
 
 Transformable::Primitive::Cylinder::Cylinder(Point3d pos, Point3d axis, double _ray, double height, std::shared_ptr<Material::IMaterial> material) : Transformable::Primitive::APrimitive(material, pos, axis), _ray(_ray), _height(height)
 {
