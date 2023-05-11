@@ -7,9 +7,18 @@
 
 #pragma once
 
-namespace Scene {
-    class IDirector {
-        public:
-            virtual bool playScene() = 0;
+namespace Scene
+{
+    /**
+     * @brief Interface for the director
+    */
+    class IDirector
+    {
+    public:
+        /**
+         * @brief Play the scene
+         * @return bool
+        */
+        virtual bool playScene() = 0;
     };
 }
