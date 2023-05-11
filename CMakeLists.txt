@@ -78,27 +78,12 @@ if (WIN32)
         ${LIBDIR}/lib/sfml-system-d.lib
     )
 
-    target_link_libraries(primiZizi PRIVATE
-        ${LIBDIR}/lib/libconfig.lib
-        ${LIBDIR}/lib/libconfig++.lib
-        ${LIBDIR}/lib/sfml-graphics-d.lib
-        ${LIBDIR}/lib/sfml-window-d.lib
-        ${LIBDIR}/lib/sfml-system-d.lib
-    )
-
 else()
 
     find_library(SFML_GRAPHICS sfml-graphics)
     find_library(LIBCONFIG++ libconfig++)
 
     target_link_libraries(${PROJECT_NAME} PRIVATE
-        config++
-        sfml-graphics
-        sfml-window
-        sfml-system
-    )
-
-    target_link_libraries(primiZizi PRIVATE
         config++
         sfml-graphics
         sfml-window
