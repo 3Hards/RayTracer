@@ -5,6 +5,8 @@
 ** ALight header
 */
 
+#pragma once
+
 #include "ILight.hpp"
 #include "ATransformable.hpp"
 

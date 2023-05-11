@@ -11,6 +11,8 @@
 #include <memory>
 #include "IScene.hpp"
 #include "DisplayStructs.hpp"
+#include "LibGraphicHandler.hpp"
+#include "ILibGraphicHandler.hpp"
 
 namespace Scene {
     class Scene : public IScene {
@@ -23,7 +25,8 @@ namespace Scene {
 
         private:
             Display::Pixel createPixel(Display::Color color, Display::Point2i position);
-            void computeVectors(unsigned int camWidth, unsigned int camHeight, Transformable::Point3d camPos, std::vector<Transformable::Point3d> axis);
+            void computeVectors(std::shared_ptr<Raytracer::IVector> vector);
+            void handle_events(Display::LibGraphicHandler &libGraphicHandler);
             std::string _filename;
             std::vector<std::shared_ptr<Transformable::Camera::ICamera>> _cameras;
             std::vector<std::shared_ptr<Transformable::Light::ILight>> _lights;
