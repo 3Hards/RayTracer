@@ -8,7 +8,6 @@
 #ifdef _WIN32
     #define _USE_MATH_DEFINES
 #endif
-#include <iostream>
 #include <algorithm>
 #include <cmath>
 #include <array>
@@ -45,7 +44,7 @@ void Raytracer::Vector::hitPrimitive(std::shared_ptr<Transformable::Primitive::I
     _hittedPrimitive = hittedPrimitive;
     for (auto primitive : _primitives) {
         if (_hittedPrimitive != primitive && primitive->checkHit(vector)) {
-            _res = Display::Color{0, 0, 0};
+            _lightColors.push_back({0, 0, 0});
             return;
         }
     }
@@ -106,62 +105,52 @@ void Raytracer::Vector::run()
     hitPrimitive(hittedPrimitives[i]);
 }
 
+Display::Color Raytracer::Vector::computeFinalColor()
+{
+    Transformable::Point3d finalColor = {0, 0, 0};
+
+    Transformable::Point3d ambient = {
+        _light->getAmbientLightColor().x * _hittedPrimitive->getMaterialBaseColor().x * 0.5,
+        _light->getAmbientLightColor().y * _hittedPrimitive->getMaterialBaseColor().y * 0.5,
+        _light->getAmbientLightColor().z * _hittedPrimitive->getMaterialBaseColor().z * 0.5
+    };
+    for (const auto& color : _lightColors) {
+        finalColor.x += color.x;
+        finalColor.y += color.y;
+        finalColor.z += color.z;
+    }
+    finalColor.x += ambient.x + _hittedPrimitive->getSpecular().x;
+    finalColor.y += ambient.y + _hittedPrimitive->getSpecular().y;
+    finalColor.z += ambient.z + _hittedPrimitive->getSpecular().z;
+    double maxColor = std::max({finalColor.x, finalColor.y, finalColor.z});
+    if (maxColor > 1.0) {
+        finalColor.x /= maxColor;
+        finalColor.y /= maxColor;
+        finalColor.z /= maxColor;
+    }
+    return Display::Color{static_cast<int>(finalColor.x * 255), static_cast<int>(finalColor.y * 255), static_cast<int>(finalColor.z * 255)};
+}
+
 Display::Color Raytracer::Vector::computeColor(std::vector<std::shared_ptr<Transformable::Light::ILight>> lights)
 {
-    Transformable::Point3d pos2 = _pos;
-    Transformable::Point3d axis2 = _axis;
-    _res = Display::Color{0, 0, 0};
-    _scalarNL = 0;
+    Transformable::Point3d posTmp = _pos;
+    Transformable::Point3d axisTmp = _axis;
 
     for (auto light : lights) {
-        _pos = pos2;
-        _axis = axis2;
-        _origin = pos2;
+        _pos = posTmp;
+        _axis = axisTmp;
+        _origin = posTmp;
         _light = light;
-        _incident = axis2;
+        _incident = axisTmp;
         run();
         _scalarNL = 0;
     }
 
     if (_lightColors.size() == 0) {
         return _res;
+    } else {
+        _res = computeFinalColor();
     }
-
-    Transformable::Point3d ambientLightColor = _light->getAmbientLightColor();
-    Transformable::Point3d materialBaseColor = _hittedPrimitive->getMaterialBaseColor();
-    Transformable::Point3d ambient = {
-        ambientLightColor.x * materialBaseColor.x,
-        ambientLightColor.y * materialBaseColor.y,
-        ambientLightColor.z * materialBaseColor.z
-    };
-
-    Transformable::Point3d finalColor = {0, 0, 0};
-    
-    for (const auto& color : _lightColors) {
-        finalColor.x += color.x;
-        finalColor.y += color.y;
-        finalColor.z += color.z;
-    }
-
-    Transformable::Point3d specular = _hittedPrimitive->getSpecular();
-
-    finalColor.x += ambient.x + specular.x;
-    finalColor.y += ambient.y + specular.y;
-    finalColor.z += ambient.z + specular.z;
-
-    float maxColor = std::max({finalColor.x, finalColor.y, finalColor.z});
-    if (maxColor > 1.0) {
-        finalColor.x /= maxColor;
-        finalColor.y /= maxColor;
-        finalColor.z /= maxColor;
-    }
-
-    _res = Display::Color{
-        static_cast<int>(finalColor.x * 255),
-        static_cast<int>(finalColor.y * 255),
-        static_cast<int>(finalColor.z * 255)
-    };
-
     _light.reset();
     _hittedPrimitive.reset();
     _scalarNL = 0;

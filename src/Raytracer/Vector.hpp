@@ -28,6 +28,7 @@ namespace Raytracer {
             void run();
             void hitPrimitive(std::shared_ptr<Transformable::Primitive::IPrimitive>);
             int checkValue(double value);
+            Display::Color computeFinalColor();
 
             double _scalarNL;
             Transformable::Point3d _origin;
