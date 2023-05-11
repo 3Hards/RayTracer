@@ -27,6 +27,13 @@ int App::run()
         std::cerr << "Usage: ./raytracer [config_file]" << std::endl;
         return 84;
     }
+    if (_args.size() == 1 && _args[0] == "-h") {
+        std::cout << "          Usage: ./raytracer [config_file]" << std::endl << std::endl;
+        std::cout << "config_file: path to the config file" << std::endl << std::endl;
+        std::cout << "          Example: ./raytracer ./Config/scene1.conf" << std::endl << std::endl;
+        std::cout << "Or Create one, you can follow the instruction in the ReadMe." << std::endl;
+        return 0;
+    }
     try {
         Scene::Director director(_args[0]);
         while (director.playScene()) {
