@@ -23,39 +23,6 @@ elseif(WIN32)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4)
 endif()
 
-##################### PLUGINS #################################
-
-add_library(primiZizi SHARED
-    ${CMAKE_CURRENT_SOURCE_DIR}/plugins/primiZIZI/PrimiZizi.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/plugins/primiZIZI/api.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Material/AMaterial.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Material/FlatColor.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Raytracer/Vector.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable/ATransformable.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable/Camera/Camera.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable/Camera/Matrix3D.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable/Light/ALight.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable/Light/Ambient.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable/Light/Directional.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable/Primitive/APrimitive.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable/Primitive/Plane.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable/Primitive/Sphere.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformation/Rotation.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformation/Translation.cpp
-)
-
-target_include_directories(primiZizi PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/plugins/primiZIZI
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Display
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Material
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Raytracer
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable/Camera
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable/Light
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformable/Primitive
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Transformation
-)
-
 ##################### lib ##########################
 
 if (WIN32)
@@ -102,12 +69,6 @@ add_custom_command(
     TARGET ${PROJECT_NAME}
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
-add_custom_command(
-    TARGET ${PROJECT_NAME}
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:primiZizi> ${CMAKE_CURRENT_SOURCE_DIR}/plugins
 )
 
 if (WIN32)
