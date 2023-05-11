@@ -7,10 +7,20 @@
 
 #include "Cylinder.hpp"
 
+/*
+** EPITECH PROJECT, 2023
+** RayTracer
+** File description:
+** Sphere
+*/
 
-Transformable::Primitive::Cylinder::Cylinder(Point3d pos, Point3d axis, double ray, double height, std::shared_ptr<Material::IMaterial> material) : Transformable::Primitive::APrimitive(material, pos, {0, 0, 0}), _ray(ray), _height(height), _axis(axis)
+#include <cmath>
+#include <memory>
+#include "Sphere.hpp"
+#include "Vector.hpp"
+
+Transformable::Primitive::Cylinder::Cylinder(Point3d pos, Point3d axis, double _ray, double height, std::shared_ptr<Material::IMaterial> material) : Transformable::Primitive::APrimitive(material, pos, axis), _ray(_ray), _height(height)
 {
-    _axis.normalize();
 }
 
 bool Transformable::Primitive::Cylinder::checkHit(std::shared_ptr<Raytracer::IVector> vector)
@@ -18,22 +28,34 @@ bool Transformable::Primitive::Cylinder::checkHit(std::shared_ptr<Raytracer::IVe
     Point3d vectorPos = vector->getPos();
     Point3d vectorAxis = vector->getAxis();
 
-    double a = vectorAxis.dot(vectorAxis);
-    Point3d dist = vectorPos - getPos();
-    double b = 2.0 * dist.dot(vectorAxis);
-    double c = dist.dot(dist) - _ray * _ray;
-    double discriminant = b * b - 4.00 * a * c;
+    Point3d dist = getAxis() - vectorPos;
+    double a = vectorAxis.x * vectorAxis.x + vectorAxis.z * vectorAxis.z;
+    double b = 2.0 * (dist.x * vectorAxis.x + dist.z * vectorAxis.z);
+    double c = dist.x * dist.x + dist.z * dist.z - _ray * _ray;
+    double discriminant = b * b - 4.0 * a * c;
 
     if (discriminant < 0) {
         return false;
     }
-    double t = (-b - std::sqrt(discriminant)) / (2.0 * a);
-    if (t < 0) {
+
+    double t1 = (-b - std::sqrt(discriminant)) / (2.0 * a);
+    double t2 = (-b + std::sqrt(discriminant)) / (2.0 * a);
+
+    double y1 = vectorPos.y + t1 * vectorAxis.y;
+    double y2 = vectorPos.y + t2 * vectorAxis.y;
+
+    double minY = std::min(y1, y2);
+    double maxY = std::max(y1, y2);
+
+    if (minY > _height || maxY < 0) {
         return false;
     }
-    _lastHittedVector = vector;
+
+    double t = (minY < 0) ? t2 : t1;
+
     Point3d hitPos = vectorPos + vectorAxis * t;
     vector->setPos(hitPos);
+    _lastHittedVector = vector;
     return true;
 }
 
