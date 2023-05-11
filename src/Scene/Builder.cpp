@@ -66,7 +66,7 @@ namespace Scene
 
         try {
             const libconfig::Setting &transformationD = setting.lookup("transformation");
-            setting.lookupValue("type", type);
+            transformationD.lookupValue("type", type);
             x = transformationD.lookup("x");
             y = transformationD.lookup("y");
             z = transformationD.lookup("z");
