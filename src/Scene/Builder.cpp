@@ -13,6 +13,8 @@
 #include "Ambient.hpp"
 #include "Plane.hpp"
 #include "Directional.hpp"
+#include "Rotation.hpp"
+#include "Translation.hpp"
 
 namespace Scene
 {
@@ -39,6 +41,26 @@ namespace Scene
             throw std::runtime_error("Unknown type : " + type);
         } catch (libconfig::SettingNotFoundException &e) {
             throw std::runtime_error("Missing settings in " + type);
+        }
+    }
+
+    void transformation(std::shared_ptr<Transformable::ITransformable> transformable, libconfig::Setting& setting)
+    {
+        std::shared_ptr<Transformation::ITransformation> transformation;
+        std::string type;
+        double x, y, z;
+
+        try {
+            libconfig::Setting &transformationD = setting.lookup("transformation");
+            type = transformationD.lookup("type");
+            x = transformationD.lookup("x");
+            y = transformationD.lookup("y");
+            z = transformationD.lookup("z");
+        } catch (std::exception &e) {
+            return;
+        }
+        if (type == "rotation") {
+            transformation = std::make_shared<Transformation::Rotation>();
         }
     }
 
