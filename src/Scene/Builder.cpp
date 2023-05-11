@@ -15,6 +15,8 @@
 #include "Ambient.hpp"
 #include "Plane.hpp"
 #include "Directional.hpp"
+#include "Rotation.hpp"
+#include "Translation.hpp"
 #include "Cone.hpp"
 #include "LibLoader.hpp"
 #include "Cylinder.hpp"
@@ -56,6 +58,31 @@ namespace Scene
         _map.at(type)(setting);
     }
 
+    void Builder::transformation(std::shared_ptr<Transformable::ITransformable> transformable, libconfig::Setting& setting)
+    {
+        std::shared_ptr<Transformation::ITransformation> transformation;
+        std::string type;
+        int x, y, z;
+
+        try {
+            const libconfig::Setting &transformationD = setting.lookup("transformation");
+            transformationD.lookupValue("type", type);
+            x = transformationD.lookup("x");
+            y = transformationD.lookup("y");
+            z = transformationD.lookup("z");
+        } catch (std::exception &e) {
+            return;
+        }
+        if (type == "rotation") {
+            transformation = std::make_shared<Transformation::Rotation>(Transformable::Point3d{(double)x, (double)y, (double)z});
+        } else if (type == "translation") {
+            transformation = std::make_shared<Transformation::Translation>(Transformable::Point3d{(double)x, (double)y, (double)z});
+        }
+        if (transformation) {
+            transformation->applyTransformation(transformable);
+        }
+    }
+
     void Builder::createCylinder(libconfig::Setting &setting)
     {
         int x, y, z;
@@ -78,6 +105,7 @@ namespace Scene
         b = color.lookup("b");
         std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{r, g, b});
         std::shared_ptr<Transformable::Primitive::IPrimitive> cylinder = std::make_shared<Transformable::Primitive::Cylinder>(Transformable::Point3d{(double)x, (double)y, (double)z}, Transformable::Point3d{(double)ax, (double)ay, (double)az}, (double)ray, (double)height, material);
+        transformation(cylinder, setting);
         _scene->addPrimitive(cylinder);
     }
 
@@ -100,6 +128,7 @@ namespace Scene
         rx = res.lookup("x");
         ry = res.lookup("y");
         std::shared_ptr<Transformable::Camera::ICamera> camera = std::make_shared<Transformable::Camera::Camera>(Transformable::Point3d{(double)x, (double)y, (double)z}, Transformable::Point3d{(double)ax, (double)ay, (double)az}, (double)rx, (double)ry, (double)fov);
+        transformation(camera, setting);
         _scene->addCamera(camera);
     }
 
@@ -185,6 +214,7 @@ namespace Scene
         int blue = color.lookup("b");
         std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{red, green, blue});
         std::shared_ptr<Transformable::Primitive::IPrimitive> sphere = std::make_shared<Transformable::Primitive::Sphere>(Transformable::Point3d{(double)x, (double)y, (double)z}, r, material);
+        transformation(sphere, setting);
         _scene->addPrimitive(sphere);
     }
 
@@ -207,6 +237,7 @@ namespace Scene
         int blue = color.lookup("b");
         std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{red, green, blue});
         std::shared_ptr<Transformable::Primitive::IPrimitive> cone = std::make_shared<Transformable::Primitive::Cone>(Transformable::Point3d{(double)x, (double)y, (double)z}, height, radius, Transformable::Point3d{(double)AxisX, (double)AxisY, (double)AxisZ}, material);
+        transformation(cone, setting);
         _scene->addPrimitive(cone);
     }
 
@@ -223,6 +254,7 @@ namespace Scene
         int g = color.lookup("g");
         int b = color.lookup("b");
         std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Ambient>(Display::Color{r, g, b}, brightness, Transformable::Point3d{(double)x, (double)y, (double)z});
+        transformation(light, setting);
         _scene->addLight(light);
     }
 
@@ -241,6 +273,7 @@ namespace Scene
         az = axis.lookup("z");
         std::shared_ptr<Transformable::Light::ILight> light = std::make_shared<Transformable::Light::Directional>(Display::Color{255, 255, 255},
             brightness, Transformable::Point3d{(double)x, (double)y, (double)z}, Transformable::Point3d{(double)ax, (double)ay, (double)az});
+        transformation(light, setting);
         _scene->addLight(light);
     }
 
@@ -264,6 +297,7 @@ namespace Scene
         int blue = color.lookup("b");
         std::shared_ptr<Material::IMaterial> material = std::make_shared<Material::FlatColor>(Display::Color{red, green, blue});
         std::shared_ptr<Transformable::Primitive::IPrimitive> plane = std::make_shared<Transformable::Primitive::Plane>(Transformable::Point3d{(double)x, (double)y, (double)z}, width, length, Transformable::Point3d{(double)AxisX, (double)AxisY, (double)AxisZ}, material);
+        transformation(plane, setting);
         _scene->addPrimitive(plane);
     }
 }
